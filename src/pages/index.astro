@@ -7,80 +7,98 @@ import SectionHeading from '../components/SectionHeading.astro';
 const projects = [
 	{
 		eyebrow: 'Selected system 01',
-		title: 'Pipeline reliability and observability',
-		summary:
-			'Tightened a fragile ingestion path into something easier to trust, inspect, and recover when upstream data shifted.',
-		problem: 'Inconsistent source data and expensive manual recoveries were interrupting the flow of downstream work.',
-		role: 'Designed and implemented the pipeline touchpoints, then paired them with practical checks and alerts.',
-		constraints: 'Schema drift, limited downtime windows, and mixed ownership across source and sink systems.',
-		outcome: 'Recovery became more predictable, failure points were visible sooner, and the system needed less hand-holding.',
-		learning: 'The biggest improvement usually comes from making failure states legible, not from adding more ceremony.',
-		tech: ['SQL', 'Python', 'orchestration', 'monitoring'],
+		title: 'Ingestion path that could survive drift',
+		summary: 'A fragile data flow was made easier to trust, inspect, and recover without overbuilding it.',
+		problem: 'Upstream schema changes were breaking the flow and making recovery too manual.',
+		meta: [
+			{ label: 'Role', value: 'Data + ops' },
+			{ label: 'Scope', value: 'Ingest / alerts' },
+			{ label: 'Constraint', value: 'Schema drift' },
+		],
+		outcome: 'Failures surfaced earlier and recovery became calmer.',
+		artifact: 'flow map',
+		featured: true,
+		href: '#contact',
 	},
 	{
 		eyebrow: 'Selected system 02',
-		title: 'Responsive web delivery with room to grow',
-		summary:
-			'Built interfaces that stayed lightweight and practical while still feeling considered, fast, and easy to maintain.',
-		problem: 'The UI needed to be clear across devices without becoming heavy or difficult to evolve.',
-		role: 'Worked on layout, components, and the small interaction details that shape how the interface feels.',
-		constraints: 'Tight timelines, content changes, and the need to keep the codebase easy to read for the next person.',
-		outcome: 'The front end stayed responsive, accessible, and straightforward to adjust as requirements shifted.',
-		learning: 'A restrained component system tends to age better than a design that depends on tricks.',
-		tech: ['Astro', 'HTML', 'CSS', 'Tailwind'],
+		title: 'Interface system that stayed light',
+		summary: 'A responsive UI kept its shape across devices while staying easy to revise.',
+		problem: 'The interface needed to stay clear without becoming heavy to maintain.',
+		meta: [
+			{ label: 'Role', value: 'Layout + UI' },
+			{ label: 'Scope', value: 'Shell / components' },
+			{ label: 'Constraint', value: 'Content churn' },
+		],
+		outcome: 'The front end stayed readable and quick to adjust.',
+		artifact: 'layout grid',
+		href: '#contact',
 	},
 	{
 		eyebrow: 'Selected system 03',
-		title: 'Delivery and infrastructure automation',
-		summary:
-			'Standardized delivery so environments behaved more like part of the product and less like a special case.',
-		problem: 'Releases and environment setup were too manual, which slowed down shipping and increased drift.',
-		role: 'Focused on automation, deployment flow, and the safeguards that keep runtime changes boring.',
-		constraints: 'Legacy pieces, operational risk, and the need to improve things without stopping the world.',
-		outcome: 'Deployments became more repeatable, the operational surface got smaller, and handoffs were clearer.',
-		learning: 'Infrastructure work matters most when it removes friction without asking for attention in return.',
-		tech: ['Docker', 'CI/CD', 'Linux', 'automation'],
+		title: 'Release flow that behaved predictably',
+		summary: 'Deployments were made more repeatable so runtime changes felt boring in the best way.',
+		problem: 'Manual releases and environment drift were slowing delivery.',
+		meta: [
+			{ label: 'Role', value: 'Infra + CI' },
+			{ label: 'Scope', value: 'Release / runtime' },
+			{ label: 'Constraint', value: 'Legacy stack' },
+		],
+		outcome: 'Shipments became steadier and handoffs clearer.',
+		artifact: 'runbook',
+		href: '#contact',
 	},
 ];
 
 const domains = [
 	{
+		id: '01',
 		title: 'Data engineering',
-		text: 'Modeling, ingestion, orchestration, and the observability that makes data systems believable.',
-		points: ['source-to-warehouse thinking', 'drift-aware design', 'recoverable pipelines'],
+		descriptor: 'Make data flows trustworthy from source to destination.',
+		capabilities: ['Ingestion and modeling', 'Drift handling', 'Observability and recovery'],
+		stateline: 'batch / streaming / checks',
 	},
 	{
+		id: '02',
 		title: 'Web development',
-		text: 'Interface structure, responsive layout, component systems, and accessible experiences that stay calm under change.',
-		points: ['clear hierarchy', 'pragmatic polish', 'maintainable UI systems'],
+		descriptor: 'Keep interfaces clear, responsive, and easy to move through.',
+		capabilities: ['Layout systems', 'Component structure', 'Accessible interaction'],
+		stateline: 'ui / layout / flow',
 	},
 	{
+		id: '03',
 		title: 'DevOps / infrastructure',
-		text: 'Build, deploy, and runtime mechanics that reduce friction and keep delivery dependable.',
-		points: ['CI/CD flow', 'environment automation', 'operational steadiness'],
+		descriptor: 'Make delivery repeatable and runtime changes less fragile.',
+		capabilities: ['CI/CD flow', 'Environment automation', 'Operational steadiness'],
+		stateline: 'build / release / run',
 	},
 ];
 
 const stackGroups = [
 	{
 		label: 'Languages',
-		items: ['TypeScript', 'Python', 'SQL', 'Bash'],
+		core: 'TypeScript',
+		items: ['Python', 'SQL', 'Bash'],
 	},
 	{
 		label: 'Web',
-		items: ['Astro', 'Tailwind CSS', 'HTML', 'CSS'],
+		core: 'Astro',
+		items: ['Tailwind CSS', 'HTML', 'CSS'],
 	},
 	{
 		label: 'Data',
-		items: ['PostgreSQL', 'ETL', 'dbt', 'Airflow'],
+		core: 'PostgreSQL',
+		items: ['ETL', 'dbt', 'Airflow'],
 	},
 	{
 		label: 'Infra',
-		items: ['Docker', 'Linux', 'Terraform', 'Kubernetes'],
+		core: 'Docker',
+		items: ['Linux', 'Terraform', 'Kubernetes'],
 	},
 	{
 		label: 'Delivery',
-		items: ['CI/CD', 'Git', 'testing', 'monitoring'],
+		core: 'CI/CD',
+		items: ['Git', 'testing', 'monitoring'],
 	},
 ];
 ---
@@ -203,8 +221,10 @@ const stackGroups = [
 				description="A few representative systems: the problem, the role, the tradeoffs, and the outcome. Nothing inflated; just the shape of the work."
 			/>
 
-			<div class="mt-8 grid gap-5 lg:grid-cols-3">
-				{projects.map((project) => <ProjectCard {...project} />)}
+			<div class="mt-8 grid gap-5 md:grid-cols-2 md:items-stretch">
+				{projects.map((project) => (
+					<ProjectCard {...project} class={project.featured ? 'md:col-span-2' : 'md:col-span-1'} />
+				))}
 			</div>
 		</section>
 
@@ -215,22 +235,31 @@ const stackGroups = [
 				description="I don’t see these as separate identities. They’re different pressure points in the same system."
 			/>
 
-			<div class="mt-8 grid gap-5 md:grid-cols-3">
+			<div class="domain-bay mt-8">
 				{domains.map((domain, index) => (
-					<Panel class="h-full p-6 md:p-7">
-						<div class="module-header">
-							<p class="eyebrow">{domain.title}</p>
-							<span class="status-light">0{index + 1}</span>
+					<Panel class="domain-plate h-full p-0">
+						<div class="domain-plate__inner p-5 md:p-6">
+							<div class="domain-plate__rail">
+								<p class="eyebrow">{domain.title}</p>
+								<span class="status-light">0{index + 1}</span>
+							</div>
+
+							<p class="mt-4 text-sm leading-7 text-[rgb(var(--muted))]">{domain.descriptor}</p>
+
+							<ul class="mt-6 space-y-2.5">
+								{domain.capabilities.map((point) => (
+									<li class="domain-capability">
+										<span class="domain-capability__mark" />
+										<span>{point}</span>
+									</li>
+								))}
+							</ul>
+
+							<div class="domain-plate__footer mt-6">
+								<span class="domain-plate__stateline">{domain.stateline}</span>
+								<span class="domain-plate__note">module loaded</span>
+							</div>
 						</div>
-						<p class="mt-4 text-sm leading-7 text-[rgb(var(--muted))]">{domain.text}</p>
-						<ul class="mt-6 space-y-3">
-							{domain.points.map((point) => (
-								<li class="flex items-start gap-3 text-sm leading-7 text-[rgb(var(--text))]">
-									<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[rgb(var(--signal))]" />
-									<span>{point}</span>
-								</li>
-							))}
-						</ul>
 					</Panel>
 				))}
 			</div>
@@ -243,30 +272,47 @@ const stackGroups = [
 				description="I’m comfortable moving from raw data to interface to runtime because the interesting problems usually live between them."
 			/>
 
-			<div class="mt-8 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+			<div class="mt-8 grid gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
 				<Panel class="p-6 md:p-7">
 					<div class="module-header">
-						<p class="eyebrow">Field notes</p>
-						<span class="status-light">ready</span>
+						<p class="eyebrow">Field note</p>
+						<span class="status-light">recorded</span>
 					</div>
-					<p class="mt-4 text-base leading-8 text-[rgb(var(--text))]">
-						I studied computer science and have worked across data engineering, web development, and DevOps.
-						That range matters to me because it reflects how real systems behave: a data issue can become a UI issue,
-						and an infrastructure decision can shape whether a product feels dependable.
-					</p>
-					<p class="mt-5 text-base leading-8 text-[rgb(var(--muted))]">
-						I prefer clear constraints, durable fixes, and interfaces that tell the truth. I’m not trying to make
-						things look effortless; I’m trying to make them hold together.
+					<div class="field-note mt-4">
+						<p class="field-note__stamp">OBS-04 / mixed layers</p>
+						<p class="field-note__text">
+							Computer science background, with work across data, web, and infrastructure.
+						</p>
+					</div>
+					<p class="mt-4 text-sm leading-7 text-[rgb(var(--muted))]">
+						I’m drawn to work where a problem can move across layers and still be kept understandable.
 					</p>
 				</Panel>
 
 				<Panel class="p-6 md:p-7">
-					<p class="mono-label">Working style</p>
-					<ul class="mt-4 space-y-4 text-sm leading-7 text-[rgb(var(--text))]">
-						<li class="flex gap-3"><span class="text-[rgb(var(--signal))]">01</span><span>Start with the system boundary and the failure modes.</span></li>
-						<li class="flex gap-3"><span class="text-[rgb(var(--signal))]">02</span><span>Make the important path visible before optimizing it.</span></li>
-						<li class="flex gap-3"><span class="text-[rgb(var(--signal))]">03</span><span>Prefer small durable improvements over theatrical refactors.</span></li>
-					</ul>
+					<div class="module-header">
+						<p class="eyebrow">Operating rules</p>
+						<span class="status-light">live</span>
+					</div>
+					<div class="mt-4 grid gap-3 md:grid-cols-3">
+						<div class="principle-slot">
+							<p class="principle-slot__id">01</p>
+							<p class="principle-slot__text">Start with the boundary and failure mode.</p>
+						</div>
+						<div class="principle-slot principle-slot--accent">
+							<p class="principle-slot__id">02</p>
+							<p class="principle-slot__text">Make the important path visible first.</p>
+						</div>
+						<div class="principle-slot">
+							<p class="principle-slot__id">03</p>
+							<p class="principle-slot__text">Prefer small durable fixes over theatrics.</p>
+						</div>
+					</div>
+					<div class="field-strip mt-5">
+						<span class="field-strip__label">working style</span>
+						<span class="field-strip__bar" />
+						<span class="field-strip__label">steady</span>
+					</div>
 				</Panel>
 			</div>
 		</section>
@@ -278,16 +324,30 @@ const stackGroups = [
 				description="Kept intentionally compact: enough to show range, not a trophy shelf."
 			/>
 
-			<div class="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
-				{stackGroups.map((group) => (
-					<Panel class="p-6 md:p-7">
-						<p class="mono-label">{group.label}</p>
-						<div class="mt-4 flex flex-wrap gap-2">
-							{group.items.map((item) => <span class="chip">{item}</span>)}
+			<Panel class="stack-housing mt-8 p-0">
+				<div class="stack-housing__head">
+					<div>
+						<p class="eyebrow">Loadout</p>
+						<p class="mt-2 text-sm leading-7 text-[rgb(var(--muted))]">Grouped by the parts of the system they support.</p>
+					</div>
+					<div class="status-light">assembled</div>
+				</div>
+
+				<div class="stack-housing__grid">
+					{stackGroups.map((group) => (
+						<div class="stack-slot">
+							<p class="stack-slot__label">{group.label}</p>
+							<div class="stack-core mt-3">
+								<span class="stack-core__flag">core</span>
+								<span class="stack-core__tool">{group.core}</span>
+							</div>
+							<ul class="stack-list mt-4">
+								{group.items.map((item) => <li>{item}</li>)}
+							</ul>
 						</div>
-					</Panel>
-				))}
-			</div>
+					))}
+				</div>
+			</Panel>
 		</section>
 
 		<section id="contact" class="mt-20 scroll-mt-24 md:mt-24">
