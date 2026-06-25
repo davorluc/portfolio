@@ -1,0 +1,54 @@
+---
+const {
+	eyebrow,
+	title,
+	summary,
+	problem,
+	role,
+	constraints,
+	outcome,
+	learning,
+	tech = [],
+} = Astro.props;
+---
+
+<article class="panel flex h-full flex-col p-6 md:p-7">
+	<div class="module-header">
+		<p class="eyebrow">{eyebrow}</p>
+		<span class="status-light">case file</span>
+	</div>
+	<h3 class="mt-4 text-xl font-medium tracking-[-0.03em] text-[rgb(var(--text))]">{title}</h3>
+	<p class="mt-4 text-sm leading-7 text-[rgb(var(--muted))]">{summary}</p>
+
+	<div class="mt-6 grid gap-3">
+		<div class="compartment p-4">
+			<p class="readout">Problem</p>
+			<p class="mt-2 text-sm leading-6 text-[rgb(var(--text))]">{problem}</p>
+		</div>
+		<div class="grid gap-3 sm:grid-cols-2">
+			<div class="compartment p-4">
+				<p class="readout">Role</p>
+				<p class="mt-2 text-sm leading-6 text-[rgb(var(--text))]">{role}</p>
+			</div>
+			<div class="compartment p-4">
+				<p class="readout">Constraints</p>
+				<p class="mt-2 text-sm leading-6 text-[rgb(var(--text))]">{constraints}</p>
+			</div>
+		</div>
+		<div class="compartment p-4">
+			<p class="readout">Outcome</p>
+			<p class="mt-2 text-sm leading-6 text-[rgb(var(--text))]">{outcome}</p>
+		</div>
+	</div>
+
+	<div class="mt-6 hairline-top pt-4">
+		<p class="mono-label">What I learned</p>
+		<p class="mt-2 text-sm leading-7 text-[rgb(var(--muted))]">{learning}</p>
+	</div>
+
+	{tech.length > 0 && (
+		<div class="mt-5 flex flex-wrap gap-2">
+			{tech.map((item) => <span class="selector">{item}</span>)}
+		</div>
+	)}
+</article>

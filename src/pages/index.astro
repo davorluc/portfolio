@@ -1,11 +1,320 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import Panel from '../components/Panel.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import SectionHeading from '../components/SectionHeading.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const projects = [
+	{
+		eyebrow: 'Selected system 01',
+		title: 'Pipeline reliability and observability',
+		summary:
+			'Tightened a fragile ingestion path into something easier to trust, inspect, and recover when upstream data shifted.',
+		problem: 'Inconsistent source data and expensive manual recoveries were interrupting the flow of downstream work.',
+		role: 'Designed and implemented the pipeline touchpoints, then paired them with practical checks and alerts.',
+		constraints: 'Schema drift, limited downtime windows, and mixed ownership across source and sink systems.',
+		outcome: 'Recovery became more predictable, failure points were visible sooner, and the system needed less hand-holding.',
+		learning: 'The biggest improvement usually comes from making failure states legible, not from adding more ceremony.',
+		tech: ['SQL', 'Python', 'orchestration', 'monitoring'],
+	},
+	{
+		eyebrow: 'Selected system 02',
+		title: 'Responsive web delivery with room to grow',
+		summary:
+			'Built interfaces that stayed lightweight and practical while still feeling considered, fast, and easy to maintain.',
+		problem: 'The UI needed to be clear across devices without becoming heavy or difficult to evolve.',
+		role: 'Worked on layout, components, and the small interaction details that shape how the interface feels.',
+		constraints: 'Tight timelines, content changes, and the need to keep the codebase easy to read for the next person.',
+		outcome: 'The front end stayed responsive, accessible, and straightforward to adjust as requirements shifted.',
+		learning: 'A restrained component system tends to age better than a design that depends on tricks.',
+		tech: ['Astro', 'HTML', 'CSS', 'Tailwind'],
+	},
+	{
+		eyebrow: 'Selected system 03',
+		title: 'Delivery and infrastructure automation',
+		summary:
+			'Standardized delivery so environments behaved more like part of the product and less like a special case.',
+		problem: 'Releases and environment setup were too manual, which slowed down shipping and increased drift.',
+		role: 'Focused on automation, deployment flow, and the safeguards that keep runtime changes boring.',
+		constraints: 'Legacy pieces, operational risk, and the need to improve things without stopping the world.',
+		outcome: 'Deployments became more repeatable, the operational surface got smaller, and handoffs were clearer.',
+		learning: 'Infrastructure work matters most when it removes friction without asking for attention in return.',
+		tech: ['Docker', 'CI/CD', 'Linux', 'automation'],
+	},
+];
+
+const domains = [
+	{
+		title: 'Data engineering',
+		text: 'Modeling, ingestion, orchestration, and the observability that makes data systems believable.',
+		points: ['source-to-warehouse thinking', 'drift-aware design', 'recoverable pipelines'],
+	},
+	{
+		title: 'Web development',
+		text: 'Interface structure, responsive layout, component systems, and accessible experiences that stay calm under change.',
+		points: ['clear hierarchy', 'pragmatic polish', 'maintainable UI systems'],
+	},
+	{
+		title: 'DevOps / infrastructure',
+		text: 'Build, deploy, and runtime mechanics that reduce friction and keep delivery dependable.',
+		points: ['CI/CD flow', 'environment automation', 'operational steadiness'],
+	},
+];
+
+const stackGroups = [
+	{
+		label: 'Languages',
+		items: ['TypeScript', 'Python', 'SQL', 'Bash'],
+	},
+	{
+		label: 'Web',
+		items: ['Astro', 'Tailwind CSS', 'HTML', 'CSS'],
+	},
+	{
+		label: 'Data',
+		items: ['PostgreSQL', 'ETL', 'dbt', 'Airflow'],
+	},
+	{
+		label: 'Infra',
+		items: ['Docker', 'Linux', 'Terraform', 'Kubernetes'],
+	},
+	{
+		label: 'Delivery',
+		items: ['CI/CD', 'Git', 'testing', 'monitoring'],
+	},
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+	title="Davor Luc — Portfolio"
+	description="A calm, engineering-led portfolio spanning data engineering, web development, and DevOps."
+>
+	<main class="relative mx-auto max-w-6xl px-6 pb-20 pt-6 md:px-8 lg:px-10">
+		<header class="sticky top-4 z-20 mb-8">
+			<nav class="panel flex items-center justify-between gap-4 px-5 py-4 backdrop-blur-md">
+				<a href="#top" class="flex items-center gap-3">
+					<span class="selector selector--active inline-flex h-8 w-8 items-center justify-center px-0 font-mono text-[11px] tracking-[0.22em]">
+						DL
+					</span>
+					<div>
+						<p class="mono-label">Davor Luc</p>
+						<p class="readout mt-1">portfolio interface</p>
+					</div>
+				</a>
+
+				<div class="hidden items-center gap-2 md:flex">
+					<a class="selector" href="#projects">Selected work</a>
+					<a class="selector" href="#domains">Domains</a>
+					<a class="selector" href="#about">About</a>
+					<a class="selector" href="#stack">Stack</a>
+					<a class="selector" href="#contact">Contact</a>
+				</div>
+			</nav>
+		</header>
+
+		<section id="top" class="grid gap-8 lg:grid-cols-[1.3fr_0.9fr] lg:items-start lg:gap-10">
+			<div class="space-y-6">
+				<p class="eyebrow">Portfolio / system overview</p>
+				<h1 class="max-w-3xl text-4xl font-medium tracking-[-0.05em] text-[rgb(var(--text))] sm:text-5xl lg:text-6xl">
+					I build across data, web, and infrastructure without pretending the layers are separate.
+				</h1>
+				<p class="max-w-2xl text-base leading-8 text-[rgb(var(--muted))] md:text-lg">
+					Computer science background. Practical range across data engineering, web development, and DevOps.
+					I like systems that stay calm on the surface and honest underneath.
+				</p>
+
+				<div class="flex flex-wrap gap-3">
+					<a class="link-button link-button--solid" href="#projects">View selected work</a>
+					<a class="link-button" href="#contact">Get in touch</a>
+				</div>
+
+				<div class="domain-rail mt-2" aria-label="Core domains">
+					<div class="domain-slot domain-slot--active">
+						<span class="domain-slot__id">01</span>
+						<span class="domain-slot__label">Data engineering</span>
+					</div>
+					<div class="domain-slot">
+						<span class="domain-slot__id">02</span>
+						<span class="domain-slot__label">Web development</span>
+					</div>
+					<div class="domain-slot">
+						<span class="domain-slot__id">03</span>
+						<span class="domain-slot__label">DevOps / infrastructure</span>
+					</div>
+				</div>
+			</div>
+
+			<Panel class="p-6 md:p-7 lg:sticky lg:top-28">
+				<div class="module-header">
+					<p class="mono-label">Build log</p>
+					<span class="status-light">live</span>
+				</div>
+
+				<div class="mt-4 space-y-4">
+					<div class="compartment p-5 md:p-6">
+						<p class="readout">Current mode</p>
+						<p class="mt-2 text-sm leading-7 text-[rgb(var(--text))]">
+							Systems-first work that moves between pipelines, interfaces, and delivery mechanics.
+						</p>
+						<div class="mt-5 grid gap-3 sm:grid-cols-2">
+							<div class="inset-panel-soft p-3">
+								<p class="signal-strip__label">Signal A</p>
+								<p class="mt-2 text-sm text-[rgb(var(--text))]">quiet</p>
+							</div>
+							<div class="inset-panel-soft p-3">
+								<p class="signal-strip__label">Signal B</p>
+								<p class="mt-2 text-sm text-[rgb(var(--text))]">stable</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="signal-strip" aria-label="Status strip">
+						<span class="signal-strip__label">Interface feed</span>
+						<div class="signal-strip__track" />
+						<span class="signal-strip__label">ready</span>
+					</div>
+
+					<div class="status-row">
+						<div class="status-cell status-cell--prominent">
+							<p class="status-cell__label">Signal</p>
+							<p class="status-cell__value">quiet, practical</p>
+						</div>
+						<div class="status-cell">
+							<p class="status-cell__label">Mode</p>
+							<p class="status-cell__value">technical</p>
+						</div>
+						<div class="status-cell">
+							<p class="status-cell__label">Focus</p>
+							<p class="status-cell__value">data / web / infra</p>
+						</div>
+					</div>
+
+					<p class="readout pt-1 text-[rgb(var(--muted))]">
+						Calm on the surface, engineered underneath.
+					</p>
+				</div>
+			</Panel>
+		</section>
+
+		<section id="projects" class="mt-20 scroll-mt-24 md:mt-24">
+			<SectionHeading
+				label="Selected systems"
+				title="Work that crosses layers and stays grounded in real constraints."
+				description="A few representative systems: the problem, the role, the tradeoffs, and the outcome. Nothing inflated; just the shape of the work."
+			/>
+
+			<div class="mt-8 grid gap-5 lg:grid-cols-3">
+				{projects.map((project) => <ProjectCard {...project} />)}
+			</div>
+		</section>
+
+		<section id="domains" class="mt-20 scroll-mt-24 md:mt-24">
+			<SectionHeading
+				label="Work modules"
+				title="The three domains I move through most often."
+				description="I don’t see these as separate identities. They’re different pressure points in the same system."
+			/>
+
+			<div class="mt-8 grid gap-5 md:grid-cols-3">
+				{domains.map((domain, index) => (
+					<Panel class="h-full p-6 md:p-7">
+						<div class="module-header">
+							<p class="eyebrow">{domain.title}</p>
+							<span class="status-light">0{index + 1}</span>
+						</div>
+						<p class="mt-4 text-sm leading-7 text-[rgb(var(--muted))]">{domain.text}</p>
+						<ul class="mt-6 space-y-3">
+							{domain.points.map((point) => (
+								<li class="flex items-start gap-3 text-sm leading-7 text-[rgb(var(--text))]">
+									<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[rgb(var(--signal))]" />
+									<span>{point}</span>
+								</li>
+							))}
+						</ul>
+					</Panel>
+				))}
+			</div>
+		</section>
+
+		<section id="about" class="mt-20 scroll-mt-24 md:mt-24">
+			<SectionHeading
+				label="About snapshot"
+				title="How I think: understand the system, then improve the path through it."
+				description="I’m comfortable moving from raw data to interface to runtime because the interesting problems usually live between them."
+			/>
+
+			<div class="mt-8 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+				<Panel class="p-6 md:p-7">
+					<div class="module-header">
+						<p class="eyebrow">Field notes</p>
+						<span class="status-light">ready</span>
+					</div>
+					<p class="mt-4 text-base leading-8 text-[rgb(var(--text))]">
+						I studied computer science and have worked across data engineering, web development, and DevOps.
+						That range matters to me because it reflects how real systems behave: a data issue can become a UI issue,
+						and an infrastructure decision can shape whether a product feels dependable.
+					</p>
+					<p class="mt-5 text-base leading-8 text-[rgb(var(--muted))]">
+						I prefer clear constraints, durable fixes, and interfaces that tell the truth. I’m not trying to make
+						things look effortless; I’m trying to make them hold together.
+					</p>
+				</Panel>
+
+				<Panel class="p-6 md:p-7">
+					<p class="mono-label">Working style</p>
+					<ul class="mt-4 space-y-4 text-sm leading-7 text-[rgb(var(--text))]">
+						<li class="flex gap-3"><span class="text-[rgb(var(--signal))]">01</span><span>Start with the system boundary and the failure modes.</span></li>
+						<li class="flex gap-3"><span class="text-[rgb(var(--signal))]">02</span><span>Make the important path visible before optimizing it.</span></li>
+						<li class="flex gap-3"><span class="text-[rgb(var(--signal))]">03</span><span>Prefer small durable improvements over theatrical refactors.</span></li>
+					</ul>
+				</Panel>
+			</div>
+		</section>
+
+		<section id="stack" class="mt-20 scroll-mt-24 md:mt-24">
+			<SectionHeading
+				label="Current stack"
+				title="A concise view of the tools I reach for."
+				description="Kept intentionally compact: enough to show range, not a trophy shelf."
+			/>
+
+			<div class="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+				{stackGroups.map((group) => (
+					<Panel class="p-6 md:p-7">
+						<p class="mono-label">{group.label}</p>
+						<div class="mt-4 flex flex-wrap gap-2">
+							{group.items.map((item) => <span class="chip">{item}</span>)}
+						</div>
+					</Panel>
+				))}
+			</div>
+		</section>
+
+		<section id="contact" class="mt-20 scroll-mt-24 md:mt-24">
+			<SectionHeading
+				label="Contact"
+				title="If the work touches data, web, or infrastructure, I’m interested."
+				description="I’m open to product work, platform work, and the kind of problems where the useful answer lives across layers."
+			/>
+
+			<Panel class="mt-8 p-6 md:p-7">
+				<div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+					<div class="max-w-2xl space-y-3">
+						<p class="text-sm leading-7 text-[rgb(var(--muted))]">
+							Want to talk about a system that needs to be steadier, clearer, or easier to ship?
+						</p>
+						<p class="text-sm leading-7 text-[rgb(var(--text))]">
+							Email: <a class="underline decoration-[rgb(var(--accent))] underline-offset-4" href="mailto:hello@davorluc.dev">hello@davorluc.dev</a>
+							&nbsp;·&nbsp; GitHub: <a class="underline decoration-[rgb(var(--accent))] underline-offset-4" href="https://github.com/davorluc" target="_blank" rel="noreferrer">davorluc</a>
+						</p>
+					</div>
+
+					<div class="flex flex-wrap gap-3">
+						<a class="link-button link-button--solid" href="mailto:hello@davorluc.dev">Start an email</a>
+						<a class="link-button" href="https://github.com/davorluc" target="_blank" rel="noreferrer">View GitHub</a>
+					</div>
+				</div>
+			</Panel>
+		</section>
+	</main>
 </Layout>

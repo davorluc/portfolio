@@ -1,0 +1,12 @@
+---
+const { label, title, description, align = 'left' } = Astro.props;
+---
+
+<div class:list={['max-w-3xl', align === 'center' && 'mx-auto text-center']}>
+	<div class="module-header">
+		<p class="eyebrow">{label}</p>
+		<span class="status-light">module online</span>
+	</div>
+	<h2 class="section-title mt-4">{title}</h2>
+	{description && <p class="section-copy">{description}</p>}
+</div>
