@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import ClickSpark from '../component/ext/ClickSpark.tsx';
 
 const {
 	title = 'Davor Luc — Portfolio',
@@ -22,6 +23,15 @@ const {
 		<title>{title}</title>
 	</head>
 	<body>
-		<slot />
+		<ClickSpark
+			client:load
+			sparkColor="#2a2a2a"
+			sparkSize={10}
+			sparkRadius={15}
+			sparkCount={8}
+			duration={400}
+		>
+			<slot />
+		</ClickSpark>
 	</body>
 </html>
