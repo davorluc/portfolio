@@ -1,4 +1,9 @@
 @import "tailwindcss";
+@import "@fontsource-variable/fraunces/wght.css";
+@import "@fontsource-variable/fraunces/wght-italic.css";
+@import "@fontsource-variable/ibm-plex-sans/wght.css";
+@import "@fontsource/ibm-plex-mono/latin-400.css";
+@import "@fontsource/ibm-plex-mono/latin-600.css";
 
 :root {
   --paper: #f2ebdd;
@@ -9,7 +14,7 @@
   --chalk: #f6f0e4;
   --ochre: #943e25;
   --sand: #d8c8ab;
-  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-family: "IBM Plex Sans Variable", system-ui, sans-serif;
   color: var(--ink);
   background: var(--paper);
 }
@@ -23,7 +28,7 @@ a:focus-visible { outline: 3px solid var(--ochre); outline-offset: 4px; }
 ::selection { background: var(--sand); color: var(--ink); }
 p, h1, h2, h3, figure { margin: 0; }
 p { line-height: 1.65; }
-h1, h2, h3, .wordmark { font-family: Fraunces, Georgia, serif; font-weight: 400; }
+h1, h2, h3, .wordmark { font-family: "Fraunces Variable", Georgia, serif; font-weight: 400; }
 em { font-weight: 400; }
 .container { width: min(100% - 5rem, 1280px); margin-inline: auto; }
 .eyebrow, .domain-number, .junction-label, .site-footer, .work-structure {
@@ -114,6 +119,8 @@ em { font-weight: 400; }
   .hero h1 { margin-top: 1.4rem; font-size: clamp(2.8rem, 10vw, 4rem); }
   .hero-lead { margin-top: 1.5rem; }
   .junction svg { margin-block: .7rem; }
+  /* SVG coordinates shrink on narrow screens; the visible caption carries the labels. */
+  .junction svg text { display: none; }
   .work-pending { grid-template-columns: 1fr; gap: 0; }
   .work-structure { border-left: 0; border-top: 1px solid var(--rule); }
   .domain-list { grid-template-columns: 1fr; }
