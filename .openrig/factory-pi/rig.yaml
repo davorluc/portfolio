@@ -1,0 +1,110 @@
+# Factory topology from OpenRig 0.7.0, adapted to use Pi for every seat.
+version: "0.2"
+name: factory
+culture_file: CULTURE.md
+summary: >
+  A product factory with a lead, a PM advisor, build, QA, design, and two
+  independent reviewers. Bring ideas to the advisor; the lead runs the team.
+
+pods:
+  - id: orch
+    label: Orchestration
+    members:
+      - id: lead
+        agent_ref: "path:/home/davorluc/.local/share/mise/installs/node/26.12.0/lib/node_modules/@openrig/cli/daemon/specs/agents/orchestration/orchestrator"
+        runtime: pi
+        profile: default
+        model: openai/gpt-6-sol
+        cwd: "."
+        startup:
+          files:
+            - path: guidance/lead-first-move.md
+              delivery_hint: send_text
+              required: true
+      - id: advisor
+        agent_ref: "path:/home/davorluc/.local/share/mise/installs/node/26.12.0/lib/node_modules/@openrig/cli/daemon/specs/agents/product-management/pm"
+        runtime: pi
+        profile: advisor
+        model: openai/gpt-6-sol
+        cwd: "."
+        startup:
+          files:
+            - path: guidance/advisor-role.md
+              delivery_hint: send_text
+              required: true
+    edges:
+      - kind: collaborates_with
+        from: advisor
+        to: lead
+
+  - id: dev
+    label: Development
+    members:
+      - id: build
+        agent_ref: "path:/home/davorluc/.local/share/mise/installs/node/26.12.0/lib/node_modules/@openrig/cli/daemon/specs/agents/development/implementer"
+        runtime: pi
+        profile: default
+        model: openai/gpt-6-sol
+        cwd: "."
+      - id: qa
+        agent_ref: "path:/home/davorluc/.local/share/mise/installs/node/26.12.0/lib/node_modules/@openrig/cli/daemon/specs/agents/development/qa"
+        runtime: pi
+        profile: default
+        model: openai/gpt-6-sol
+        cwd: "."
+      - id: design
+        agent_ref: "path:/home/davorluc/.local/share/mise/installs/node/26.12.0/lib/node_modules/@openrig/cli/daemon/specs/agents/design/product-designer"
+        runtime: pi
+        profile: default
+        model: openai/gpt-6-sol
+        cwd: "."
+    edges:
+      - kind: delegates_to
+        from: build
+        to: qa
+
+  - id: review
+    label: Review
+    members:
+      - id: r1
+        agent_ref: "path:/home/davorluc/.local/share/mise/installs/node/26.12.0/lib/node_modules/@openrig/cli/daemon/specs/agents/review/independent-reviewer"
+        runtime: pi
+        profile: default
+        model: openai/gpt-6-sol
+        cwd: "."
+      - id: r2
+        agent_ref: "path:/home/davorluc/.local/share/mise/installs/node/26.12.0/lib/node_modules/@openrig/cli/daemon/specs/agents/review/independent-reviewer"
+        runtime: pi
+        profile: default
+        model: openai/gpt-6-sol
+        cwd: "."
+    edges: []
+
+edges:
+  - kind: delegates_to
+    from: orch.lead
+    to: dev.build
+  - kind: delegates_to
+    from: orch.lead
+    to: dev.design
+  - kind: delegates_to
+    from: orch.lead
+    to: review.r1
+  - kind: delegates_to
+    from: orch.lead
+    to: dev.qa
+  - kind: delegates_to
+    from: orch.lead
+    to: review.r2
+  - kind: can_observe
+    from: review.r1
+    to: dev.build
+  - kind: can_observe
+    from: review.r1
+    to: dev.design
+  - kind: can_observe
+    from: review.r2
+    to: dev.build
+  - kind: can_observe
+    from: review.r2
+    to: dev.qa
