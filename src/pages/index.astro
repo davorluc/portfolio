@@ -1,365 +1,108 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Panel from '../components/Panel.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import SectionHeading from '../components/SectionHeading.astro';
-
-const projects = [
-	{
-		eyebrow: 'Selected system 01',
-		title: 'Ingestion path that could survive drift',
-		summary: 'A fragile data flow was made easier to trust, inspect, and recover without overbuilding it.',
-		problem: 'Upstream schema changes were breaking the flow and making recovery too manual.',
-		meta: [
-			{ label: 'Role', value: 'Data + ops' },
-			{ label: 'Scope', value: 'Ingest / alerts' },
-			{ label: 'Constraint', value: 'Schema drift' },
-		],
-		outcome: 'Failures surfaced earlier and recovery became calmer.',
-		artifact: 'flow map',
-		featured: true,
-		href: '#contact',
-	},
-	{
-		eyebrow: 'Selected system 02',
-		title: 'Interface system that stayed light',
-		summary: 'A responsive UI kept its shape across devices while staying easy to revise.',
-		problem: 'The interface needed to stay clear without becoming heavy to maintain.',
-		meta: [
-			{ label: 'Role', value: 'Layout + UI' },
-			{ label: 'Scope', value: 'Shell / components' },
-			{ label: 'Constraint', value: 'Content churn' },
-		],
-		outcome: 'The front end stayed readable and quick to adjust.',
-		artifact: 'layout grid',
-		href: '#contact',
-	},
-	{
-		eyebrow: 'Selected system 03',
-		title: 'Release flow that behaved predictably',
-		summary: 'Deployments were made more repeatable so runtime changes felt boring in the best way.',
-		problem: 'Manual releases and environment drift were slowing delivery.',
-		meta: [
-			{ label: 'Role', value: 'Infra + CI' },
-			{ label: 'Scope', value: 'Release / runtime' },
-			{ label: 'Constraint', value: 'Legacy stack' },
-		],
-		outcome: 'Shipments became steadier and handoffs clearer.',
-		artifact: 'runbook',
-		href: '#contact',
-	},
-];
-
-const domains = [
-	{
-		id: '01',
-		title: 'Data engineering',
-		descriptor: 'Make data flows trustworthy from source to destination.',
-		capabilities: ['Ingestion and modeling', 'Drift handling', 'Observability and recovery'],
-		stateline: 'batch / streaming / checks',
-	},
-	{
-		id: '02',
-		title: 'Web development',
-		descriptor: 'Keep interfaces clear, responsive, and easy to move through.',
-		capabilities: ['Layout systems', 'Component structure', 'Accessible interaction'],
-		stateline: 'ui / layout / flow',
-	},
-	{
-		id: '03',
-		title: 'DevOps / infrastructure',
-		descriptor: 'Make delivery repeatable and runtime changes less fragile.',
-		capabilities: ['CI/CD flow', 'Environment automation', 'Operational steadiness'],
-		stateline: 'build / release / run',
-	},
-];
-
-const stackGroups = [
-	{
-		label: 'Languages',
-		core: 'TypeScript',
-		items: ['Python', 'SQL', 'Bash'],
-	},
-	{
-		label: 'Web',
-		core: 'Astro',
-		items: ['Tailwind CSS', 'HTML', 'CSS'],
-	},
-	{
-		label: 'Data',
-		core: 'PostgreSQL',
-		items: ['ETL', 'dbt', 'Airflow'],
-	},
-	{
-		label: 'Infra',
-		core: 'Docker',
-		items: ['Linux', 'Terraform', 'Kubernetes'],
-	},
-	{
-		label: 'Delivery',
-		core: 'CI/CD',
-		items: ['Git', 'testing', 'monitoring'],
-	},
-];
 ---
 
 <Layout
-	title="Davor Luc — Portfolio"
-	description="A calm, engineering-led portfolio spanning data engineering, web development, and DevOps."
+  title="Davor Luc — Data, web & infrastructure"
+  description="Davor Luc's portfolio: connecting data, web and infrastructure. Selected case studies and contact details are being prepared."
 >
-	<main class="relative mx-auto max-w-6xl px-6 pb-20 pt-6 md:px-8 lg:px-10">
-		<header class="sticky top-4 z-20 mb-8">
-			<nav class="panel flex items-center justify-between gap-4 px-5 py-4 backdrop-blur-md">
-				<a href="#top" class="flex items-center gap-3">
-					<span class="selector selector--active inline-flex h-8 w-8 items-center justify-center px-0 font-mono text-[11px] tracking-[0.22em]">
-						DL
-					</span>
-					<div>
-						<p class="mono-label">Davor Luc</p>
-						<p class="readout mt-1">portfolio interface</p>
-					</div>
-				</a>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="wordmark" href="#top" aria-label="Davor Luc, back to top">Davor Luc<span class="wordmark-dot" aria-hidden="true">.</span></a>
+      <nav aria-label="Primary navigation">
+        <a href="#work">Work</a>
+        <a href="#approach">Approach</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-				<div class="hidden items-center gap-2 md:flex">
-					<a class="selector" href="#projects">Selected work</a>
-					<a class="selector" href="#domains">Domains</a>
-					<a class="selector" href="#about">About</a>
-					<a class="selector" href="#stack">Stack</a>
-					<a class="selector" href="#contact">Contact</a>
-				</div>
-			</nav>
-		</header>
+  <main id="main" tabindex="-1">
+    <section class="hero container" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">01 / Data · Web · Infrastructure</p>
+        <h1 id="hero-title">I build where data, web, and infrastructure <em>meet.</em></h1>
+        <p class="hero-lead">From the flow of data to the interface people use and the systems that keep it running: a portfolio about the connections between layers.</p>
+        <div class="hero-actions">
+          <a class="button" href="#work">See selected work <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="#contact">Contact details <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <figure class="junction">
+        <p class="junction-label">Fig. 01 / The junction</p>
+        <svg viewBox="0 0 440 300" aria-hidden="true" focusable="false">
+          <path class="diagram-path" d="M36 44 L232 150 M36 150 H232 M36 256 L232 150 H405" />
+          <circle class="diagram-end" cx="36" cy="44" r="4"/><circle class="diagram-end" cx="36" cy="150" r="4"/><circle class="diagram-end" cx="36" cy="256" r="4"/>
+          <circle class="diagram-center" cx="232" cy="150" r="43"/><circle class="diagram-core" cx="232" cy="150" r="13"/>
+          <text x="51" y="42">DATA</text><text x="51" y="143">WEB</text><text x="51" y="267">INFRASTRUCTURE</text>
+        </svg>
+        <figcaption>Across layers, toward the useful answer.</figcaption>
+      </figure>
+    </section>
 
-		<section id="top" class="grid gap-8 lg:grid-cols-[1.3fr_0.9fr] lg:items-start lg:gap-10">
-			<div class="space-y-6">
-				<p class="eyebrow">Portfolio / system overview</p>
-				<h1 class="max-w-3xl text-4xl font-medium tracking-[-0.05em] text-[rgb(var(--text))] sm:text-5xl lg:text-6xl">
-					I build across data, web, and infrastructure without pretending the layers are separate.
-				</h1>
-				<p class="max-w-2xl text-base leading-8 text-[rgb(var(--muted))] md:text-lg">
-					Computer science background. Practical range across data engineering, web development, and DevOps.
-					I like systems that stay calm on the surface and honest underneath.
-				</p>
+    <section class="section container work" id="work" aria-labelledby="work-title">
+      <div class="section-intro">
+        <p class="eyebrow">02 / Selected work</p>
+        <h2 id="work-title">Decisions under real constraints.</h2>
+        <p>Good case studies show the problem, the decision and what changed. Those details will appear here when they can be shared accurately.</p>
+      </div>
+      <div class="work-pending" role="note" aria-label="Case study publication status">
+        <div>
+          <p class="eyebrow">Case studies / in preparation</p>
+          <h3>Work worth explaining, not inventing.</h3>
+          <p>Project stories are being prepared. No example is presented as a completed case until its role, constraints and outcome are confirmed.</p>
+        </div>
+        <div class="work-structure" aria-label="What future case studies will cover">
+          <span>01 / The problem</span>
+          <span>02 / The decision</span>
+          <span>03 / The outcome</span>
+        </div>
+      </div>
+    </section>
 
-				<div class="flex flex-wrap gap-3">
-					<a class="link-button link-button--solid" href="#projects">View selected work</a>
-					<a class="link-button" href="#contact">Get in touch</a>
-				</div>
-			</div>
+    <section class="section container domains" id="domains" aria-labelledby="domains-title">
+      <div class="section-intro">
+        <p class="eyebrow">03 / Across the system</p>
+        <h2 id="domains-title">Different layers. One connected problem.</h2>
+        <p>Data engineering, web development and DevOps / infrastructure are the three parts of the work this portfolio is here to connect.</p>
+      </div>
+      <ol class="domain-list">
+        <li><span class="domain-number">01</span><h3>Data</h3><p>How information moves and becomes useful.</p></li>
+        <li><span class="domain-number">02</span><h3>Web</h3><p>How people meet the system through an interface.</p></li>
+        <li><span class="domain-number">03</span><h3>Infrastructure</h3><p>How the system gets delivered and kept running.</p></li>
+      </ol>
+    </section>
 
-			<Panel class="p-6 md:p-7 lg:sticky lg:top-28">
-				<div class="module-header">
-					<p class="mono-label">Build log</p>
-					<span class="status-light">live</span>
-				</div>
+    <section class="approach" id="approach" aria-labelledby="approach-title">
+      <div class="container approach-inner">
+        <div>
+          <p class="eyebrow">04 / Approach</p>
+          <h2 id="approach-title">Understand the system.<br /><em>Improve the path through it.</em></h2>
+          <div class="about-note" id="about">
+            <h3>About this portfolio</h3>
+            <p>I studied computer science and have worked across data engineering, web development and DevOps. The interesting problems often sit between those layers.</p>
+          </div>
+        </div>
+        <div class="principles" aria-label="Working principles">
+          <p><span>01</span> Find the failure boundary</p>
+          <p><span>02</span> Make the path legible</p>
+          <p><span>03</span> Leave it easier to operate</p>
+        </div>
+      </div>
+    </section>
 
-				<div class="mt-4 space-y-4">
-					<div class="compartment p-5 md:p-6">
-						<p class="readout">Current mode</p>
-						<p class="mt-2 text-sm leading-7 text-[rgb(var(--text))]">
-							Systems-first work that moves between pipelines, interfaces, and delivery mechanics.
-						</p>
-						<div class="mt-5 grid gap-3 sm:grid-cols-2">
-							<div class="inset-panel-soft p-3">
-								<p class="signal-strip__label">Signal A</p>
-								<p class="mt-2 text-sm text-[rgb(var(--text))]">quiet</p>
-							</div>
-							<div class="inset-panel-soft p-3">
-								<p class="signal-strip__label">Signal B</p>
-								<p class="mt-2 text-sm text-[rgb(var(--text))]">stable</p>
-							</div>
-						</div>
-					</div>
-
-					<div class="signal-strip" aria-label="Status strip">
-						<span class="signal-strip__label">Interface feed</span>
-						<div class="signal-strip__track" />
-						<span class="signal-strip__label">ready</span>
-					</div>
-
-					<div class="status-row">
-						<div class="status-cell status-cell--prominent">
-							<p class="status-cell__label">Signal</p>
-							<p class="status-cell__value">quiet, practical</p>
-						</div>
-						<div class="status-cell">
-							<p class="status-cell__label">Mode</p>
-							<p class="status-cell__value">technical</p>
-						</div>
-						<div class="status-cell">
-							<p class="status-cell__label">Focus</p>
-							<p class="status-cell__value">data / web / infra</p>
-						</div>
-					</div>
-
-					<p class="readout pt-1 text-[rgb(var(--muted))]">
-						Calm on the surface, engineered underneath.
-					</p>
-				</div>
-			</Panel>
-		</section>
-
-		<section id="projects" class="mt-20 scroll-mt-24 md:mt-24">
-			<SectionHeading
-				label="Selected systems"
-				title="Work that crosses layers and stays grounded in real constraints."
-				description="A few representative systems: the problem, the role, the tradeoffs, and the outcome. Nothing inflated; just the shape of the work."
-			/>
-
-			<div class="mt-8 grid gap-5 md:grid-cols-2 md:items-stretch">
-				{projects.map((project) => (
-					<ProjectCard {...project} class={project.featured ? 'md:col-span-2' : 'md:col-span-1'} />
-				))}
-			</div>
-		</section>
-
-		<section id="domains" class="mt-20 scroll-mt-24 md:mt-24">
-			<SectionHeading
-				label="Work modules"
-				title="The three domains I move through most often."
-				description="I don’t see these as separate identities. They’re different pressure points in the same system."
-			/>
-
-			<div class="domain-bay mt-8">
-				{domains.map((domain, index) => (
-					<Panel class="domain-plate h-full p-0">
-						<div class="domain-plate__inner p-5 md:p-6">
-							<div class="domain-plate__rail">
-								<p class="eyebrow">{domain.title}</p>
-								<span class="status-light">0{index + 1}</span>
-							</div>
-
-							<p class="mt-4 text-sm leading-7 text-[rgb(var(--muted))]">{domain.descriptor}</p>
-
-							<ul class="mt-6 space-y-2.5">
-								{domain.capabilities.map((point) => (
-									<li class="domain-capability">
-										<span class="domain-capability__mark" />
-										<span>{point}</span>
-									</li>
-								))}
-							</ul>
-
-							<div class="domain-plate__footer mt-6">
-								<span class="domain-plate__stateline">{domain.stateline}</span>
-								<span class="domain-plate__note">module loaded</span>
-							</div>
-						</div>
-					</Panel>
-				))}
-			</div>
-		</section>
-
-		<section id="about" class="mt-20 scroll-mt-24 md:mt-24">
-			<SectionHeading
-				label="About snapshot"
-				title="How I think: understand the system, then improve the path through it."
-				description="I’m comfortable moving from raw data to interface to runtime because the interesting problems usually live between them."
-			/>
-
-			<div class="mt-8 grid gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
-				<Panel class="p-6 md:p-7">
-					<div class="module-header">
-						<p class="eyebrow">Field note</p>
-						<span class="status-light">recorded</span>
-					</div>
-					<div class="field-note mt-4">
-						<p class="field-note__stamp">OBS-04 / mixed layers</p>
-						<p class="field-note__text">
-							Computer science background, with work across data, web, and infrastructure.
-						</p>
-					</div>
-					<p class="mt-4 text-sm leading-7 text-[rgb(var(--muted))]">
-						I’m drawn to work where a problem can move across layers and still be kept understandable.
-					</p>
-				</Panel>
-
-				<Panel class="p-6 md:p-7">
-					<div class="module-header">
-						<p class="eyebrow">Operating rules</p>
-						<span class="status-light">live</span>
-					</div>
-					<div class="mt-4 grid gap-3 md:grid-cols-3">
-						<div class="principle-slot">
-							<p class="principle-slot__id">01</p>
-							<p class="principle-slot__text">Start with the boundary and failure mode.</p>
-						</div>
-						<div class="principle-slot principle-slot--accent">
-							<p class="principle-slot__id">02</p>
-							<p class="principle-slot__text">Make the important path visible first.</p>
-						</div>
-						<div class="principle-slot">
-							<p class="principle-slot__id">03</p>
-							<p class="principle-slot__text">Prefer small durable fixes over theatrics.</p>
-						</div>
-					</div>
-					<div class="field-strip mt-5">
-						<span class="field-strip__label">working style</span>
-						<span class="field-strip__bar" />
-						<span class="field-strip__label">steady</span>
-					</div>
-				</Panel>
-			</div>
-		</section>
-
-		<section id="stack" class="mt-20 scroll-mt-24 md:mt-24">
-			<SectionHeading
-				label="Current stack"
-				title="A concise view of the tools I reach for."
-				description="Kept intentionally compact: enough to show range, not a trophy shelf."
-			/>
-
-			<Panel class="stack-housing mt-8 p-0">
-				<div class="stack-housing__head">
-					<div>
-						<p class="eyebrow">Loadout</p>
-						<p class="mt-2 text-sm leading-7 text-[rgb(var(--muted))]">Grouped by the parts of the system they support.</p>
-					</div>
-					<div class="status-light">assembled</div>
-				</div>
-
-				<div class="stack-housing__grid">
-					{stackGroups.map((group) => (
-						<div class="stack-slot">
-							<p class="stack-slot__label">{group.label}</p>
-							<div class="stack-core mt-3">
-								<span class="stack-core__flag">core</span>
-								<span class="stack-core__tool">{group.core}</span>
-							</div>
-							<ul class="stack-list mt-4">
-								{group.items.map((item) => <li>{item}</li>)}
-							</ul>
-						</div>
-					))}
-				</div>
-			</Panel>
-		</section>
-
-		<section id="contact" class="mt-20 scroll-mt-24 md:mt-24">
-			<SectionHeading
-				label="Contact"
-				title="If the work touches data, web, or infrastructure, I’m interested."
-				description="I’m open to product work, platform work, and the kind of problems where the useful answer lives across layers."
-			/>
-
-			<Panel class="mt-8 p-6 md:p-7">
-				<div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-					<div class="max-w-2xl space-y-3">
-						<p class="text-sm leading-7 text-[rgb(var(--muted))]">
-							Want to talk about a system that needs to be steadier, clearer, or easier to ship?
-						</p>
-						<p class="text-sm leading-7 text-[rgb(var(--text))]">
-							Email: <a class="underline decoration-[rgb(var(--accent))] underline-offset-4" href="mailto:hello@davorluc.dev">hello@davorluc.dev</a>
-							&nbsp;·&nbsp; GitHub: <a class="underline decoration-[rgb(var(--accent))] underline-offset-4" href="https://github.com/davorluc" target="_blank" rel="noreferrer">davorluc</a>
-						</p>
-					</div>
-
-					<div class="flex flex-wrap gap-3">
-						<a class="link-button link-button--solid" href="mailto:hello@davorluc.dev">Start an email</a>
-						<a class="link-button" href="https://github.com/davorluc" target="_blank" rel="noreferrer">View GitHub</a>
-					</div>
-				</div>
-			</Panel>
-		</section>
-	</main>
+    <section class="contact section container" id="contact" aria-labelledby="contact-title">
+      <p class="eyebrow">05 / Contact</p>
+      <div class="contact-inner">
+        <h2 id="contact-title">Let's make the next system clearer.</h2>
+        <p>Contact details are being confirmed before a direct link is published. There is no working email or profile destination on this page yet.</p>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer container">
+    <span>Davor Luc / Portfolio</span>
+    <a href="#top">Back to top ↑</a>
+  </footer>
 </Layout>

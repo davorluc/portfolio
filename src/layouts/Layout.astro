@@ -1,10 +1,9 @@
 ---
 import '../styles/global.css';
-import ClickSpark from '../component/ext/ClickSpark.tsx';
 
 const {
 	title = 'Davor Luc — Portfolio',
-	description = 'A calm, technically grounded portfolio spanning data engineering, web development, and DevOps.',
+	description = 'Davor Luc — a portfolio connecting data, web and infrastructure.'
 } = Astro.props;
 ---
 
@@ -17,21 +16,12 @@ const {
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
-		<meta name="theme-color" content="#f5efe4" />
+		<meta name="theme-color" content="#f2ebdd" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<title>{title}</title>
 	</head>
 	<body>
-		<ClickSpark
-			client:load
-			sparkColor="#2a2a2a"
-			sparkSize={10}
-			sparkRadius={15}
-			sparkCount={8}
-			duration={400}
-		>
-			<slot />
-		</ClickSpark>
+		<slot />
 	</body>
 </html>
