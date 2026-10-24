@@ -33,11 +33,14 @@ import Layout from '../layouts/Layout.astro';
       <figure class="junction">
         <p class="junction-label">Fig. 01 / The junction</p>
         <svg viewBox="0 0 440 300" aria-hidden="true" focusable="false">
+          <path class="diagram-registration" d="M12 28 V12 H28 M412 12 H428 V28 M12 272 V288 H28 M412 288 H428 V272 M12 66 H22 M12 84 H18 M12 102 H22 M12 120 H18 M12 138 H22 M12 156 H18 M12 174 H22 M12 192 H18" />
           <path class="diagram-path" d="M36 44 L232 150 M36 150 H232 M36 256 L232 150 H405" />
           <circle class="diagram-end" cx="36" cy="44" r="4"/><circle class="diagram-end" cx="36" cy="150" r="4"/><circle class="diagram-end" cx="36" cy="256" r="4"/>
+          <circle class="diagram-ring diagram-ring--outer" cx="232" cy="150" r="65"/><circle class="diagram-ring diagram-ring--inner" cx="232" cy="150" r="56"/>
           <circle class="diagram-center" cx="232" cy="150" r="43"/><circle class="diagram-core" cx="232" cy="150" r="13"/>
           <text x="51" y="42">DATA</text><text x="51" y="143">WEB</text><text x="51" y="267">INFRASTRUCTURE</text>
         </svg>
+        <p class="junction-imprint" aria-hidden="true">Three disciplines / one connected system</p>
         <figcaption>Data, web and infrastructure: across layers, toward the useful answer.</figcaption>
       </figure>
     </section>

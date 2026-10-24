@@ -14,6 +14,7 @@
   --chalk: #f6f0e4;
   --ochre: #943e25;
   --sand: #d8c8ab;
+  --instrument-brass: #c6ad79; /* Decorative strokes only, never small text. */
   font-family: "IBM Plex Sans Variable", system-ui, sans-serif;
   color: var(--ink);
   background: var(--paper);
@@ -59,15 +60,21 @@ em { font-weight: 400; }
 .button span { transition: transform 180ms ease-out; }
 .button:hover span { transform: translate(2px, -2px); }
 .text-link { padding: .65rem 0; font-weight: 600; }
-.junction { min-width: 0; padding: clamp(1.2rem, 2.4vw, 2rem); background: var(--ink); color: var(--chalk); }
+.junction { position: relative; min-width: 0; padding: clamp(1.2rem, 2.4vw, 2rem); border: 1px solid var(--sand); background: var(--ink); color: var(--chalk); }
+.junction::before { content: ""; position: absolute; inset: 6px; border: 1px solid var(--instrument-brass); opacity: .5; pointer-events: none; }
 .junction-label { color: var(--sand); }
 .junction svg { width: 100%; height: auto; display: block; margin-block: 1.4rem; }
 .junction svg text { fill: var(--chalk); font: 12px "IBM Plex Mono", ui-monospace, monospace; letter-spacing: 1px; }
 .diagram-path { stroke: var(--sand); stroke-width: 2; fill: none; }
+.diagram-registration { stroke: var(--instrument-brass); stroke-width: 1; opacity: .6; fill: none; }
+.diagram-ring { stroke: var(--instrument-brass); stroke-width: 1; fill: none; }
+.diagram-ring--outer { opacity: .4; }
+.diagram-ring--inner { opacity: .6; stroke-dasharray: 3 5; }
 .diagram-end { fill: var(--sand); }
 .diagram-center { fill: var(--ochre); }
 .diagram-core { fill: var(--chalk); }
-.junction figcaption { font-size: .92rem; }
+.junction-imprint { padding-top: .85rem; border-top: 1px solid var(--instrument-brass); font: 400 .76rem/1.5 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .05em; text-transform: uppercase; }
+.junction figcaption { margin-top: .5rem; font-size: .92rem; }
 .section { padding-block: clamp(4.5rem, 8vw, 7rem); }
 .section-intro { border-top: 1px solid var(--rule); padding-top: 1.5rem; }
 .section-intro h2, .contact h2 { max-width: 19ch; margin-top: 1.25rem; font-size: clamp(2.4rem, 4vw, 4.2rem); line-height: 1.1; letter-spacing: -.035em; }
@@ -81,8 +88,10 @@ em { font-weight: 400; }
 .work-structure span:last-child { border-bottom: 0; }
 .domains { padding-top: 2rem; }
 .domain-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; margin: 3rem 0 0; padding: 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-.domain-list li { min-width: 0; padding: 1.6rem 1.4rem 2rem 0; }
+.domain-list li { position: relative; min-width: 0; padding: 2.2rem 1.4rem 2rem 0; }
 .domain-list li + li { padding-left: 1.4rem; border-left: 1px solid var(--rule); }
+.domain-list li::before { content: ""; position: absolute; top: 1.2rem; left: 0; right: 0; border-top: 1px solid #69745b; }
+.domain-list li::after { content: ""; position: absolute; top: calc(1.2rem - 4px); left: max(1rem, 12%); width: 9px; height: 9px; border-radius: 50%; background: var(--ochre); }
 .domain-number { color: var(--ochre); font-weight: 600; }
 .domain-list h3 { margin-top: 1.5rem; font-size: clamp(1.75rem, 2.5vw, 2.7rem); }
 .domain-list p { margin-top: .8rem; color: var(--ink-soft); }
@@ -121,11 +130,15 @@ em { font-weight: 400; }
   .junction svg { margin-block: .7rem; }
   /* SVG coordinates shrink on narrow screens; the visible caption carries the labels. */
   .junction svg text { display: none; }
+  .junction-imprint { display: none; }
   .work-pending { grid-template-columns: 1fr; gap: 0; }
   .work-structure { border-left: 0; border-top: 1px solid var(--rule); }
-  .domain-list { grid-template-columns: 1fr; }
-  .domain-list li, .domain-list li + li { border-left: 0; padding: 1rem 0 1.25rem; }
+  .domain-list { position: relative; grid-template-columns: 1fr; border-top: 0; }
+  .domain-list::before { content: ""; position: absolute; top: 1.2rem; bottom: 1.2rem; left: 4px; border-left: 1px solid #69745b; }
+  .domain-list li, .domain-list li + li { border-left: 0; padding: 1rem 0 1.25rem 1.75rem; }
   .domain-list li + li { border-top: 1px solid var(--rule); }
+  .domain-list li::before { display: none; }
+  .domain-list li::after { top: 1.4rem; left: 0; }
   .domain-list h3 { margin-top: .5rem; }
   .domain-list p { margin-top: .25rem; }
   .about-note { margin-top: 2.5rem; }
