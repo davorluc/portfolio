@@ -35,7 +35,6 @@ import Layout from '../layouts/Layout.astro';
           <p class="crt-pending">Case studies and contact details are being prepared.</p>
         </div>
       </div>
-      <button class="crt-play" type="button" hidden>Pause background</button>
       <p class="crt-status" role="status" aria-live="polite"></p>
     </section>
 
@@ -72,7 +71,6 @@ import Layout from '../layouts/Layout.astro';
               <p class="project-media-note">Temporary dune footage, not project imagery.</p>
             </div>
           </div>
-          <button class="project-play" type="button" aria-label="Pause monad-torrent video" hidden><span aria-hidden="true">❚❚</span></button>
           <p class="project-status" role="status" aria-live="polite"></p>
         </article>
         <article class="project-screen" data-project-name="devchain" aria-labelledby="project-title-devchain" tabindex="0">
@@ -95,7 +93,6 @@ import Layout from '../layouts/Layout.astro';
               <p class="project-media-note">Temporary dune footage, not project imagery.</p>
             </div>
           </div>
-          <button class="project-play" type="button" aria-label="Pause devchain video" hidden><span aria-hidden="true">❚❚</span></button>
           <p class="project-status" role="status" aria-live="polite"></p>
         </article>
         <article class="project-screen" data-project-name="Hydra" aria-labelledby="project-title-hydra" tabindex="0">
@@ -118,7 +115,6 @@ import Layout from '../layouts/Layout.astro';
               <p class="project-media-note">Temporary dune footage, not project imagery.</p>
             </div>
           </div>
-          <button class="project-play" type="button" aria-label="Pause Hydra video" hidden><span aria-hidden="true">❚❚</span></button>
           <p class="project-status" role="status" aria-live="polite"></p>
         </article>
       </div>
@@ -175,12 +171,10 @@ import Layout from '../layouts/Layout.astro';
     const screen = document.querySelector<HTMLElement>('.crt-screen');
     const backdrop = screen?.querySelector<HTMLElement>('.crt-backdrop');
     const video = screen?.querySelector<HTMLVideoElement>('video');
-    const button = screen?.querySelector<HTMLButtonElement>('.crt-play');
     const status = screen?.querySelector<HTMLElement>('.crt-status');
-    if (screen && backdrop && video && button && status) {
+    if (screen && backdrop && video && status) {
       const reduced = matchMedia('(prefers-reduced-motion: reduce)');
       let inView = false;
-      let manualPause = false;
       let failed = false;
       function release() {
         video!.pause();
@@ -189,9 +183,6 @@ import Layout from '../layouts/Layout.astro';
         backdrop!.classList.remove('has-frame');
       }
       async function sync() {
-        const canPlay = !reduced.matches && !failed;
-        screen!.classList.toggle('can-play', canPlay);
-        button!.hidden = !canPlay;
         if (reduced.matches) {
           release();
           status!.textContent = 'Reduced motion: static poster only.';
@@ -205,34 +196,25 @@ import Layout from '../layouts/Layout.astro';
           video!.src = '/media/dunes-silent.mp4';
           video!.load();
         }
-        if (inView && !document.hidden && !manualPause) {
+        if (inView && !document.hidden) {
           try { await video!.play(); }
-          catch { if (!failed && !reduced.matches) status!.textContent = 'Autoplay unavailable; choose Play background to retry.'; }
+          catch {
+            if (inView && !document.hidden && !failed && !reduced.matches) {
+              video!.pause();
+              backdrop!.classList.remove('has-frame');
+              status!.textContent = 'Video unavailable; poster remains visible.';
+            }
+          }
         } else video!.pause();
-        button!.textContent = video!.paused ? 'Play background' : 'Pause background';
       }
       video.addEventListener('playing', () => {
         backdrop.classList.add('has-frame');
-        button.textContent = 'Pause background';
         status.textContent = '';
       });
       video.addEventListener('error', () => {
         failed = true;
         backdrop.classList.remove('has-frame');
         void sync();
-      });
-      button.addEventListener('click', async () => {
-        if (video.paused) {
-          manualPause = false;
-          button.textContent = 'Pause background';
-          if (!video.getAttribute('src')) { video.src = '/media/dunes-silent.mp4'; video.load(); }
-          try { await video.play(); status.textContent = ''; }
-          catch { if (!failed && !reduced.matches) { button.textContent = 'Play background'; status.textContent = 'Video could not play; poster remains visible.'; } }
-        } else {
-          manualPause = true;
-          video.pause();
-          button.textContent = 'Play background';
-        }
       });
       reduced.addEventListener('change', () => { void sync(); });
       document.addEventListener('visibilitychange', () => { void sync(); });
@@ -244,10 +226,9 @@ import Layout from '../layouts/Layout.astro';
     document.querySelectorAll<HTMLElement>('.project-screen').forEach(project => {
     const projectBackdrop = project.querySelector<HTMLElement>('.project-backdrop');
     const projectVideo = project.querySelector<HTMLVideoElement>('video');
-    const projectButton = project.querySelector<HTMLButtonElement>('.project-play');
     const projectStatus = project.querySelector<HTMLElement>('.project-status');
     const projectToggle = project.querySelector<HTMLButtonElement>('.project-toggle');
-    if (projectBackdrop && projectVideo && projectButton && projectStatus && projectToggle) {
+    if (projectBackdrop && projectVideo && projectStatus && projectToggle) {
       const projectName = project.dataset.projectName ?? 'project';
       project.classList.add('is-interactive');
       project.addEventListener('pointerenter', () => project.classList.add('was-open'), { once: true });
@@ -261,7 +242,6 @@ import Layout from '../layouts/Layout.astro';
       });
       const reduced = matchMedia('(prefers-reduced-motion: reduce)');
       let visible = false;
-      let manuallyPaused = false;
       let failed = false;
       function releaseProject() {
         projectVideo!.pause();
@@ -270,9 +250,6 @@ import Layout from '../layouts/Layout.astro';
         projectBackdrop!.classList.remove('has-frame');
       }
       async function syncProject() {
-        const canPlay = !reduced.matches && !failed;
-        project!.classList.toggle('can-play', canPlay);
-        projectButton!.hidden = !canPlay;
         if (reduced.matches) {
           releaseProject();
           projectStatus!.textContent = ''; // The poster needs no extra resting text.
@@ -286,38 +263,25 @@ import Layout from '../layouts/Layout.astro';
           projectVideo!.src = '/media/dunes-silent.mp4';
           projectVideo!.load();
         }
-        if (visible && !document.hidden && !manuallyPaused) {
+        if (visible && !document.hidden) {
           try { await projectVideo!.play(); }
-          catch { if (!failed && !reduced.matches) projectStatus!.textContent = 'Autoplay unavailable; choose Play project video to retry.'; }
+          catch {
+            if (visible && !document.hidden && !failed && !reduced.matches) {
+              projectVideo!.pause();
+              projectBackdrop!.classList.remove('has-frame');
+              projectStatus!.textContent = 'Project video unavailable; still image shown.';
+            }
+          }
         } else projectVideo!.pause();
-        projectButton!.setAttribute('aria-label', `${projectVideo!.paused ? 'Play' : 'Pause'} ${projectName} video`);
-        projectButton!.querySelector('span')!.textContent = projectVideo!.paused ? '▶' : '❚❚';
       }
       projectVideo.addEventListener('playing', () => {
         projectBackdrop.classList.add('has-frame');
-        projectButton.setAttribute('aria-label', `Pause ${projectName} video`);
-        projectButton.querySelector('span')!.textContent = '❚❚';
         projectStatus.textContent = '';
       });
       projectVideo.addEventListener('error', () => {
         failed = true;
         projectBackdrop.classList.remove('has-frame');
         void syncProject();
-      });
-      projectButton.addEventListener('click', async () => {
-        if (projectVideo.paused) {
-          manuallyPaused = false;
-          projectButton.setAttribute('aria-label', `Pause ${projectName} video`);
-          projectButton.querySelector('span')!.textContent = '❚❚';
-          if (!projectVideo.getAttribute('src')) { projectVideo.src = '/media/dunes-silent.mp4'; projectVideo.load(); }
-          try { await projectVideo.play(); if (!failed && !reduced.matches) projectStatus.textContent = ''; }
-          catch { if (!failed && !reduced.matches) { projectButton.setAttribute('aria-label', `Play ${projectName} video`); projectButton.querySelector('span')!.textContent = '▶'; projectStatus.textContent = 'Project video could not play; still image shown.'; } }
-        } else {
-          manuallyPaused = true;
-          projectVideo.pause();
-          projectButton.setAttribute('aria-label', `Play ${projectName} video`);
-          projectButton.querySelector('span')!.textContent = '▶';
-        }
       });
       reduced.addEventListener('change', () => { void syncProject(); });
       document.addEventListener('visibilitychange', () => { void syncProject(); });
