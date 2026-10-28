@@ -40,67 +40,58 @@ import Layout from '../layouts/Layout.astro';
     </section>
 
     <section class="section container work" id="work" aria-labelledby="work-title">
-      <div class="section-intro">
-        <p class="eyebrow">02 / Selected work</p>
-        <h2 id="work-title">Decisions under real constraints.</h2>
-        <p>Good case studies show the problem, the decision and what changed. Those details will appear here when they can be shared accurately.</p>
+      <div class="work-intro">
+        <div>
+          <p class="eyebrow">02 / Selected work</p>
+          <h2 id="work-title">Stories worth<br /><em>telling well.</em></h2>
+        </div>
+        <p>Real problems. Clear decisions. Outcomes that can be shared honestly.</p>
       </div>
       <div class="work-pending" role="note" aria-label="Case study publication status">
-        <div>
-          <p class="eyebrow">Case studies / in preparation</p>
-          <h3>Work worth explaining, not inventing.</h3>
-          <p>Project stories are being prepared. No example is presented as a completed case until its role, constraints and outcome are confirmed.</p>
-        </div>
-        <div class="work-structure" aria-label="What future case studies will cover">
-          <span>01 / The problem</span>
-          <span>02 / The decision</span>
-          <span>03 / The outcome</span>
-        </div>
+        <p class="eyebrow">Case studies / In preparation</p>
+        <p>Case studies are being prepared. I’ll share the work here when the details can be confirmed.</p>
       </div>
     </section>
 
     <section class="section container domains" id="domains" aria-labelledby="domains-title">
-      <div class="section-intro">
+      <div class="domains-intro">
         <p class="eyebrow">03 / Across the system</p>
-        <h2 id="domains-title">Different layers. One connected problem.</h2>
-        <p>Data engineering, web development and DevOps / infrastructure are the three parts of the work this portfolio is here to connect.</p>
+        <h2 id="domains-title">The layers connect.</h2>
       </div>
       <ol class="domain-list">
-        <li><span class="domain-number">01</span><h3>Data</h3><p>How information moves and becomes useful.</p></li>
-        <li><span class="domain-number">02</span><h3>Web</h3><p>How people meet the system through an interface.</p></li>
-        <li><span class="domain-number">03</span><h3>Infrastructure</h3><p>How the system gets delivered and kept running.</p></li>
+        <li><span class="domain-number">01 / Data</span><h3>Data <br /><em>engineering</em></h3><p>How information moves and becomes useful.</p></li>
+        <li><span class="domain-number">02 / Web</span><h3>Web <br /><em>development</em></h3><p>How people meet a system through its interface.</p></li>
+        <li><span class="domain-number">03 / Systems</span><h3>DevOps &amp; <br /><em>infrastructure</em></h3><p>How systems are delivered and kept running.</p></li>
       </ol>
     </section>
 
     <section class="approach" id="approach" aria-labelledby="approach-title">
       <div class="container approach-inner">
-        <div>
+        <div class="approach-statement">
           <p class="eyebrow">04 / Approach</p>
-          <h2 id="approach-title">Understand the system.<br /><em>Improve the path through it.</em></h2>
-          <div class="about-note" id="about">
-            <h3>About this portfolio</h3>
-            <p>I studied computer science and have worked across data engineering, web development and DevOps. The interesting problems often sit between those layers.</p>
-          </div>
+          <h2 id="approach-title">Follow the problem<br /><em>across layers.</em></h2>
         </div>
-        <div class="principles" aria-label="Working principles">
-          <p><span>01</span> Find the failure boundary</p>
-          <p><span>02</span> Make the path legible</p>
-          <p><span>03</span> Leave it easier to operate</p>
+        <div class="about-note" id="about">
+          <p class="eyebrow">05 / About</p>
+          <h3>About this portfolio</h3>
+          <p>I studied computer science and have worked across data engineering, web development and DevOps. The interesting problems often sit between those layers.</p>
         </div>
       </div>
     </section>
 
-    <section class="contact section container" id="contact" aria-labelledby="contact-title">
-      <p class="eyebrow">05 / Contact</p>
-      <div class="contact-inner">
-        <h2 id="contact-title">Let's make the next system clearer.</h2>
-        <p>Contact details are being confirmed before a direct link is published. There is no working email or profile destination on this page yet.</p>
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="container contact-inner">
+        <p class="eyebrow">06 / Contact</p>
+        <h2 id="contact-title">Let's make the next<br /><em>system clearer.</em></h2>
+        <p>Contact details are being confirmed. A direct way to get in touch will appear here when it’s ready.</p>
       </div>
     </section>
   </main>
-  <footer class="site-footer container">
-    <span>Davor Luc / Portfolio</span>
-    <a href="#top">Back to top ↑</a>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>Davor Luc / Portfolio</span>
+      <a href="#top">Back to top ↑</a>
+    </div>
   </footer>
   <script>
     const screen = document.querySelector<HTMLElement>('.crt-screen');
