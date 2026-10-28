@@ -49,7 +49,78 @@ import Layout from '../layouts/Layout.astro';
       </div>
       <div class="work-pending" role="note" aria-label="Case study publication status">
         <p class="eyebrow">Case studies / In preparation</p>
-        <p>Case studies are being prepared. I’ll share the work here when the details can be confirmed.</p>
+        <p>Two code repositories and one Aave bot concept. Their case studies are in preparation.</p>
+      </div>
+      <div class="project-grid">
+        <article class="project-screen" data-project-name="monad-torrent" aria-labelledby="project-title" tabindex="0">
+          <div class="project-media">
+            <div class="project-backdrop" aria-hidden="true">
+              <img src="/media/dunes-poster.webp" width="1280" height="720" alt="" loading="lazy" />
+              <video muted playsinline loop preload="none" poster="/media/dunes-poster.webp" tabindex="-1"></video>
+            </div>
+            <div class="project-scrim" aria-hidden="true"></div>
+          </div>
+          <div class="project-scan" aria-hidden="true"></div>
+          <div class="project-glass" aria-hidden="true"></div>
+          <button class="project-toggle" type="button" aria-controls="project-details" aria-expanded="false" aria-label="Show monad-torrent details"><span aria-hidden="true">+</span></button>
+          <div class="project-copy">
+            <p class="project-kicker">Haskell / Brick</p>
+            <h3 id="project-title">monad-torrent</h3>
+            <div class="project-details" id="project-details">
+              <p>A simple torrent client written in Haskell using Brick.</p>
+              <a class="project-link" href="https://github.com/davorluc/monad-torrent">View source on GitHub <span aria-hidden="true">↗</span></a>
+              <p class="project-media-note">Temporary dune footage, not project imagery.</p>
+            </div>
+          </div>
+          <button class="project-play" type="button" aria-label="Pause monad-torrent video" hidden><span aria-hidden="true">❚❚</span></button>
+          <p class="project-status" role="status" aria-live="polite"></p>
+        </article>
+        <article class="project-screen" data-project-name="devchain" aria-labelledby="project-title-devchain" tabindex="0">
+          <div class="project-media">
+            <div class="project-backdrop" aria-hidden="true">
+              <img src="/media/dunes-poster.webp" width="1280" height="720" alt="" loading="lazy" />
+              <video muted playsinline loop preload="none" poster="/media/dunes-poster.webp" tabindex="-1"></video>
+            </div>
+            <div class="project-scrim" aria-hidden="true"></div>
+          </div>
+          <div class="project-scan" aria-hidden="true"></div>
+          <div class="project-glass" aria-hidden="true"></div>
+          <button class="project-toggle" type="button" aria-controls="project-details-devchain" aria-expanded="false" aria-label="Show devchain details"><span aria-hidden="true">+</span></button>
+          <div class="project-copy">
+            <p class="project-kicker">Rust / SHA-256</p>
+            <h3 id="project-title-devchain">devchain</h3>
+            <div class="project-details" id="project-details-devchain">
+              <p>Early Rust blockchain study of proof-of-work blocks and transaction models.</p>
+              <a class="project-link" href="https://github.com/davorluc/devchain">View source on GitHub <span aria-hidden="true">↗</span></a>
+              <p class="project-media-note">Temporary dune footage, not project imagery.</p>
+            </div>
+          </div>
+          <button class="project-play" type="button" aria-label="Pause devchain video" hidden><span aria-hidden="true">❚❚</span></button>
+          <p class="project-status" role="status" aria-live="polite"></p>
+        </article>
+        <article class="project-screen" data-project-name="Hydra" aria-labelledby="project-title-hydra" tabindex="0">
+          <div class="project-media">
+            <div class="project-backdrop" aria-hidden="true">
+              <img src="/media/dunes-poster.webp" width="1280" height="720" alt="" loading="lazy" />
+              <video muted playsinline loop preload="none" poster="/media/dunes-poster.webp" tabindex="-1"></video>
+            </div>
+            <div class="project-scrim" aria-hidden="true"></div>
+          </div>
+          <div class="project-scan" aria-hidden="true"></div>
+          <div class="project-glass" aria-hidden="true"></div>
+          <button class="project-toggle" type="button" aria-controls="project-details-hydra" aria-expanded="false" aria-label="Show Hydra details"><span aria-hidden="true">+</span></button>
+          <div class="project-copy">
+            <p class="project-kicker">Aave / concept</p>
+            <h3 id="project-title-hydra">Hydra</h3>
+            <div class="project-details" id="project-details-hydra">
+              <p>A concept for an Aave liquidation bot with planned Rust monitoring and Solidity execution.</p>
+              <a class="project-link" href="https://github.com/davorluc/hydra">View concept on GitHub <span aria-hidden="true">↗</span></a>
+              <p class="project-media-note">Temporary dune footage, not project imagery.</p>
+            </div>
+          </div>
+          <button class="project-play" type="button" aria-label="Pause Hydra video" hidden><span aria-hidden="true">❚❚</span></button>
+          <p class="project-status" role="status" aria-live="polite"></p>
+        </article>
       </div>
     </section>
 
@@ -169,5 +240,91 @@ import Layout from '../layouts/Layout.astro';
         new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; void sync(); }, { threshold: .05 }).observe(screen);
       } else { inView = true; void sync(); }
     }
+
+    document.querySelectorAll<HTMLElement>('.project-screen').forEach(project => {
+    const projectBackdrop = project.querySelector<HTMLElement>('.project-backdrop');
+    const projectVideo = project.querySelector<HTMLVideoElement>('video');
+    const projectButton = project.querySelector<HTMLButtonElement>('.project-play');
+    const projectStatus = project.querySelector<HTMLElement>('.project-status');
+    const projectToggle = project.querySelector<HTMLButtonElement>('.project-toggle');
+    if (projectBackdrop && projectVideo && projectButton && projectStatus && projectToggle) {
+      const projectName = project.dataset.projectName ?? 'project';
+      project.classList.add('is-interactive');
+      project.addEventListener('pointerenter', () => project.classList.add('was-open'), { once: true });
+      project.addEventListener('focusin', () => project.classList.add('was-open'), { once: true });
+      projectToggle.addEventListener('click', () => {
+        project.classList.add('was-open');
+        const open = project.classList.toggle('is-open');
+        projectToggle.setAttribute('aria-expanded', String(open));
+        projectToggle.setAttribute('aria-label', `${open ? 'Hide' : 'Show'} ${projectName} details`);
+        projectToggle.querySelector('span')!.textContent = open ? '−' : '+';
+      });
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+      let visible = false;
+      let manuallyPaused = false;
+      let failed = false;
+      function releaseProject() {
+        projectVideo!.pause();
+        projectVideo!.removeAttribute('src');
+        projectVideo!.load();
+        projectBackdrop!.classList.remove('has-frame');
+      }
+      async function syncProject() {
+        const canPlay = !reduced.matches && !failed;
+        project!.classList.toggle('can-play', canPlay);
+        projectButton!.hidden = !canPlay;
+        if (reduced.matches) {
+          releaseProject();
+          projectStatus!.textContent = ''; // The poster needs no extra resting text.
+          return;
+        }
+        if (failed) {
+          projectStatus!.textContent = 'Project video unavailable; still image shown.';
+          return;
+        }
+        if (visible && !projectVideo!.getAttribute('src')) {
+          projectVideo!.src = '/media/dunes-silent.mp4';
+          projectVideo!.load();
+        }
+        if (visible && !document.hidden && !manuallyPaused) {
+          try { await projectVideo!.play(); }
+          catch { if (!failed && !reduced.matches) projectStatus!.textContent = 'Autoplay unavailable; choose Play project video to retry.'; }
+        } else projectVideo!.pause();
+        projectButton!.setAttribute('aria-label', `${projectVideo!.paused ? 'Play' : 'Pause'} ${projectName} video`);
+        projectButton!.querySelector('span')!.textContent = projectVideo!.paused ? '▶' : '❚❚';
+      }
+      projectVideo.addEventListener('playing', () => {
+        projectBackdrop.classList.add('has-frame');
+        projectButton.setAttribute('aria-label', `Pause ${projectName} video`);
+        projectButton.querySelector('span')!.textContent = '❚❚';
+        projectStatus.textContent = '';
+      });
+      projectVideo.addEventListener('error', () => {
+        failed = true;
+        projectBackdrop.classList.remove('has-frame');
+        void syncProject();
+      });
+      projectButton.addEventListener('click', async () => {
+        if (projectVideo.paused) {
+          manuallyPaused = false;
+          projectButton.setAttribute('aria-label', `Pause ${projectName} video`);
+          projectButton.querySelector('span')!.textContent = '❚❚';
+          if (!projectVideo.getAttribute('src')) { projectVideo.src = '/media/dunes-silent.mp4'; projectVideo.load(); }
+          try { await projectVideo.play(); if (!failed && !reduced.matches) projectStatus.textContent = ''; }
+          catch { if (!failed && !reduced.matches) { projectButton.setAttribute('aria-label', `Play ${projectName} video`); projectButton.querySelector('span')!.textContent = '▶'; projectStatus.textContent = 'Project video could not play; still image shown.'; } }
+        } else {
+          manuallyPaused = true;
+          projectVideo.pause();
+          projectButton.setAttribute('aria-label', `Play ${projectName} video`);
+          projectButton.querySelector('span')!.textContent = '▶';
+        }
+      });
+      reduced.addEventListener('change', () => { void syncProject(); });
+      document.addEventListener('visibilitychange', () => { void syncProject(); });
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; void syncProject(); }, { threshold: .05 }).observe(project);
+      } else { visible = true; void syncProject(); }
+    }
+    });
   </script>
 </Layout>
