@@ -2,6 +2,12 @@
 
 This is the human-operated product-development starter. It uses a full factory topology: a lead and a PM advisor, a development pod with implementation, QA, and design, plus two reviewers.
 
+## Owner working mode — 2026-10-28
+
+- **Build in real project first.** Edit actual source and assets. Run build/browser checks there. Do not make a separate mockup/prototype/test page and then rebuild the same feature in production. Exception: owner asks for a study, or a direct edit would put important owner state at risk; say why first. Temporary test fixtures for real-project verification are fine.
+- **No duplicate ceremony.** One coherent implementation, proportionate checks, one selected handoff/review boundary. No automatic design→mockup→prototype→integration loop; no repeat QA/review just to fill seats. Still preserve before state, verify user path, protect owner changes, and surface real blockers.
+- **Cave-man talk.** Human and peer updates: short fragments, simple words, few sentences. E.g. “Build done. Test pass. Need your pick.” Keep exact paths, errors, risks, and decisions when they matter. Do not let brevity hide a failed check or erase context needed to act.
+
 ## Work selection
 
 Derive identity with `rig whoami --json`, then follow
