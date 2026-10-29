@@ -6,16 +6,22 @@ const projects = [
     name: 'monad-torrent', titleId: 'project-title', detailsId: 'project-details',
     stack: 'Haskell / Brick', description: 'A simple torrent client written in Haskell using Brick.',
     url: 'https://github.com/davorluc/monad-torrent', linkLabel: 'View source on GitHub',
+    mediaUrl: '/media/dunes-silent.mp4', posterUrl: '/media/dunes-poster.webp',
+    mediaNote: 'Temporary dune footage, not project imagery.',
   },
   {
     name: 'devchain', titleId: 'project-title-devchain', detailsId: 'project-details-devchain',
     stack: 'Rust / SHA-256', description: 'Early Rust blockchain study of proof-of-work blocks and transaction models.',
     url: 'https://github.com/davorluc/devchain', linkLabel: 'View source on GitHub',
+    mediaUrl: '/media/dunes-silent.mp4', posterUrl: '/media/dunes-poster.webp',
+    mediaNote: 'Temporary dune footage, not project imagery.',
   },
   {
     name: 'Hydra', titleId: 'project-title-hydra', detailsId: 'project-details-hydra',
     stack: 'Aave / concept', description: 'A concept for an Aave liquidation bot with planned Rust monitoring and Solidity execution.',
     url: 'https://github.com/davorluc/hydra', linkLabel: 'View concept on GitHub',
+    mediaUrl: '/media/hydra-storm-silent.mp4', posterUrl: '/media/hydra-storm-poster.webp',
+    mediaNote: 'Temporary storm concept visual, not a built bot or project demo.',
   },
 ] as const;
 ---
@@ -70,11 +76,11 @@ const projects = [
       </div>
       <div class="project-grid">
         {projects.map((project) => (
-          <article class="project-screen" data-project-name={project.name} aria-labelledby={project.titleId} tabindex="0">
+          <article class="project-screen" data-project-name={project.name} data-video-src={project.mediaUrl} aria-labelledby={project.titleId} tabindex="0">
             <div class="project-media">
               <div class="project-backdrop" aria-hidden="true">
-                <img src="/media/dunes-poster.webp" width="1280" height="720" alt="" loading="lazy" />
-                <video muted playsinline loop preload="none" poster="/media/dunes-poster.webp" tabindex="-1"></video>
+                <img src={project.posterUrl} width="1280" height="720" alt="" loading="lazy" />
+                <video muted playsinline loop preload="none" poster={project.posterUrl} tabindex="-1"></video>
               </div>
               <div class="project-scrim" aria-hidden="true"></div>
             </div>
@@ -87,7 +93,7 @@ const projects = [
               <div class="project-details" id={project.detailsId}>
                 <p>{project.description}</p>
                 <a class="project-link" href={project.url}>{project.linkLabel} <span aria-hidden="true">↗</span></a>
-                <p class="project-media-note">Temporary dune footage, not project imagery.</p>
+                <p class="project-media-note">{project.mediaNote}</p>
               </div>
             </div>
             <p class="project-status" role="status" aria-live="polite"></p>
@@ -236,7 +242,7 @@ const projects = [
           return;
         }
         if (visible && !projectVideo!.getAttribute('src')) {
-          projectVideo!.src = '/media/dunes-silent.mp4';
+          projectVideo!.src = project.dataset.videoSrc!;
           projectVideo!.load();
         }
         if (visible && !document.hidden) {
