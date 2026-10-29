@@ -8,6 +8,7 @@ const projects = [
     url: 'https://github.com/davorluc/monad-torrent', linkLabel: 'View source on GitHub',
     mediaUrl: '/media/library-silent.mp4', posterUrl: '/media/library-poster.webp',
     mediaNote: 'Temporary library concept visual, not project imagery.',
+    caseUrl: '/work/monad-torrent/',
   },
   {
     name: 'devchain', titleId: 'project-title-devchain', detailsId: 'project-details-devchain',
@@ -15,6 +16,7 @@ const projects = [
     url: 'https://github.com/davorluc/devchain', linkLabel: 'View source on GitHub',
     mediaUrl: '/media/settlement-silent.mp4', posterUrl: '/media/settlement-poster.webp',
     mediaNote: 'Temporary settlement concept visual, not blockchain or project footage.',
+    caseUrl: null,
   },
   {
     name: 'Hydra', titleId: 'project-title-hydra', detailsId: 'project-details-hydra',
@@ -22,13 +24,14 @@ const projects = [
     url: 'https://github.com/davorluc/hydra', linkLabel: 'View concept on GitHub',
     mediaUrl: '/media/hydra-storm-silent.mp4', posterUrl: '/media/hydra-storm-poster.webp',
     mediaNote: 'Temporary storm concept visual, not a built bot or project demo.',
+    caseUrl: null,
   },
 ] as const;
 ---
 
 <Layout
   title=" Davor Lucic — Data, web & infrastructure"
-  description=" Davor Lucic's portfolio: connecting data, web and infrastructure. Selected case studies and contact details are being prepared."
+  description="Davor Lucic's portfolio: connecting data, web and infrastructure. Read the monad-torrent case study; more case studies and contact details are in preparation."
 >
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="crt-header crt-inner">
@@ -56,7 +59,7 @@ const projects = [
           <p class="crt-eyebrow crt-eyebrow-short">Data / Web / DevOps</p>
           <h1 id="hero-title">I build across layers.</h1>
           <a class="crt-cta" href="#work">Explore portfolio <span aria-hidden="true">↓</span></a>
-          <p class="crt-pending">Case studies and contact details are being prepared.</p>
+          <p class="crt-pending">More case studies and contact details are being prepared.</p>
         </div>
       </div>
       <p class="crt-status" role="status" aria-live="polite"></p>
@@ -71,12 +74,12 @@ const projects = [
         <p>Real problems. Clear decisions. Outcomes that can be shared honestly.</p>
       </div>
       <div class="work-pending" role="note" aria-label="Case study publication status">
-        <p class="eyebrow">Case studies / In preparation</p>
-        <p>Two code repositories and one Aave bot concept. Their case studies are in preparation.</p>
+        <p class="eyebrow">Case studies / One available</p>
+        <p>Read the monad-torrent case study. devchain and the Hydra concept are in preparation.</p>
       </div>
       <div class="project-grid">
         {projects.map((project) => (
-          <article class="project-screen" data-project-name={project.name} data-video-src={project.mediaUrl} aria-labelledby={project.titleId} tabindex="0">
+          <article class:list={['project-screen', { 'has-case-study': Boolean(project.caseUrl) }]} data-project-name={project.name} data-video-src={project.mediaUrl} aria-labelledby={project.titleId} tabindex="0">
             <div class="project-media">
               <div class="project-backdrop" aria-hidden="true">
                 <img src={project.posterUrl} width="1280" height="720" alt="" loading="lazy" />
@@ -88,6 +91,7 @@ const projects = [
             <div class="project-glass" aria-hidden="true"></div>
             <button class="project-toggle" type="button" aria-controls={project.detailsId} aria-expanded="false" aria-label={`Show ${project.name} details`}><span aria-hidden="true">+</span></button>
             <div class="project-copy">
+              {project.caseUrl && <a class="project-case-link" href={project.caseUrl}><span>Read case study <span aria-hidden="true">↗</span></span></a>}
               <p class="project-kicker">{project.stack}</p>
               <h3 id={project.titleId}>{project.name}</h3>
               <div class="project-details" id={project.detailsId}>

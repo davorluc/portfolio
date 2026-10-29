@@ -1,0 +1,134 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+---
+
+<Layout
+  title="monad-torrent — Case study | Davor Lucic"
+  description="A collaborative Haskell BitTorrent client: protocol flow, Davor Lucic's Brick interface work, and honest implementation limits."
+>
+  <a class="skip-link" href="#main">Skip to case study</a>
+  <header class="case-header case-container">
+    <a class="case-identity" href="/">Davor Lucic <span>/ Work</span></a>
+    <a class="case-back" href="/#work">← Back to Work</a>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <div class="case-container">
+      <section class="case-hero" aria-labelledby="case-title">
+        <p class="case-index">01 / Selected work · Case study</p>
+        <div class="case-hero-grid">
+          <div>
+            <h1 id="case-title">monad-<em>torrent</em></h1>
+            <p class="case-deck">A collaborative Haskell BitTorrent client exploring protocol and terminal UI.</p>
+          </div>
+          <aside class="case-facts" aria-label="Project facts">
+            <p><span>Built with</span><strong>Fadil Smajilbasic</strong></p>
+            <p><span>My focus</span><strong>Brick interface, interactions and local state</strong></p>
+            <p><span>Stack</span><strong>Haskell · Brick · STM</strong></p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="case-section case-overview" aria-labelledby="overview-title">
+        <div class="case-section-head"><p>01 / Context</p><h2 id="overview-title">What it does</h2></div>
+        <div class="case-section-body">
+          <p>A <code>.torrent</code> file supplies metadata about a file. This client decodes that metadata, computes an info hash, asks the listed HTTP tracker for compact peer addresses, and requests blocks from peers over TCP. A terminal interface lets someone add a torrent, inspect its metadata and choose a download directory.</p>
+          <p class="case-aside">This is an account of the code path in a collaborative study, not a claim of a finished or production-ready downloader.</p>
+        </div>
+      </section>
+
+      <figure class="case-flow" aria-labelledby="flow-title">
+        <figcaption><span>02 / Under the hood</span><strong id="flow-title">From metadata to file</strong></figcaption>
+        <ol>
+          <li><span class="case-step">01</span><h3>Read the torrent</h3><p>Decode bencoded metadata and derive the SHA-1 info hash.</p></li>
+          <li><span class="case-step">02</span><h3>Find peers</h3><p>Query the <code>announce</code> HTTP tracker for compact peer addresses.</p></li>
+          <li><span class="case-step">03</span><h3>Request blocks</h3><p>Connect over TCP; workers take pieces from an STM queue.</p></li>
+          <li><span class="case-step">04</span><h3>Write the file</h3><p>Place received blocks at their file offsets.</p></li>
+        </ol>
+        <p class="case-flow-note">Source-derived protocol map, not a screenshot of the app.</p>
+      </figure>
+
+      <section class="case-section case-contribution" aria-labelledby="contribution-title">
+        <div class="case-section-head"><p>03 / Contribution</p><h2 id="contribution-title">My work</h2></div>
+        <div class="case-section-body">
+          <p>Fadil and I built the client together. My commits concentrated on the part a person uses: the Brick terminal layout, the add-torrent and download-path modals, and keybindings for navigating, removing and expunging entries.</p>
+          <p>I also worked on saving and restoring the torrent list as JSON and on settings for the download directory. The protocol and peer-download code is a collaborative project; I do not present it as mine alone.</p>
+        </div>
+      </section>
+
+      <section class="case-section case-limits" aria-labelledby="limits-title">
+        <div class="case-section-head"><p>04 / In scope</p><h2 id="limits-title">What remains open</h2></div>
+        <div class="case-section-body">
+          <p>The current download path writes received blocks without comparing a completed piece against the hashes advertised in the torrent metadata. That missing integrity check matters. The tracker path also reads one <code>announce</code> URL. This study is not presented as a production-ready, fast or reliable client, and this page makes no test-suite claim.</p>
+        </div>
+      </section>
+
+      <nav class="case-end" aria-label="Case study links">
+        <a class="case-source" href="https://github.com/davorluc/monad-torrent">Explore the source <span aria-hidden="true">↗</span></a>
+        <a class="case-return" href="/#work">← Back to Work</a>
+      </nav>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .case-container { width: min(100% - 5rem, 1280px); margin-inline: auto; }
+  .case-header { display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem; padding-block: 1.6rem; border-bottom: 1px solid var(--rule); }
+  .case-header a { text-decoration: none; }
+  .case-identity { font-family: "Fraunces Variable", Georgia, serif; font-size: 1.45rem; white-space: nowrap; }
+  .case-identity span { font: 400 .72rem "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .05em; color: var(--ink-soft); }
+  .case-back, .case-index, .case-section-head > p, .case-flow figcaption span, .case-step, .case-flow-note, .case-facts span { font: 600 .76rem/1.5 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; }
+  .case-back { color: var(--ochre); text-underline-offset: .3em; }
+  .case-back:hover, .case-return:hover { text-decoration: underline; }
+  .case-hero { padding: clamp(5rem, 9vw, 9rem) 0 clamp(4.5rem, 8vw, 8rem); }
+  .case-index { margin-bottom: 2rem; color: var(--ochre); }
+  .case-hero-grid { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(16rem, .7fr); gap: clamp(3rem, 7vw, 9rem); align-items: end; }
+  h1 { overflow-wrap: anywhere; font-size: clamp(3.6rem, 7.4vw, 8rem); line-height: .96; letter-spacing: -.065em; }
+  h1 em { color: var(--ochre); }
+  .case-deck { max-width: 39rem; margin-top: 2rem; font-size: clamp(1.3rem, 2.1vw, 1.8rem); line-height: 1.38; }
+  .case-facts { display: grid; gap: 1.2rem; border-top: 1px solid var(--rule); padding-top: 1.35rem; }
+  .case-facts p { display: grid; gap: .25rem; line-height: 1.35; }
+  .case-facts span { color: var(--ochre); }
+  .case-facts strong { font-size: .98rem; font-weight: 500; }
+  .case-section { display: grid; grid-template-columns: minmax(10rem, .7fr) minmax(0, 1.5fr); gap: clamp(2rem, 6vw, 7rem); border-top: 1px solid var(--rule); padding-block: clamp(3rem, 5vw, 5rem); }
+  .case-section-head > p { margin-bottom: 1.1rem; color: var(--ochre); }
+  .case-section h2 { font-size: clamp(2.5rem, 4vw, 4rem); line-height: 1.05; letter-spacing: -.045em; }
+  .case-section-body { max-width: 42rem; }
+  .case-section-body p { font-size: clamp(1.08rem, 1.4vw, 1.25rem); line-height: 1.7; }
+  .case-section-body p + p { margin-top: 1.4rem; }
+  .case-aside { border-left: 2px solid var(--ochre); padding-left: 1.2rem; color: var(--ink-soft); }
+  code { overflow-wrap: anywhere; border-radius: 2px; padding: .08rem .3rem; background: #e4d7c2; font-size: .9em; }
+  .case-flow { margin: 1.5rem 0 clamp(4rem, 8vw, 8rem); padding: clamp(1.5rem, 3vw, 3rem); background: #121a19; color: var(--chalk); box-shadow: inset 0 0 0 1px #46504c; }
+  .case-flow figcaption { display: flex; flex-wrap: wrap; align-items: baseline; gap: 1rem 2rem; border-bottom: 1px solid #52605b; padding-bottom: 1.7rem; }
+  .case-flow figcaption span { color: #e2cba5; }
+  .case-flow figcaption strong { font-family: "Fraunces Variable", Georgia, serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 400; }
+  .case-flow ol { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1rem, 2.5vw, 3rem); margin: 0; padding: 2.5rem 0 1.8rem; list-style: none; }
+  .case-flow li { position: relative; min-width: 0; }
+  .case-flow li:not(:last-child)::after { content: '→'; position: absolute; top: .15rem; right: -1.8rem; color: #d0a787; }
+  .case-step { color: #d0a787; }
+  .case-flow h3 { margin-top: 1.15rem; font: 500 clamp(1.15rem, 1.6vw, 1.5rem)/1.2 "IBM Plex Sans Variable", system-ui, sans-serif; }
+  .case-flow li p { margin-top: .8rem; color: #d0d9d4; font-size: .92rem; line-height: 1.5; }
+  .case-flow code { background: #34423d; color: #f6f0e4; }
+  .case-flow-note { border-top: 1px solid #52605b; padding-top: 1rem; color: #c8d2ca; font-size: .67rem; }
+  .case-end { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; border-top: 1px solid var(--rule); padding-block: 3rem 7rem; }
+  .case-source { display: inline-flex; align-items: center; gap: .6rem; min-height: 3rem; padding: .7rem 1rem; background: var(--ink); color: var(--chalk); text-decoration: none; font-weight: 600; }
+  .case-source:hover { background: #424940; }
+  .case-return { color: var(--ochre); text-decoration: none; text-underline-offset: .3em; }
+  @media (max-width: 850px) {
+    .case-hero-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .case-flow ol { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
+    .case-flow li::after { display: none; }
+  }
+  @media (max-width: 600px) {
+    .case-container { width: min(100% - 2.5rem, 1280px); }
+    .case-header { flex-wrap: wrap; padding-block: 1.2rem; }
+    .case-hero { padding-block: 4.5rem 4rem; }
+    .case-section { grid-template-columns: 1fr; gap: 1.5rem; padding-block: 3.5rem; }
+    .case-flow { margin-inline: -1rem; padding: 1.5rem 1rem; }
+    .case-flow ol { grid-template-columns: 1fr; gap: 1.5rem; padding-top: 2rem; }
+    .case-flow li { border-left: 1px solid #52605b; padding-left: 1rem; }
+    .case-flow h3 { margin-top: .4rem; }
+    .case-flow li p { margin-top: .4rem; }
+    .case-end { display: grid; justify-content: start; padding-bottom: 5rem; }
+  }
+</style>

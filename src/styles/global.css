@@ -95,6 +95,15 @@ em { font-weight: 400; }
 .project-glass { z-index: 2; border: 2px solid rgba(248,222,182,.11); border-radius: inherit; background: radial-gradient(ellipse 95% 60% at 50% -25%,rgba(246,227,198,.09),transparent 72%); box-shadow: inset 2px 0 rgba(112,173,170,.22),inset -2px 0 rgba(168,66,61,.24),inset 0 0 25px rgba(2,5,5,.35); }
 .project-kicker, .project-media-note { font-family: "IBM Plex Mono",ui-monospace,monospace; text-transform: uppercase; letter-spacing: .05em; }
 .project-copy { position: absolute; z-index: 3; inset: 0; background: linear-gradient(0deg,#0e1211,transparent 66%); }
+/* The case-study anchor covers the resting card; its source link and toggle remain separate controls. */
+.project-case-link { position: absolute; z-index: 2; inset: 0; color: #f6f1e8; text-decoration: none; }
+.project-case-link > span { position: absolute; top: .65rem; left: .9rem; display: inline-flex; align-items: center; gap: .35rem; min-height: 2.75rem; padding: .5rem .7rem; border: 1px solid #f6f1e8; background: rgba(8,12,11,.94); font-size: .78rem; font-weight: 600; white-space: nowrap; }
+.project-case-link:hover > span { background: #343c38; }
+.project-screen.has-case-study.is-interactive .project-details { z-index: 3; }
+.project-screen.has-case-study.is-interactive:is(:hover,:focus-within,.is-open) .project-kicker { opacity: 0; }
+.project-screen.has-case-study.is-interactive:is(:hover,:focus-within,.is-open) .project-copy h3 { bottom: calc(100% - 4.7rem); font-size: 1rem; }
+.project-screen.has-case-study:not(.is-interactive) .project-case-link { position: relative; inset: auto; display: inline-flex; }
+.project-screen.has-case-study:not(.is-interactive) .project-case-link > span { position: relative; top: auto; left: auto; }
 .project-screen.is-interactive .project-copy::before { content: ''; position: absolute; inset: 0; background: rgba(8,12,11,.82); opacity: 0; pointer-events: none; transition: opacity var(--project-duration) ease; }
 .project-screen.is-interactive:is(:hover,:focus-within,.is-open) .project-copy::before { opacity: 1; }
 .project-kicker { color: #e2cba5; font-size: .68rem; }
@@ -121,6 +130,8 @@ em { font-weight: 400; }
   .project-screen.is-interactive:not(.is-open) .project-copy::before { opacity: 0; }
   .project-screen.is-interactive:not(.is-open) .project-kicker { bottom: 3.2rem; }
   .project-screen.is-interactive:not(.is-open) .project-copy h3 { right: .9rem; bottom: .85rem; font-size: clamp(2rem,8vw,2.5rem); }
+  .project-screen.has-case-study.is-interactive:not(.is-open) .project-kicker { opacity: 1; }
+  .project-screen.has-case-study.is-interactive:not(.is-open) .project-copy h3 { bottom: .85rem; font-size: clamp(2rem,8vw,2.5rem); }
   .project-screen.is-interactive:not(.is-open) .project-details { opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(8px); transition: opacity var(--project-duration) ease, transform var(--project-duration) ease, visibility 0s linear var(--project-duration); }
 }
 .domains { padding-top: clamp(3rem, 6vw, 6rem); }
