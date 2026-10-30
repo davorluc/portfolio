@@ -14,13 +14,15 @@ import Layout from '../../../layouts/Layout.astro';
 
   <main id="main" tabindex="-1">
     <figure class="case-media case-container">
-      <div class="case-media-frame">
-        <img src="/media/library-poster.webp" width="960" height="540" alt="" fetchpriority="high" />
-        <video muted playsinline loop preload="none" poster="/media/library-poster.webp" tabindex="-1" aria-hidden="true"></video>
-        <div class="case-media-shade" aria-hidden="true"></div>
-        <div class="case-media-scan" aria-hidden="true"></div>
-        <div class="case-media-glass" aria-hidden="true"></div>
-        <p class="case-media-status" role="status" aria-live="polite"></p>
+      <div class="case-media-shell">
+        <div class="case-media-frame">
+          <img src="/media/library-poster.webp" width="960" height="540" alt="" fetchpriority="high" />
+          <video muted playsinline loop preload="none" poster="/media/library-poster.webp" tabindex="-1" aria-hidden="true"></video>
+          <div class="case-media-shade" aria-hidden="true"></div>
+          <div class="case-media-scan" aria-hidden="true"></div>
+          <div class="case-media-glass" aria-hidden="true"></div>
+          <p class="case-media-status" role="status" aria-live="polite"></p>
+        </div>
       </div>
       <figcaption>Temporary library concept footage — not project UI or a working client demo.</figcaption>
     </figure>
@@ -156,7 +158,8 @@ import Layout from '../../../layouts/Layout.astro';
   .case-back { color: var(--ochre); text-underline-offset: .3em; }
   .case-back:hover, .case-return:hover { text-decoration: underline; }
   .case-media { margin-top: clamp(1.5rem, 3vw, 3rem); }
-  .case-media-frame { position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 32 / 7; max-height: 270px; border-radius: 14px; background: #121a19; box-shadow: 0 0 0 1px #302e2a; }
+  .case-media-shell { position: relative; }
+  .case-media-frame { position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 32 / 7; max-height: 270px; border-radius: 14px; background: #121a19; box-shadow: 0 0 0 1px #302e2a; width: 100%; }
   .case-media-frame img, .case-media-frame video, .case-media-shade, .case-media-scan, .case-media-glass { position: absolute; inset: 0; width: 100%; height: 100%; }
   .case-media-frame img, .case-media-frame video { display: block; object-fit: cover; object-position: center; }
   .case-media-frame video { opacity: 0; }
@@ -165,6 +168,15 @@ import Layout from '../../../layouts/Layout.astro';
   .case-media-scan { pointer-events: none; background: repeating-linear-gradient(to bottom,rgba(3,5,5,.20) 0 1px,transparent 1px 4px); animation: crt-scan-animation 1s infinite linear; }
   .case-media-frame.is-paused .case-media-scan { animation-play-state: paused; }
   .case-media-glass { pointer-events: none; border: 2px solid rgba(248,222,182,.16); border-radius: inherit; box-shadow: inset 2px 0 rgba(112,173,170,.22),inset -2px 0 rgba(168,66,61,.24),inset 0 0 32px rgba(2,5,5,.5); }
+  /* Only this case-study screen: static bowed mask and outline, with the original rounded bezel as fallback. */
+  @supports ((mask-image: linear-gradient(#000,#000)) or (-webkit-mask-image: linear-gradient(#000,#000))) {
+    .case-media-shell { --case-outer-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 600' preserveAspectRatio='none'%3E%3Cpath d='M28 38 Q500 -30 972 38 Q980 44 980 56 Q1016 300 980 544 Q980 556 972 562 Q500 630 28 562 Q20 556 20 544 Q-16 300 20 56 Q20 44 28 38Z' fill='%23fff'/%3E%3C/svg%3E"); }
+    .case-media-frame { border-radius: 0; box-shadow: none; mask: var(--case-outer-mask) center / 100% 100% no-repeat; -webkit-mask: var(--case-outer-mask) center / 100% 100% no-repeat; }
+    .case-media-shade { background: linear-gradient(0deg,rgba(8,12,11,.42),transparent 42%); }
+    .case-media-glass { border: 0; border-radius: 0; box-shadow: none; }
+    .case-media-glass::after { background-size: calc(100% - 12px) calc(100% - 12px); }
+    .case-media-shell::after { content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 600' preserveAspectRatio='none'%3E%3Cpath d='M28 38 Q500 -30 972 38 Q980 44 980 56 Q1016 300 980 544 Q980 556 972 562 Q500 630 28 562 Q20 556 20 544 Q-16 300 20 56 Q20 44 28 38Z' fill='none' stroke='%23050808' stroke-opacity='.28' stroke-width='8' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M28 38 Q500 -30 972 38 Q980 44 980 56 Q1016 300 980 544 Q980 556 972 562 Q500 630 28 562 Q20 556 20 544 Q-16 300 20 56 Q20 44 28 38Z' fill='none' stroke='%23e2c9a5' stroke-opacity='.38' stroke-width='2' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat; }
+  }
   .case-media-status { position: absolute; z-index: 2; bottom: 1rem; left: 1rem; max-width: calc(100% - 2rem); padding: .35rem .55rem; background: rgba(8,12,11,.94); color: var(--chalk); font-size: .84rem; }
   .case-media-status:empty { display: none; }
   .case-media figcaption { margin-top: .85rem; color: var(--ink-soft); font: 400 .75rem/1.6 "IBM Plex Mono",ui-monospace,monospace; }
