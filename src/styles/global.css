@@ -41,7 +41,7 @@ em { font-weight: 400; }
 .skip-link:focus { top: 1rem; }
 .wordmark { font-size: 1.65rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
 .site-footer a { text-underline-offset: .3em; text-decoration-thickness: 1px; }
-.crt-screen { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; min-height: min(760px, 85svh); margin: clamp(.75rem, 2vw, 1.75rem); border-radius: 18px; background: #0e1211; color: #f6f1e8; box-shadow: 0 0 0 1px #302e2a; }
+.crt-screen { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; min-height: min(760px, 85svh); width: min(calc(100% - 2 * clamp(.75rem, 2vw, 1.75rem)), 1480px); margin: clamp(.75rem, 2vw, 1.75rem) auto; border-radius: 18px; background: #0e1211; color: #f6f1e8; box-shadow: 0 0 0 1px #302e2a; }
 .crt-backdrop, .crt-backdrop img, .crt-backdrop video, .crt-scrim, .crt-scan, .crt-glass, .crt-edge { position: absolute; inset: 0; width: 100%; height: 100%; }
 .crt-backdrop { z-index: -5; overflow: hidden; }
 .crt-backdrop img, .crt-backdrop video { display: block; object-fit: cover; object-position: 52% 50%; }
