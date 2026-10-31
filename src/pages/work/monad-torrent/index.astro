@@ -64,15 +64,17 @@ import Layout from '../../../layouts/Layout.astro';
       <section class="case-section case-contribution" aria-labelledby="contribution-title">
         <div class="case-section-head"><p>03 / Contribution</p><h2 id="contribution-title">My work</h2></div>
         <div class="case-section-body">
-          <p>Fadil and I built the client together. My commits concentrated on the part a person uses: the Brick terminal layout, the add-torrent and download-path modals, and keybindings for navigating, removing and expunging entries.</p>
-          <p>I also worked on saving and restoring the torrent list as JSON and on settings for the download directory. The protocol and peer-download code is a collaborative project; I do not present it as mine alone.</p>
+          <p>Fadil and I both explored the download side at first. When time became tight, he took the peer-download backend and I focused on the Brick interface. That early look at the backend helped me design the add-torrent flow, the download-directory setting and the torrent-detail view around the data the client actually handles.</p>
+          <p>With no modal open, direct keys add a torrent, move through entries, remove an entry or its downloaded file, open settings and show help. The footer only advertises <kbd>h</kbd> for help and <kbd>q</kbd> for quit; the full shortcut list is in the help screen. The add modal takes a path to a local <code>.torrent</code> file. <kbd>Enter</kbd> closes it and begins a download attempt; <kbd>Esc</kbd> closes it without starting one.</p>
+          <p>I chose direct shortcuts over a menu while the set of actions was small. If the interface grows, I would keep common shortcuts and add a menu for discoverability rather than assign a new key to everything. I also worked on saving and restoring the torrent list as JSON and on settings for the download directory. This was collaborative work, not a backend I built alone.</p>
         </div>
       </section>
 
       <section class="case-section case-limits" aria-labelledby="limits-title">
         <div class="case-section-head"><p>04 / In scope</p><h2 id="limits-title">What remains open</h2></div>
         <div class="case-section-body">
-          <p>The current download path writes received blocks without comparing a completed piece against the hashes advertised in the torrent metadata. That missing integrity check matters. The tracker path also reads one <code>announce</code> URL. This study is not presented as a production-ready, fast or reliable client, and this page makes no test-suite claim.</p>
+          <p>In our trials, some simple torrents downloaded, while more complex examples with multiple seeders failed. We suspected a parsing problem but did not confirm its cause. Broader compatibility needs investigation rather than a claim that this already works reliably.</p>
+          <p>The current download path writes received blocks without comparing a completed piece against the hashes advertised in the torrent metadata. That missing integrity check matters. The tracker path also reads one <code>announce</code> URL. This study is not presented as a production-ready or fast client, and this page makes no test-suite claim.</p>
         </div>
       </section>
 
