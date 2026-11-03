@@ -33,8 +33,13 @@ const projects = [
   title=" Davor Lucic — Data, web & infrastructure"
   description="Davor Lucic's portfolio: connecting data, web and infrastructure. Read the monad-torrent case study; more case studies and contact details are in preparation."
 >
+  <script is:inline>
+    if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+      document.documentElement.classList.add('crt-turn-on');
+    }
+  </script>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="crt-header crt-inner">
+  <header class="crt-header crt-inner" id="top">
     <a class="wordmark" href="#top" aria-label=" Davor Lucic, back to top">Davor Lucic</a>
     <nav aria-label="Primary navigation">
       <a href="#work">Work</a>
@@ -44,7 +49,7 @@ const projects = [
     </nav>
   </header>
   <main id="main" tabindex="-1">
-    <section class="crt-screen" id="top" aria-labelledby="hero-title">
+    <section class="crt-screen" aria-labelledby="hero-title">
       <div class="crt-backdrop" aria-hidden="true">
         <img src="/media/dunes-poster.webp" width="1280" height="720" alt="" fetchpriority="high" />
         <video muted playsinline loop preload="none" poster="/media/dunes-poster.webp" tabindex="-1"></video>
@@ -169,11 +174,13 @@ const projects = [
       }
       async function sync() {
         if (reduced.matches) {
+          document.documentElement.classList.remove('crt-turn-on');
           release();
           status!.textContent = 'Reduced motion: static poster only.';
           return;
         }
         if (failed) {
+          document.documentElement.classList.remove('crt-turn-on');
           status!.textContent = 'Video unavailable; poster remains visible.';
           return;
         }
@@ -187,11 +194,15 @@ const projects = [
             if (inView && !document.hidden && !failed && !reduced.matches) {
               video!.pause();
               backdrop!.classList.remove('has-frame');
+              document.documentElement.classList.remove('crt-turn-on');
               status!.textContent = 'Video unavailable; poster remains visible.';
             }
           }
         } else video!.pause();
       }
+      backdrop.addEventListener('animationend', (event) => {
+        if (event.animationName === 'crt-power-on') document.documentElement.classList.remove('crt-turn-on');
+      });
       video.addEventListener('playing', () => {
         backdrop.classList.add('has-frame');
         status.textContent = '';
