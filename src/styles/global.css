@@ -47,19 +47,31 @@ em { font-weight: 400; }
 .crt-backdrop img, .crt-backdrop video { display: block; object-fit: cover; object-position: 52% 50%; }
 .crt-backdrop video { opacity: 0; }
 .crt-backdrop.has-frame video { opacity: 1; }
-/* One-shot progressive enhancement: only the media opens from a horizontal trace;
-   copy and controls remain visible, while no-JS and reduced-motion keep the full poster. */
+/* Keep the bowed black CRT present while two opaque shutters uncover all its
+   contents from the center. The desktop header joins as the opening reaches it. */
+.crt-shutter { display: none; position: absolute; inset: 0; z-index: 9; pointer-events: none; }
 @media (prefers-reduced-motion: no-preference) {
-  .crt-turn-on .crt-backdrop { animation: crt-power-on .9s cubic-bezier(.26,.18,.22,1) both; animation-delay: 0.2s; }
-  .crt-turn-on .crt-screen::before { content: ''; position: absolute; z-index: -3; top: 50%; left: 0; width: 100%; height: 2px; transform: translateY(-50%); pointer-events: none; background: linear-gradient(90deg,transparent,rgba(221,235,222,.55) 22%,rgba(221,235,222,.72) 50%,rgba(221,235,222,.42) 78%,transparent); box-shadow: 0 0 8px rgba(204,228,214,.35); animation: crt-power-line .55s ease-out both; animation-delay: 0.2s;}
-  @keyframes crt-power-on {
-    0% { clip-path: inset(49.9% 0 49.9% 0); }
-    12% { clip-path: inset(49.6% 0 49.6% 0); }
-    55% { clip-path: inset(16% 0 16% 0); }
-    82% { clip-path: inset(1.3% 0 1.3% 0); }
-    100% { clip-path: inset(0); }
+  .crt-turn-on .crt-shutter { display: block; }
+  .crt-turn-on .crt-shutter::before, .crt-turn-on .crt-shutter::after {
+    content: ''; position: absolute; left: 0; right: 0; height: 50%; background: #080d0c;
+    animation: crt-shutter-open .9s cubic-bezier(.26,.18,.22,1) .2s both;
+  }
+  .crt-turn-on .crt-shutter::before { top: 0; transform-origin: top; }
+  .crt-turn-on .crt-shutter::after { bottom: 0; transform-origin: bottom; }
+  .crt-turn-on .crt-shutter-line { position: absolute; z-index: 1; top: 50%; left: 0; right: 0; height: 2px; transform: translateY(-50%); background: linear-gradient(90deg,transparent,rgba(221,235,222,.55) 22%,rgba(221,235,222,.72) 50%,rgba(221,235,222,.42) 78%,transparent); box-shadow: 0 0 8px rgba(204,228,214,.35); animation: crt-power-line .55s ease-out .2s both; }
+  .crt-turn-on .crt-header { animation: crt-header-power-on .9s linear .2s both; }
+  @keyframes crt-shutter-open {
+    0%, 12% { transform: scaleY(1); }
+    55% { transform: scaleY(.32); }
+    82% { transform: scaleY(.026); }
+    100% { transform: scaleY(0); }
   }
   @keyframes crt-power-line { 0%, 12% { opacity: .75; } 100% { opacity: 0; } }
+  @keyframes crt-header-power-on {
+    0%, 82% { opacity: 0; visibility: hidden; }
+    85% { opacity: 0; visibility: visible; }
+    100% { opacity: 1; visibility: visible; }
+  }
 }
 .crt-scrim { z-index: -4; pointer-events: none; background: linear-gradient(90deg,rgba(10,14,13,.98) 0%,rgba(10,14,13,.94) 33%,rgba(10,14,13,.86) 49%,rgba(10,14,13,.32) 74%,rgba(10,14,13,.10) 100%),linear-gradient(180deg,rgba(8,12,11,.90),rgba(8,12,11,.68) 14%,transparent 44%); }
 .crt-scan { z-index: 1; pointer-events: none; background: repeating-linear-gradient(to bottom,rgba(3,5,5,.21) 0 1px,transparent 1px 4px); animation: crt-scan-animation 1s infinite linear; }
@@ -194,6 +206,7 @@ em { font-weight: 400; }
   .crt-header nav { margin-top: .25rem; border-top: 1px solid var(--rule); gap: 0 .25rem; }
   .crt-header nav a { display: inline-flex; align-items: center; min-width: 2.75rem; min-height: 2.75rem; padding: .55rem .35rem; font-size: .88rem; }
   .crt-header :is(a,button):focus-visible { outline-color: var(--ochre); }
+  .crt-turn-on .crt-header { animation: none; }
   .crt-hero { padding-block: clamp(3rem, 7svh, 4rem) 5rem; }
   .crt-copy { max-width: 100%; }
   .crt-eyebrow-wide { display: none; }

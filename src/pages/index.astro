@@ -68,6 +68,7 @@ const projects = [
         </div>
       </div>
       <p class="crt-status" role="status" aria-live="polite"></p>
+      <div class="crt-shutter" aria-hidden="true"><span class="crt-shutter-line"></span></div>
     </section>
 
     <section class="section container work" id="work" aria-labelledby="work-title">
@@ -162,7 +163,8 @@ const projects = [
     const backdrop = screen?.querySelector<HTMLElement>('.crt-backdrop');
     const video = screen?.querySelector<HTMLVideoElement>('video');
     const status = screen?.querySelector<HTMLElement>('.crt-status');
-    if (screen && backdrop && video && status) {
+    const shutter = screen?.querySelector<HTMLElement>('.crt-shutter');
+    if (screen && backdrop && video && status && shutter) {
       const reduced = matchMedia('(prefers-reduced-motion: reduce)');
       let inView = false;
       let failed = false;
@@ -180,7 +182,6 @@ const projects = [
           return;
         }
         if (failed) {
-          document.documentElement.classList.remove('crt-turn-on');
           status!.textContent = 'Video unavailable; poster remains visible.';
           return;
         }
@@ -194,14 +195,13 @@ const projects = [
             if (inView && !document.hidden && !failed && !reduced.matches) {
               video!.pause();
               backdrop!.classList.remove('has-frame');
-              document.documentElement.classList.remove('crt-turn-on');
               status!.textContent = 'Video unavailable; poster remains visible.';
             }
           }
         } else video!.pause();
       }
-      backdrop.addEventListener('animationend', (event) => {
-        if (event.animationName === 'crt-power-on') document.documentElement.classList.remove('crt-turn-on');
+      shutter.addEventListener('animationend', (event) => {
+        if (event.animationName === 'crt-shutter-open') document.documentElement.classList.remove('crt-turn-on');
       });
       video.addEventListener('playing', () => {
         backdrop.classList.add('has-frame');
