@@ -47,18 +47,20 @@ em { font-weight: 400; }
 .crt-backdrop img, .crt-backdrop video { display: block; object-fit: cover; object-position: 52% 50%; }
 .crt-backdrop video { opacity: 0; }
 .crt-backdrop.has-frame video { opacity: 1; }
-/* Keep the bowed black CRT present while two opaque shutters uncover all its
-   contents from the center. The desktop header joins as the opening reaches it. */
+/* Keep each bowed CRT present while two opaque shutters uncover all its
+   contents from the center. Secondary screens pre-arm before JS/observers run. */
 .crt-shutter { display: none; position: absolute; inset: 0; z-index: 9; pointer-events: none; }
+.crt-shutter::before, .crt-shutter::after { content: ''; position: absolute; left: 0; right: 0; height: 50%; background: #080d0c; }
+.crt-shutter::before { top: 0; transform-origin: top; }
+.crt-shutter::after { bottom: 0; transform-origin: bottom; }
+.crt-shutter-line { position: absolute; z-index: 1; top: 50%; left: 0; right: 0; height: 2px; transform: translateY(-50%); opacity: 0; background: linear-gradient(90deg,transparent,rgba(221,235,222,.55) 22%,rgba(221,235,222,.72) 50%,rgba(221,235,222,.42) 78%,transparent); box-shadow: 0 0 8px rgba(204,228,214,.35); }
 @media (prefers-reduced-motion: no-preference) {
-  .crt-turn-on .crt-shutter { display: block; }
-  .crt-turn-on .crt-shutter::before, .crt-turn-on .crt-shutter::after {
-    content: ''; position: absolute; left: 0; right: 0; height: 50%; background: #080d0c;
-    animation: crt-shutter-open .9s cubic-bezier(.26,.18,.22,1) .2s both;
-  }
-  .crt-turn-on .crt-shutter::before { top: 0; transform-origin: top; }
-  .crt-turn-on .crt-shutter::after { bottom: 0; transform-origin: bottom; }
-  .crt-turn-on .crt-shutter-line { position: absolute; z-index: 1; top: 50%; left: 0; right: 0; height: 2px; transform: translateY(-50%); background: linear-gradient(90deg,transparent,rgba(221,235,222,.55) 22%,rgba(221,235,222,.72) 50%,rgba(221,235,222,.42) 78%,transparent); box-shadow: 0 0 8px rgba(204,228,214,.35); animation: crt-power-line .55s ease-out .2s both; }
+  .crt-turn-on .crt-screen > .crt-shutter,
+  .crt-secondary-ready :is(.project-screen, .case-media-frame):not([data-power-state="played"]) > .crt-shutter { display: block; }
+  .crt-turn-on .crt-screen > .crt-shutter::before, .crt-turn-on .crt-screen > .crt-shutter::after,
+  .is-powering-on > .crt-shutter::before, .is-powering-on > .crt-shutter::after { animation: crt-shutter-open .9s cubic-bezier(.26,.18,.22,1) .2s both; }
+  .crt-turn-on .crt-screen > .crt-shutter .crt-shutter-line,
+  .is-powering-on > .crt-shutter .crt-shutter-line { animation: crt-power-line .55s ease-out .2s both; }
   .crt-turn-on .crt-header { animation: crt-header-power-on .9s linear .2s both; }
   @keyframes crt-shutter-open {
     0%, 12% { transform: scaleY(1); }

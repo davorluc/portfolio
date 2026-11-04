@@ -35,7 +35,10 @@ const projects = [
 >
   <script is:inline>
     if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
-      document.documentElement.classList.add('crt-turn-on');
+      document.documentElement.classList.add('crt-turn-on', 'crt-secondary-ready');
+      document.documentElement.dataset.powerFallback = String(window.setTimeout(() => {
+        document.documentElement.classList.remove('crt-secondary-ready');
+      }, 5000));
     }
   </script>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -107,6 +110,7 @@ const projects = [
               </div>
             </div>
             <p class="project-status" role="status" aria-live="polite"></p>
+            <div class="crt-shutter" aria-hidden="true"><span class="crt-shutter-line"></span></div>
           </article>
         ))}
       </div>
@@ -159,6 +163,8 @@ const projects = [
     <p class="terminal-line">End of transmission<span class="terminal-cursor" aria-hidden="true"></span></p>
   </div>
   <script>
+    import { startSecondaryPowerOn } from '../scripts/crt-secondary-power';
+
     const screen = document.querySelector<HTMLElement>('.crt-screen');
     const backdrop = screen?.querySelector<HTMLElement>('.crt-backdrop');
     const video = screen?.querySelector<HTMLVideoElement>('video');
@@ -286,5 +292,6 @@ const projects = [
       } else { visible = true; void syncProject(); }
     }
     });
+    startSecondaryPowerOn(Array.from(document.querySelectorAll<HTMLElement>('.project-screen')));
   </script>
 </Layout>

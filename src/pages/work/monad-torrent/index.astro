@@ -6,6 +6,14 @@ import Layout from '../../../layouts/Layout.astro';
   title="monad-torrent — Case study | Davor Lucic"
   description="A collaborative Haskell BitTorrent client: protocol flow, Davor Lucic's Brick interface work, and honest implementation limits."
 >
+  <script is:inline>
+    if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+      document.documentElement.classList.add('crt-secondary-ready');
+      document.documentElement.dataset.powerFallback = String(window.setTimeout(() => {
+        document.documentElement.classList.remove('crt-secondary-ready');
+      }, 5000));
+    }
+  </script>
   <a class="skip-link" href="#main">Skip to case study</a>
   <header class="case-header case-container">
     <a class="case-identity" href="/">Davor Lucic <span>/ Work</span></a>
@@ -22,6 +30,7 @@ import Layout from '../../../layouts/Layout.astro';
           <div class="case-media-scan" aria-hidden="true"></div>
           <div class="case-media-glass" aria-hidden="true"></div>
           <p class="case-media-status" role="status" aria-live="polite"></p>
+          <div class="crt-shutter" aria-hidden="true"><span class="crt-shutter-line"></span></div>
         </div>
       </div>
       <figcaption>Temporary library concept footage — not project UI or a working client demo.</figcaption>
@@ -85,6 +94,8 @@ import Layout from '../../../layouts/Layout.astro';
     </div>
   </main>
   <script>
+    import { startSecondaryPowerOn } from '../../../scripts/crt-secondary-power';
+
     const media = document.querySelector<HTMLElement>('.case-media');
     const frame = media?.querySelector<HTMLElement>('.case-media-frame');
     const video = frame?.querySelector<HTMLVideoElement>('video');
@@ -147,6 +158,7 @@ import Layout from '../../../layouts/Layout.astro';
         new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; void sync(); }, { threshold: .05 }).observe(frame);
       } else { inView = true; void sync(); }
     }
+    if (frame) startSecondaryPowerOn([frame]);
   </script>
 </Layout>
 
