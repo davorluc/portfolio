@@ -14,7 +14,7 @@ const projects = [
     stack: 'Rust / SHA-256', description: 'Early Rust blockchain study of proof-of-work blocks and transaction models.',
     mediaUrl: '/media/settlement-silent.mp4', posterUrl: '/media/settlement-poster.webp',
     mediaNote: 'Temporary settlement concept visual, not blockchain or project footage.',
-    caseUrl: null,
+    caseUrl: '/work/devchain/',
   },
   {
     name: 'Hydra', titleId: 'project-title-hydra', detailsId: 'project-details-hydra',
@@ -28,7 +28,7 @@ const projects = [
 
 <Layout
   title=" Davor Lucic — Data, web & infrastructure"
-  description="Davor Lucic's portfolio: connecting data, web and infrastructure. Read the monad-torrent case study; more case studies and contact details are in preparation."
+  description="Davor Lucic's portfolio: connecting data, web and infrastructure. Read the monad-torrent and devchain case studies; the Hydra concept and contact details are in preparation."
 >
   <script is:inline>
     if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
@@ -64,7 +64,7 @@ const projects = [
           <p class="crt-eyebrow crt-eyebrow-short">Data / Web / DevOps</p>
           <h1 id="hero-title">I build across layers.</h1>
           <a class="crt-cta" href="#work">Explore portfolio <span aria-hidden="true">↓</span></a>
-          <p class="crt-pending">More case studies and contact details are being prepared.</p>
+          <p class="crt-pending">The Hydra concept case study and contact details are being prepared.</p>
         </div>
       </div>
       <p class="crt-status" role="status" aria-live="polite"></p>
@@ -80,8 +80,8 @@ const projects = [
         <p>Real problems. Clear decisions. Outcomes that can be shared honestly.</p>
       </div>
       <div class="work-pending" role="note" aria-label="Case study publication status">
-        <p class="eyebrow">Case studies / One available</p>
-        <p>Read the monad-torrent case study. devchain and the Hydra concept are in preparation.</p>
+        <p class="eyebrow">Case studies / Two available</p>
+        <p>Read the monad-torrent and devchain case studies. The Hydra concept is in preparation.</p>
       </div>
       <div class="project-grid">
         {projects.map((project) => (
