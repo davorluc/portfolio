@@ -121,45 +121,29 @@ em { font-weight: 400; }
 .project-glass { z-index: 2; border: 2px solid rgba(248,222,182,.11); border-radius: inherit; background: radial-gradient(ellipse 95% 60% at 50% -25%,rgba(246,227,198,.09),transparent 72%); box-shadow: inset 2px 0 rgba(112,173,170,.22),inset -2px 0 rgba(168,66,61,.24),inset 0 0 25px rgba(2,5,5,.35); }
 .project-kicker, .project-media-note { font-family: "IBM Plex Mono",ui-monospace,monospace; text-transform: uppercase; letter-spacing: .05em; }
 .project-copy { position: absolute; z-index: 3; inset: 0; background: linear-gradient(0deg,#0e1211,transparent 66%); }
-/* The case-study anchor covers the resting card; its source link and toggle remain separate controls. */
-.project-case-link { position: absolute; z-index: 2; inset: 0; color: #f6f1e8; text-decoration: none; }
-.project-case-link > span { position: absolute; top: .65rem; left: .9rem; display: inline-flex; align-items: center; gap: .35rem; min-height: 2.75rem; padding: .5rem .7rem; border: 1px solid #f6f1e8; background: rgba(8,12,11,.94); font-size: .78rem; font-weight: 600; white-space: nowrap; }
-.project-case-link:hover > span { background: #343c38; }
-.project-screen.has-case-study.is-interactive .project-details { z-index: 3; }
-.project-screen.has-case-study.is-interactive:is(:hover,:focus-within,.is-open) .project-kicker { opacity: 0; }
-.project-screen.has-case-study.is-interactive:is(:hover,:focus-within,.is-open) .project-copy h3 { bottom: calc(100% - 4.7rem); font-size: 1rem; }
-.project-screen.has-case-study:not(.is-interactive) .project-case-link { position: relative; inset: auto; display: inline-flex; }
-.project-screen.has-case-study:not(.is-interactive) .project-case-link > span { position: relative; top: auto; left: auto; }
+.project-trigger { display: none; position: absolute; z-index: 6; inset: 0; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.project-trigger:focus-visible { outline: 3px solid #f6f1e8; outline-offset: -5px; border-radius: inherit; }
 .project-screen.is-interactive .project-copy::before { content: ''; position: absolute; inset: 0; background: rgba(8,12,11,.82); opacity: 0; pointer-events: none; transition: opacity var(--project-duration) ease; }
-.project-screen.is-interactive:is(:hover,:focus-within,.is-open) .project-copy::before { opacity: 1; }
+.project-screen.is-interactive:is(:hover,:focus-within) .project-copy::before { opacity: 1; }
 .project-kicker { color: #e2cba5; font-size: .68rem; }
 .project-copy h3 { margin-top: .3rem; font-size: clamp(1.7rem,2.3vw,2rem); line-height: 1.08; letter-spacing: -.045em; overflow-wrap: anywhere; }
 .project-screen.is-interactive .project-kicker { position: absolute; z-index: 1; left: .9rem; bottom: 3.2rem; margin: 0; transition: bottom var(--project-duration) ease; }
 .project-screen.is-interactive .project-copy h3 { position: absolute; z-index: 1; right: .9rem; bottom: .85rem; left: .9rem; margin: 0; transition: bottom var(--project-duration) ease, right var(--project-duration) ease, font-size var(--project-duration) ease; }
-.project-screen.is-interactive:is(:hover,:focus-within,.is-open) .project-kicker { bottom: calc(100% - 1.55rem); }
-.project-screen.is-interactive:is(:hover,:focus-within,.is-open) .project-copy h3 { right: 6.8rem; bottom: calc(100% - 3.4rem); font-size: 1.13rem; }
+.project-screen.is-interactive:is(:hover,:focus-within) .project-kicker { bottom: calc(100% - 1.55rem); }
+.project-screen.is-interactive:is(:hover,:focus-within) .project-copy h3 { right: .9rem; bottom: calc(100% - 3.4rem); font-size: 1.13rem; }
 .project-details { position: relative; }
 .project-screen.is-interactive .project-details { position: absolute; z-index: 1; right: .9rem; bottom: .85rem; left: .9rem; opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(8px); transition: opacity var(--project-duration) ease, transform var(--project-duration) ease, visibility 0s linear var(--project-duration); }
-.project-screen.is-interactive:not(.was-open):not(.is-open) .project-details { transition: none; visibility: hidden; opacity: 0; pointer-events: none; }
-.project-screen.is-interactive:is(:hover,:focus-within,.is-open) .project-details { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); transition: opacity var(--project-duration) ease, transform var(--project-duration) ease, visibility 0s; }
+.project-screen.is-interactive:not(.was-open) .project-details { transition: none; visibility: hidden; opacity: 0; pointer-events: none; }
+.project-screen.is-interactive:is(:hover,:focus-within) .project-details { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); transition: opacity var(--project-duration) ease, transform var(--project-duration) ease, visibility 0s; }
 .project-details > p:not(.project-media-note) { font-size: .85rem; line-height: 1.4; }
 .project-link { display: inline-flex; align-items: center; gap: .4rem; min-height: 2.75rem; margin-top: .7rem; padding: .55rem .7rem; border: 1px solid #f6f1e8; color: #f6f1e8; text-decoration: none; font-size: .82rem; font-weight: 600; }
 .project-link:hover { background: #343c38; }
+.project-placeholder { display: block; margin-top: .85rem; color: #e2cba5; font: 600 .72rem/1.5 "IBM Plex Mono",ui-monospace,monospace; letter-spacing: .025em; }
 .project-media-note { margin-top: .7rem; color: #e2cba5; font-size: .65rem; line-height: 1.45; }
-.project-toggle { position: absolute; z-index: 4; top: .65rem; right: .65rem; display: none; place-items: center; width: 2.75rem; height: 2.75rem; border: 1px solid #f6f1e8; border-radius: 3px; background: rgba(8,12,11,.95); color: #f6f1e8; font: 600 1.2rem "IBM Plex Sans Variable",system-ui,sans-serif; cursor: pointer; }
-.project-screen.is-interactive .project-toggle { display: grid; }
-.project-toggle:hover { background: #343c38; }
-.project-status { position: absolute; z-index: 4; top: .65rem; right: 4rem; left: .65rem; margin: 0; padding: .35rem .45rem; background: #212a26; font-size: .75rem; line-height: 1.4; }
+.project-status { position: absolute; z-index: 4; top: .65rem; right: .65rem; left: .65rem; margin: 0; padding: .35rem .45rem; background: #212a26; font-size: .75rem; line-height: 1.4; }
 .project-status:empty { display: none; }
 .project-screen:focus-visible, .project-screen :is(a,button):focus-visible { outline: 3px solid #f6f1e8; outline-offset: -4px; }
-@media (hover: none) {
-  .project-screen.is-interactive:not(.is-open) .project-copy::before { opacity: 0; }
-  .project-screen.is-interactive:not(.is-open) .project-kicker { bottom: 3.2rem; }
-  .project-screen.is-interactive:not(.is-open) .project-copy h3 { right: .9rem; bottom: .85rem; font-size: clamp(2rem,8vw,2.5rem); }
-  .project-screen.has-case-study.is-interactive:not(.is-open) .project-kicker { opacity: 1; }
-  .project-screen.has-case-study.is-interactive:not(.is-open) .project-copy h3 { bottom: .85rem; font-size: clamp(2rem,8vw,2.5rem); }
-  .project-screen.is-interactive:not(.is-open) .project-details { opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(8px); transition: opacity var(--project-duration) ease, transform var(--project-duration) ease, visibility 0s linear var(--project-duration); }
-}
+.project-screen .project-trigger:focus-visible { outline-offset: -10px; box-shadow: inset 0 0 0 3px #f6f1e8; }
 .how { padding-top: clamp(3rem, 6vw, 6rem); }
 .how-index { border-top: 1px solid var(--rule); padding-top: 1.5rem; }
 .how-layout { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: start; gap: clamp(2rem, 5vw, 6rem); margin-top: clamp(2.5rem, 5vw, 4.5rem); }
@@ -220,9 +204,6 @@ em { font-weight: 400; }
   .work-intro h2 { font-size: clamp(2.8rem, 12vw, 4.6rem); }
   .work-pending { grid-template-columns: 1fr; gap: .75rem; margin-top: 4.5rem; }
   .project-grid { grid-template-columns: 1fr; }
-  .project-screen { height: 225px; }
-  .project-copy h3 { font-size: clamp(2rem,8vw,2.5rem); }
-  .project-screen.is-interactive:is(:hover,:focus-within,.is-open) .project-copy h3 { font-size: 1.13rem; }
   .project-backdrop img, .project-backdrop video { object-position: 51% 50%; }
   .how-layout { gap: 1.75rem; margin-top: 2.5rem; }
   .how h2 { font-size: clamp(2.75rem, 11vw, 4.7rem); }
@@ -231,6 +212,28 @@ em { font-weight: 400; }
   .contact h2 { font-size: clamp(3rem, 11vw, 4.7rem); }
   .footer-inner { grid-template-columns: 1fr auto; gap: 2rem 1rem; }
   .footer-socials { grid-column: 1 / -1; grid-row: 2; }
+}
+/* The CRT is the touch toggle. Keep the original fixed-height overlay; only
+   the independent case link receives pointer events above the full-card button.
+   Without JS, details remain visible in the existing readable fallback. */
+@media (max-width: 600px), (hover: none) {
+  .project-screen.is-interactive { height: 225px; }
+  .project-screen.is-interactive .project-trigger { display: block; }
+  .project-screen.is-interactive .project-status:not(:empty) { z-index: 8; top: .5rem; right: .7rem; left: auto; max-width: 7.2rem; padding: .25rem .3rem; font-size: .65rem; line-height: 1.2; pointer-events: none; }
+  .project-screen.is-interactive:not(.is-open) .project-copy::before { opacity: 0; }
+  .project-screen.is-interactive:not(.is-open) .project-kicker { bottom: 3.2rem; }
+  .project-screen.is-interactive:not(.is-open) .project-copy h3 { right: .9rem; bottom: .85rem; font-size: clamp(2rem, 8vw, 2.5rem); }
+  .project-screen.is-interactive:not(.is-open) .project-details { visibility: hidden; opacity: 0; pointer-events: none; transition: none; }
+  .project-screen.is-interactive.is-open .project-copy { z-index: 7; pointer-events: none; }
+  .project-screen.is-interactive.is-open .project-copy::before { opacity: 1; }
+  .project-screen.is-interactive.is-open .project-kicker { bottom: calc(100% - 1.45rem); }
+  .project-screen.is-interactive.is-open .project-copy h3 { right: .9rem; bottom: calc(100% - 3rem); font-size: 1.13rem; }
+  .project-screen.is-interactive.is-open .project-details { bottom: .75rem; opacity: 1; visibility: visible; pointer-events: none; transform: none; transition: opacity var(--project-duration) ease, transform var(--project-duration) ease, visibility 0s; }
+  .project-screen.is-interactive.is-open .project-link { position: relative; z-index: 1; pointer-events: auto; }
+  .project-screen:not(.is-interactive) { height: auto; min-height: 0; }
+  .project-screen:not(.is-interactive) :is(.project-media, .project-scan, .project-glass) { top: 0; bottom: auto; height: clamp(145px, 28vw, 175px); }
+  .project-screen:not(.is-interactive) .project-copy { position: relative; inset: auto; margin-top: clamp(145px, 28vw, 175px); padding: 1rem .9rem 1.35rem; background: #0e1211; }
+  .project-media-note { font-size: .75rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }

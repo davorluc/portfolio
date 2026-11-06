@@ -5,7 +5,6 @@ const projects = [
   {
     name: 'monad-torrent', titleId: 'project-title', detailsId: 'project-details',
     stack: 'Haskell / Brick', description: 'A simple torrent client written in Haskell using Brick.',
-    url: 'https://github.com/davorluc/monad-torrent', linkLabel: 'View source on GitHub',
     mediaUrl: '/media/library-silent.mp4', posterUrl: '/media/library-poster.webp',
     mediaNote: 'Temporary library concept visual, not project imagery.',
     caseUrl: '/work/monad-torrent/',
@@ -13,7 +12,6 @@ const projects = [
   {
     name: 'devchain', titleId: 'project-title-devchain', detailsId: 'project-details-devchain',
     stack: 'Rust / SHA-256', description: 'Early Rust blockchain study of proof-of-work blocks and transaction models.',
-    url: 'https://github.com/davorluc/devchain', linkLabel: 'View source on GitHub',
     mediaUrl: '/media/settlement-silent.mp4', posterUrl: '/media/settlement-poster.webp',
     mediaNote: 'Temporary settlement concept visual, not blockchain or project footage.',
     caseUrl: null,
@@ -21,7 +19,6 @@ const projects = [
   {
     name: 'Hydra', titleId: 'project-title-hydra', detailsId: 'project-details-hydra',
     stack: 'Aave / concept', description: 'A concept for an Aave liquidation bot with planned Rust monitoring and Solidity execution.',
-    url: 'https://github.com/davorluc/hydra', linkLabel: 'View concept on GitHub',
     mediaUrl: '/media/hydra-storm-silent.mp4', posterUrl: '/media/hydra-storm-poster.webp',
     mediaNote: 'Temporary storm concept visual, not a built bot or project demo.',
     caseUrl: null,
@@ -88,7 +85,7 @@ const projects = [
       </div>
       <div class="project-grid">
         {projects.map((project) => (
-          <article class:list={['project-screen', { 'has-case-study': Boolean(project.caseUrl) }]} data-project-name={project.name} data-video-src={project.mediaUrl} aria-labelledby={project.titleId} tabindex="0">
+          <article class="project-screen" data-project-name={project.name} data-video-src={project.mediaUrl} aria-labelledby={project.titleId} tabindex="0">
             <div class="project-media">
               <div class="project-backdrop" aria-hidden="true">
                 <img src={project.posterUrl} width="1280" height="720" alt="" loading="lazy" />
@@ -98,14 +95,15 @@ const projects = [
             </div>
             <div class="project-scan" aria-hidden="true"></div>
             <div class="project-glass" aria-hidden="true"></div>
-            <button class="project-toggle" type="button" aria-controls={project.detailsId} aria-expanded="false" aria-label={`Show ${project.name} details`}><span aria-hidden="true">+</span></button>
+            <button class="project-trigger" type="button" aria-controls={project.detailsId} aria-expanded="false" aria-label={`Show ${project.name} details`}></button>
             <div class="project-copy">
-              {project.caseUrl && <a class="project-case-link" href={project.caseUrl}><span>Read case study <span aria-hidden="true">↗</span></span></a>}
               <p class="project-kicker">{project.stack}</p>
               <h3 id={project.titleId}>{project.name}</h3>
               <div class="project-details" id={project.detailsId}>
                 <p>{project.description}</p>
-                <a class="project-link" href={project.url}>{project.linkLabel} <span aria-hidden="true">↗</span></a>
+                {project.caseUrl
+                  ? <a class="project-link" href={project.caseUrl}>Read case study <span aria-hidden="true">↗</span></a>
+                  : <span class="project-placeholder">Case study in preparation</span>}
                 <p class="project-media-note">{project.mediaNote}</p>
               </div>
             </div>
@@ -229,19 +227,24 @@ const projects = [
     const projectBackdrop = project.querySelector<HTMLElement>('.project-backdrop');
     const projectVideo = project.querySelector<HTMLVideoElement>('video');
     const projectStatus = project.querySelector<HTMLElement>('.project-status');
-    const projectToggle = project.querySelector<HTMLButtonElement>('.project-toggle');
-    if (projectBackdrop && projectVideo && projectStatus && projectToggle) {
-      const projectName = project.dataset.projectName ?? 'project';
+    const projectTrigger = project.querySelector<HTMLButtonElement>('.project-trigger');
+    if (projectBackdrop && projectVideo && projectStatus && projectTrigger) {
       project.classList.add('is-interactive');
       project.addEventListener('pointerenter', () => project.classList.add('was-open'), { once: true });
       project.addEventListener('focusin', () => project.classList.add('was-open'), { once: true });
-      projectToggle.addEventListener('click', () => {
-        project.classList.add('was-open');
-        const open = project.classList.toggle('is-open');
-        projectToggle.setAttribute('aria-expanded', String(open));
-        projectToggle.setAttribute('aria-label', `${open ? 'Hide' : 'Show'} ${projectName} details`);
-        projectToggle.querySelector('span')!.textContent = open ? '−' : '+';
-      });
+      const touchLayout = matchMedia('(max-width: 600px), (hover: none)');
+      const setOpen = (open: boolean) => {
+        project.classList.toggle('is-open', open);
+        projectTrigger!.setAttribute('aria-expanded', String(open));
+        projectTrigger!.setAttribute('aria-label', `${open ? 'Hide' : 'Show'} ${project.dataset.projectName} details`);
+      };
+      const syncLayout = () => {
+        if (touchLayout.matches) project.removeAttribute('tabindex');
+        else { project.setAttribute('tabindex', '0'); setOpen(false); }
+      };
+      projectTrigger.addEventListener('click', () => setOpen(!project.classList.contains('is-open')));
+      touchLayout.addEventListener('change', syncLayout);
+      syncLayout();
       const reduced = matchMedia('(prefers-reduced-motion: reduce)');
       let visible = false;
       let failed = false;
