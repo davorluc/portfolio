@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { TIP_RECIPIENT } from '../scripts/base-tip';
 
 const projects = [
   {
@@ -24,11 +25,14 @@ const projects = [
     caseUrl: null,
   },
 ] as const;
+
+const contactEmail = 'd.lucic4@hotmail.com';
+const linkedInUrl = 'https://www.linkedin.com/in/davor-lucic-467236267/';
 ---
 
 <Layout
   title=" Davor Lucic — Data, web & infrastructure"
-  description="Davor Lucic's portfolio: connecting data, web and infrastructure. Read the monad-torrent and devchain case studies; the Hydra concept and contact details are in preparation."
+  description="Davor Lucic's portfolio: connecting data, web and infrastructure. Read the monad-torrent and devchain case studies, explore the Hydra concept, and get in touch by email or LinkedIn."
 >
   <script is:inline>
     if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
@@ -64,7 +68,7 @@ const projects = [
           <p class="crt-eyebrow crt-eyebrow-short">Data / Web / DevOps</p>
           <h1 id="hero-title">I build across layers.</h1>
           <a class="crt-cta" href="#work">Explore portfolio <span aria-hidden="true">↓</span></a>
-          <p class="crt-pending">The Hydra concept case study and contact details are being prepared.</p>
+          <p class="crt-pending">The Hydra concept case study is in preparation.</p>
         </div>
       </div>
       <p class="crt-status" role="status" aria-live="polite"></p>
@@ -133,8 +137,9 @@ const projects = [
         </div>
         <div class="about-note" id="about">
           <p class="eyebrow">05 / About</p>
-          <h3>About this portfolio</h3>
-          <p>I studied computer science and have worked across data engineering, web development and DevOps. The interesting problems often sit between those layers.</p>
+          <h3>What I'm working toward</h3>
+          <p>I’m working toward DeFi engineering and building systems in the blockchain space. I’m drawn to work where engineering discipline has real consequences. Smart contracts make that clear: testing, understanding failure cases, and following proven practices matter before code goes live. Shipping fast is useful; shipping something that breaks can be far more costly.</p>
+          <p>I enjoy the problems that should work but don’t. Finding the gap between what I expected and what the system actually does is challenging in the best way. It’s why I keep learning, testing my assumptions, and digging until I understand the cause.</p>
         </div>
       </div>
     </section>
@@ -143,16 +148,67 @@ const projects = [
       <div class="container contact-inner">
         <p class="eyebrow">06 / Contact</p>
         <h2 id="contact-title">Let's make the next<br /><em>system clearer.</em></h2>
-        <p>Contact details are being confirmed before a direct link is published.</p>
+        <address class="contact-links">
+          <a href={`mailto:${contactEmail}`}>Email me <span aria-hidden="true">↗</span><span class="contact-email">{contactEmail}</span></a>
+          <a href={linkedInUrl}>Connect on LinkedIn <span aria-hidden="true">↗</span></a>
+        </address>
       </div>
+      <section class="container tip-panel" aria-labelledby="tip-title" data-tip-panel>
+        <div class="tip-heading">
+          <p class="eyebrow">Optional / Leave a tip</p>
+          <h3 id="tip-title">Support the work, if you like.</h3>
+          <p>If this work helped, you can leave an optional ETH tip on Base. Connecting a wallet does not send funds.</p>
+        </div>
+        <dl class="tip-network"><div><dt>Network</dt><dd>Base Mainnet</dd></div><div><dt>Asset</dt><dd>ETH</dd></div></dl>
+        <div class="tip-destination">
+          <p class="tip-label">Full recipient address</p>
+          <code data-tip-recipient>{TIP_RECIPIENT}</code>
+          <button type="button" data-tip-copy hidden>Copy address</button>
+          <p data-tip-copy-status role="status" aria-live="polite"></p>
+        </div>
+        <p class="tip-manual">No wallet? Copy the address and send ETH on Base from your own wallet. Check the network and full address first; other networks or assets may be lost.</p>
+        <div class="tip-form" data-tip-form hidden>
+          <fieldset class="tip-amounts">
+            <legend>Choose an ETH amount</legend>
+            <div class="tip-presets">
+              <button type="button" data-tip-preset="0.001" aria-pressed="false">0.001 ETH</button>
+              <button type="button" data-tip-preset="0.005" aria-pressed="false">0.005 ETH</button>
+              <button type="button" data-tip-preset="0.01" aria-pressed="false">0.01 ETH</button>
+            </div>
+          </fieldset>
+          <label class="tip-label" for="tip-custom">Or enter a custom amount in ETH</label>
+          <input id="tip-custom" data-tip-custom type="text" inputmode="decimal" autocomplete="off" spellcheck="false" maxlength="24" aria-describedby="tip-amount-help tip-error" />
+          <p id="tip-amount-help" class="tip-help">More than 0, at most 0.1 ETH, with up to 18 decimal places. No signs or exponent.</p>
+          <p id="tip-error" class="tip-error" data-tip-error role="alert"></p>
+          <p class="tip-selected">Selected: <output data-tip-amount>Choose an amount</output></p>
+          <button class="tip-primary" type="button" data-tip-connect disabled>Connect wallet to review</button>
+          <p class="tip-wallet-info" data-tip-wallet-info></p>
+          <div class="tip-review" data-tip-review hidden role="group" aria-label="Review before wallet approval">
+            <h4>Transfer review</h4>
+            <dl>
+              <div><dt>From wallet</dt><dd data-tip-account></dd></div>
+              <div><dt>Network / asset</dt><dd>Base Mainnet (8453) / ETH</dd></div>
+              <div><dt>Full destination</dt><dd><code>{TIP_RECIPIENT}</code></dd></div>
+              <div><dt>Exact amount</dt><dd data-tip-review-amount></dd></div>
+            </dl>
+            <p>The wallet shows the final transfer and gas cost. Only approve if every detail matches; an approved transfer cannot be reversed.</p>
+            <button class="tip-primary" type="button" data-tip-send disabled>Review transfer in wallet</button>
+          </div>
+          <p class="tip-status" data-tip-status role="status" aria-live="polite" tabindex="-1"></p>
+          <p class="tip-hash" data-tip-hash hidden>Wallet-returned transaction hash: <code data-tip-hash-value></code></p>
+          <a class="tip-receipt" data-tip-receipt href="#" target="_blank" rel="noopener noreferrer" hidden>View on BaseScan ↗</a>
+        </div>
+        <noscript><p class="tip-help">Wallet connection and the copy button need JavaScript. The full address above remains selectable for manual use.</p></noscript>
+      </section>
     </section>
   </main>
   <footer class="site-footer">
     <div class="container footer-inner">
       <span class="footer-identity"> Davor Lucic / Portfolio</span>
       <div class="footer-socials">
-        <span>Social profiles</span>
-        <p>Links pending confirmation.</p>
+        <span>Find me</span>
+        <a href={`mailto:${contactEmail}`}>Email</a>
+        <a href={linkedInUrl}>LinkedIn</a>
       </div>
       <a href="#top">Back to top ↑</a>
     </div>
@@ -162,6 +218,7 @@ const projects = [
   </div>
   <script>
     import { startSecondaryPowerOn } from '../scripts/crt-secondary-power';
+    import { initBaseTip } from '../scripts/base-tip';
 
     const screen = document.querySelector<HTMLElement>('.crt-screen');
     const backdrop = screen?.querySelector<HTMLElement>('.crt-backdrop');
@@ -296,5 +353,6 @@ const projects = [
     }
     });
     startSecondaryPowerOn(Array.from(document.querySelectorAll<HTMLElement>('.project-screen')));
+    initBaseTip();
   </script>
 </Layout>
