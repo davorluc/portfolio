@@ -53,23 +53,29 @@ export function initBaseTip(): void {
     if (!node) throw new Error(`Tip interface missing ${selector}`);
     return node;
   };
+  const drawerToggle = pick<HTMLButtonElement>('[data-tip-drawer-toggle]');
+  const drawerBody = pick<HTMLElement>('[data-tip-drawer-body]');
   const form = pick<HTMLElement>('[data-tip-form]');
   const copy = pick<HTMLButtonElement>('[data-tip-copy]');
   const copyStatus = pick<HTMLElement>('[data-tip-copy-status]');
   const presets = [...panel.querySelectorAll<HTMLButtonElement>('[data-tip-preset]')];
-  const custom = pick<HTMLInputElement>('[data-tip-custom]');
   const error = pick<HTMLElement>('[data-tip-error]');
   const status = pick<HTMLElement>('[data-tip-status]');
-  const amountDisplay = pick<HTMLElement>('[data-tip-amount]');
   const connect = pick<HTMLButtonElement>('[data-tip-connect]');
   const send = pick<HTMLButtonElement>('[data-tip-send]');
   const review = pick<HTMLElement>('[data-tip-review]');
   const accountDisplay = pick<HTMLElement>('[data-tip-account]');
-  const reviewAmount = pick<HTMLElement>('[data-tip-review-amount]');
   const receiptLink = pick<HTMLAnchorElement>('[data-tip-receipt]');
   const hashDisplay = pick<HTMLElement>('[data-tip-hash]');
   const hashValue = pick<HTMLElement>('[data-tip-hash-value]');
   const walletInfo = pick<HTMLElement>('[data-tip-wallet-info]');
+  const amountStep = pick<HTMLElement>('[data-tip-step-amount]');
+  const reviewStep = pick<HTMLElement>('[data-tip-step-review]');
+  const outcomeStep = pick<HTMLElement>('[data-tip-step-outcome]');
+  const back = pick<HTMLButtonElement>('[data-tip-back]');
+  const retry = pick<HTMLButtonElement>('[data-tip-retry]');
+  const stepReviewAmount = pick<HTMLElement>('[data-tip-step-review-amount]');
+  const outcomeAmount = pick<HTMLElement>('[data-tip-outcome-amount]');
 
   let amount: ReturnType<typeof parseEthAmount> = null;
   let provider: EthereumProvider | null = null;
@@ -82,26 +88,34 @@ export function initBaseTip(): void {
   let receiptOutcome: 'pending' | 'confirmed' | 'failed' | 'unverified' | null = null;
   let provenanceUncertain = false;
   let revision = 0;
-  let activePreset: HTMLButtonElement | null = null;
+  let step: 1 | 2 | 3 = 1;
+  const showStep = (next: 1 | 2 | 3, focus = false) => {
+    step = next;
+    amountStep.hidden = next !== 1;
+    reviewStep.hidden = next !== 2;
+    outcomeStep.hidden = next !== 3;
+    if (focus) (next === 1 ? amountStep : next === 2 ? reviewStep : outcomeStep).querySelector<HTMLElement>('h4')?.focus();
+  };
 
   const setStatus = (text: string) => { status.textContent = text; };
   const setError = (text = '') => { error.textContent = text; };
   const refresh = () => {
     const locked = busy || sendAttempted || !!hash;
+    back.disabled = locked;
+    retry.hidden = step !== 3 || locked || !!hash;
     connect.disabled = locked || !amount;
+    connect.hidden = ready;
     send.disabled = locked || !ready || !amount;
-    connect.textContent = account ? 'Review with wallet' : 'Connect wallet to review';
+    connect.textContent = account ? 'Review with wallet' : 'Connect wallet';
     presets.forEach(button => {
       button.disabled = busy || !!hash || sendAttempted;
-      button.setAttribute('aria-pressed', String(button === activePreset));
     });
-    custom.disabled = busy || !!hash || sendAttempted;
-    amountDisplay.textContent = amount ? `${amount.eth} ETH` : 'Choose an amount';
-    walletInfo.textContent = account ? `Connected wallet: ${account}` : '';
+    stepReviewAmount.textContent = amount ? `${amount.eth} ETH` : '';
+    outcomeAmount.textContent = amount ? `${amount.eth} ETH` : '';
+    walletInfo.textContent = account && !ready ? `Selected wallet: ${account}` : '';
     review.hidden = !ready;
     if (ready && account && amount) {
       accountDisplay.textContent = account;
-      reviewAmount.textContent = `${amount.eth} ETH`;
     }
   };
   const invalidate = (message: string) => {
@@ -110,19 +124,33 @@ export function initBaseTip(): void {
     if (!hash) setStatus(message);
     refresh();
   };
-  const choose = (raw: string, button: HTMLButtonElement | null) => {
-    if (busy || sendAttempted || hash) return;
-    amount = parseEthAmount(raw);
-    activePreset = button;
-    custom.setAttribute('aria-invalid', String(!button && raw.length > 0 && !amount));
-    setError(!button && raw.length > 0 && !amount ? 'Enter more than 0 and at most 0.1 ETH, using up to 18 decimal places. No signs or exponent.' : '');
-    invalidate(amount ? 'Amount selected. Connect or review with your wallet; no funds have been sent.' : 'Choose a valid ETH amount before connecting.');
-  };
   presets.forEach(button => button.addEventListener('click', () => {
-    custom.value = '';
-    choose(button.dataset.tipPreset ?? '', button);
+    if (busy || sendAttempted || hash || step !== 1) return;
+    const selected = parseEthAmount(button.dataset.tipPreset ?? '');
+    if (!selected) { setError('This tip amount is unavailable.'); return; }
+    amount = selected;
+    setError();
+    invalidate('');
+    showStep(2, true);
+    refresh();
   }));
-  custom.addEventListener('input', () => choose(custom.value, null));
+  back.addEventListener('click', () => {
+    if (busy || sendAttempted || hash || step !== 2) return;
+    account = null;
+    amount = null;
+    invalidate('');
+    setError();
+    showStep(1, true);
+    refresh();
+  });
+  retry.addEventListener('click', () => {
+    if (busy || sendAttempted || hash || step !== 3) return;
+    account = null;
+    invalidate('No transaction hash was returned. Review the Base network, amount and address again before connecting.');
+    setError();
+    showStep(2, true);
+    refresh();
+  });
 
   copy.addEventListener('click', async () => {
     try {
@@ -196,7 +224,7 @@ export function initBaseTip(): void {
       }
       account = current[0];
       ready = true;
-      setStatus('Ready for review. Check the account, Base Mainnet, full destination and exact ETH amount. Nothing has been sent.');
+      setStatus('Ready for wallet transfer review. Nothing has been sent.');
     } catch (cause) {
       ready = false;
       if (rejected(cause)) setError('Wallet connection or network switch declined. Your amount is kept; retry when ready.');
@@ -234,7 +262,7 @@ export function initBaseTip(): void {
         if (!isBase(await wallet.request({ method: 'eth_chainId' }))) { provenanceUncertain = true; receiptLink.hidden = true; break; }
         if (isReceipt(receipt, txHash)) {
           const value = (receipt.status as string).toLowerCase();
-          if (/^0x0*1$/.test(value)) { provenanceUncertain = false; receiptLink.hidden = false; receiptOutcome = 'confirmed'; setStatus('Confirmed on Base: transaction receipt reports success.'); return; }
+          if (/^0x0*1$/.test(value)) { provenanceUncertain = false; receiptLink.hidden = false; receiptOutcome = 'confirmed'; setStatus('Thank you for the support! Your tip is confirmed on Base.'); return; }
           if (/^0x0+$/.test(value)) { provenanceUncertain = false; receiptLink.hidden = false; receiptOutcome = 'failed'; setError('Failed on Base: the transaction receipt reports failure.'); setStatus('Submitted transaction failed on-chain.'); return; }
           break;
         }
@@ -268,6 +296,7 @@ export function initBaseTip(): void {
       sendAttempted = true;
       provenanceUncertain = false;
       ready = false;
+      showStep(3, true);
       setStatus('Awaiting wallet approval. Verify destination, Base network and ETH amount in your wallet; you may reject.');
       refresh();
       const response = await wallet.request({ method: 'eth_sendTransaction', params: [{ from: selectedAccount, to: TIP_RECIPIENT, value: `0x${selectedWei.toString(16)}` }] });
@@ -295,14 +324,24 @@ export function initBaseTip(): void {
     } finally {
       busy = false;
       refresh();
-      if (sendAttempted) status.focus();
+      if (step === 3) status.focus();
       else if (amount) connect.focus();
     }
   });
 
+  drawerToggle.addEventListener('click', () => {
+    const open = !panel.classList.contains('is-open');
+    panel.classList.toggle('is-open', open);
+    drawerBody.inert = !open;
+    drawerToggle.setAttribute('aria-expanded', String(open));
+    drawerToggle.querySelector<HTMLElement>('.tip-trigger-icon')!.textContent = open ? '←' : '→';
+    panel.dispatchEvent(new Event('tip-drawer-toggle'));
+  });
   form.hidden = false;
   copy.hidden = false;
+  drawerBody.inert = true;
+  drawerToggle.hidden = false;
   panel.classList.add('is-enhanced');
-  setStatus('Choose an ETH amount. Connecting a wallet does not send funds.');
+  setStatus('');
   refresh();
 }

@@ -30,6 +30,11 @@ export function startSecondaryPowerOn(screens: HTMLElement[]) {
     screen.dataset.powerState = 'played';
     screen.classList.remove('is-powering-on');
     observer.unobserve(screen);
+    if (screen.dataset.powerSessionKey) {
+      try { sessionStorage.setItem(screen.dataset.powerSessionKey, '1'); }
+      catch { /* Storage is optional; the screen still plays only once this visit. */ }
+      root.classList.add('tip-power-played');
+    }
     if (--remaining === 0) root.classList.remove('crt-secondary-ready');
   };
   for (const screen of screens) {
@@ -43,6 +48,12 @@ export function startSecondaryPowerOn(screens: HTMLElement[]) {
     });
     screen.addEventListener('focusin', () => finish(screen));
     screen.addEventListener('pointerdown', () => finish(screen));
+    screen.addEventListener('tip-media-failure', () => finish(screen));
+    if (screen.dataset.powerSessionKey) {
+      const housing = screen.closest('[data-tip-media]');
+      housing?.addEventListener('focusin', () => finish(screen));
+      housing?.addEventListener('pointerdown', () => finish(screen));
+    }
     observer.observe(screen);
   }
   reduced.addEventListener('change', () => {

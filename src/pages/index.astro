@@ -35,6 +35,9 @@ const linkedInUrl = 'https://www.linkedin.com/in/davor-lucic-467236267/';
   description="Davor Lucic's portfolio: connecting data, web and infrastructure. Read the monad-torrent and devchain case studies, explore the Hydra concept, and get in touch by email or LinkedIn."
 >
   <script is:inline>
+    try {
+      if (sessionStorage.getItem('coffee-tip-screen-played') === '1') document.documentElement.classList.add('tip-power-played');
+    } catch { /* Storage may be unavailable; the one-shot still holds per page. */ }
     if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
       document.documentElement.classList.add('crt-turn-on', 'crt-secondary-ready');
       document.documentElement.dataset.powerFallback = String(window.setTimeout(() => {
@@ -152,54 +155,79 @@ const linkedInUrl = 'https://www.linkedin.com/in/davor-lucic-467236267/';
           <a href={`mailto:${contactEmail}`}>Email me <span aria-hidden="true">↗</span><span class="contact-email">{contactEmail}</span></a>
           <a href={linkedInUrl}>Connect on LinkedIn <span aria-hidden="true">↗</span></a>
         </address>
-      </div>
-      <section class="container tip-panel" aria-labelledby="tip-title" data-tip-panel>
-        <div class="tip-heading">
-          <p class="eyebrow">Optional / Leave a tip</p>
-          <h3 id="tip-title">Support the work, if you like.</h3>
-          <p>If this work helped, you can leave an optional ETH tip on Base. Connecting a wallet does not send funds.</p>
-        </div>
-        <dl class="tip-network"><div><dt>Network</dt><dd>Base Mainnet</dd></div><div><dt>Asset</dt><dd>ETH</dd></div></dl>
-        <div class="tip-destination">
-          <p class="tip-label">Full recipient address</p>
-          <code data-tip-recipient>{TIP_RECIPIENT}</code>
-          <button type="button" data-tip-copy hidden>Copy address</button>
-          <p data-tip-copy-status role="status" aria-live="polite"></p>
-        </div>
-        <p class="tip-manual">No wallet? Copy the address and send ETH on Base from your own wallet. Check the network and full address first; other networks or assets may be lost.</p>
-        <div class="tip-form" data-tip-form hidden>
-          <fieldset class="tip-amounts">
-            <legend>Choose an ETH amount</legend>
-            <div class="tip-presets">
-              <button type="button" data-tip-preset="0.001" aria-pressed="false">0.001 ETH</button>
-              <button type="button" data-tip-preset="0.005" aria-pressed="false">0.005 ETH</button>
-              <button type="button" data-tip-preset="0.01" aria-pressed="false">0.01 ETH</button>
+        <section class="tip-panel" data-tip-panel aria-label="Optional ETH tip">
+        <button class="tip-trigger" type="button" data-tip-drawer-toggle aria-controls="tip-drawer-body" aria-expanded="false" hidden><span>Fund the night shift</span><span class="tip-trigger-icon" aria-hidden="true">→</span></button>
+        <div class="tip-panel-body" id="tip-drawer-body" data-tip-drawer-body>
+        <div class="tip-machine" data-tip-media>
+          <figure class="tip-machine-figure" aria-hidden="true">
+            <p class="tip-machine-stamp">NIGHT SHIFT · COFFEE UNIT</p>
+            <div class="tip-machine-crt" data-tip-screen data-power-session-key="coffee-tip-screen-played">
+              <img src="/media/settlement-poster.webp" alt="" loading="lazy" />
+              <video muted playsinline preload="none" aria-hidden="true"></video>
+              <div class="crt-shutter" aria-hidden="true"><span class="crt-shutter-line"></span></div>
             </div>
-          </fieldset>
-          <label class="tip-label" for="tip-custom">Or enter a custom amount in ETH</label>
-          <input id="tip-custom" data-tip-custom type="text" inputmode="decimal" autocomplete="off" spellcheck="false" maxlength="24" aria-describedby="tip-amount-help tip-error" />
-          <p id="tip-amount-help" class="tip-help">More than 0, at most 0.1 ETH, with up to 18 decimal places. No signs or exponent.</p>
-          <p id="tip-error" class="tip-error" data-tip-error role="alert"></p>
-          <p class="tip-selected">Selected: <output data-tip-amount>Choose an amount</output></p>
-          <button class="tip-primary" type="button" data-tip-connect disabled>Connect wallet to review</button>
-          <p class="tip-wallet-info" data-tip-wallet-info></p>
-          <div class="tip-review" data-tip-review hidden role="group" aria-label="Review before wallet approval">
-            <h4>Transfer review</h4>
-            <dl>
-              <div><dt>From wallet</dt><dd data-tip-account></dd></div>
-              <div><dt>Network / asset</dt><dd>Base Mainnet (8453) / ETH</dd></div>
-              <div><dt>Full destination</dt><dd><code>{TIP_RECIPIENT}</code></dd></div>
-              <div><dt>Exact amount</dt><dd data-tip-review-amount></dd></div>
-            </dl>
-            <p>The wallet shows the final transfer and gas cost. Only approve if every detail matches; an approved transfer cannot be reversed.</p>
-            <button class="tip-primary" type="button" data-tip-send disabled>Review transfer in wallet</button>
-          </div>
-          <p class="tip-status" data-tip-status role="status" aria-live="polite" tabindex="-1"></p>
-          <p class="tip-hash" data-tip-hash hidden>Wallet-returned transaction hash: <code data-tip-hash-value></code></p>
-          <a class="tip-receipt" data-tip-receipt href="#" target="_blank" rel="noopener noreferrer" hidden>View on BaseScan ↗</a>
+          </figure>
+          <p class="tip-media-caption">Concept footage · not a payment preview</p>
+          <p class="tip-media-status" data-tip-media-status role="status" aria-live="polite"></p>
         </div>
-        <noscript><p class="tip-help">Wallet connection and the copy button need JavaScript. The full address above remains selectable for manual use.</p></noscript>
-      </section>
+        <div class="tip-console">
+          <div class="tip-heading">
+            <h3 id="tip-title">Fuel the next late night.</h3>
+            <p>Enjoyed the work? Leave an optional ETH tip on Base.</p>
+          </div>
+          <div class="tip-form" data-tip-form hidden>
+            <section data-tip-step-amount aria-labelledby="tip-step-amount-title">
+              <h4 id="tip-step-amount-title" class="tip-step-heading" tabindex="-1">Choose a tip</h4>
+              <fieldset class="tip-amounts">
+                <legend>Choose an ETH tip on Base Mainnet</legend>
+                <div class="tip-presets">
+                  <button type="button" data-tip-preset="0.001">A little fuel <span>0.001 ETH</span></button>
+                  <button type="button" data-tip-preset="0.005">A coffee <span>0.005 ETH</span></button>
+                  <button type="button" data-tip-preset="0.01">Keep the lights on <span>0.01 ETH</span></button>
+                </div>
+              </fieldset>
+            </section>
+            <section data-tip-step-review aria-labelledby="tip-step-review-title" hidden>
+              <h4 id="tip-step-review-title" class="tip-step-heading" tabindex="-1">Review your tip</h4>
+              <dl class="tip-review-facts">
+                <div><dt>Network / asset</dt><dd>Base Mainnet (8453) / ETH</dd></div>
+                <div><dt>Amount</dt><dd data-tip-step-review-amount></dd></div>
+                <div><dt>Recipient · verify full address</dt><dd><code>{TIP_RECIPIENT}</code></dd></div>
+              </dl>
+              <p class="tip-check">Check these details. Connecting does not send funds.</p>
+              <button class="tip-primary" type="button" data-tip-connect disabled>Connect wallet</button>
+              <p class="tip-wallet-info" data-tip-wallet-info></p>
+              <div class="tip-review" data-tip-review hidden role="group" aria-label="Review before wallet approval">
+                <h5>Ready to review in your wallet</h5>
+                <p>From: <span data-tip-account></span></p>
+                <p>Check the amount, address, network and gas in your wallet. Approved transfers cannot be reversed.</p>
+                <button class="tip-primary" type="button" data-tip-send disabled>Review transfer in wallet</button>
+              </div>
+              <button class="tip-back" type="button" data-tip-back>← Change tip</button>
+            </section>
+            <section data-tip-step-outcome aria-labelledby="tip-step-outcome-title" hidden>
+              <h4 id="tip-step-outcome-title" class="tip-step-heading" tabindex="-1">Tip status</h4>
+              <p class="tip-help">Base Mainnet (8453) / ETH · <span data-tip-outcome-amount></span> to <code>{TIP_RECIPIENT}</code></p>
+            </section>
+            <p class="tip-error" id="tip-error" data-tip-error role="alert"></p>
+            <p class="tip-status" data-tip-status role="status" aria-live="polite" tabindex="-1"></p>
+            <button type="button" data-tip-retry hidden>Return to review details</button>
+            <p class="tip-hash" data-tip-hash hidden>Wallet-returned transaction hash: <code data-tip-hash-value></code></p>
+            <a class="tip-receipt" data-tip-receipt href="#" target="_blank" rel="noopener noreferrer" hidden>View on BaseScan ↗</a>
+          </div>
+          <noscript><p class="tip-nojs">Wallet connection needs JavaScript. To use your own wallet, send only ETH on Base Mainnet (8453) to the full address below; verify it in your wallet first.</p><code class="tip-nojs">{TIP_RECIPIENT}</code></noscript>
+          </div>
+          <details class="tip-manual-details">
+            <summary>Send from your own wallet instead</summary>
+            <p>Send only ETH on Base Mainnet (8453). Check the full address; other networks or assets may be lost.</p>
+            <p class="tip-label">Full recipient address</p>
+            <code>{TIP_RECIPIENT}</code>
+            <button type="button" data-tip-copy hidden>Copy address</button>
+            <p data-tip-copy-status role="status" aria-live="polite"></p>
+          </details>
+        </div>
+        </section>
+      </div>
     </section>
   </main>
   <footer class="site-footer">
@@ -219,6 +247,7 @@ const linkedInUrl = 'https://www.linkedin.com/in/davor-lucic-467236267/';
   <script>
     import { startSecondaryPowerOn } from '../scripts/crt-secondary-power';
     import { initBaseTip } from '../scripts/base-tip';
+    import { initTipMedia } from '../scripts/tip-media';
 
     const screen = document.querySelector<HTMLElement>('.crt-screen');
     const backdrop = screen?.querySelector<HTMLElement>('.crt-backdrop');
@@ -352,7 +381,13 @@ const linkedInUrl = 'https://www.linkedin.com/in/davor-lucic-467236267/';
       } else { visible = true; void syncProject(); }
     }
     });
-    startSecondaryPowerOn(Array.from(document.querySelectorAll<HTMLElement>('.project-screen')));
+    const tipScreen = document.querySelector<HTMLElement>('.tip-machine-crt');
+    if (tipScreen && document.documentElement.classList.contains('tip-power-played')) tipScreen.dataset.powerState = 'played';
+    startSecondaryPowerOn([
+      ...document.querySelectorAll<HTMLElement>('.project-screen'),
+      ...(tipScreen && tipScreen.dataset.powerState !== 'played' ? [tipScreen] : []),
+    ]);
     initBaseTip();
+    initTipMedia();
   </script>
 </Layout>
