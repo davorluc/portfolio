@@ -163,6 +163,8 @@ em { font-weight: 400; }
 .about-note p:not(.eyebrow) { max-width: 29rem; margin-top: 1rem; color: var(--ink-soft); }
 .contact { position: relative; background: #202722; color: var(--chalk); padding-block: clamp(7rem, 12vw, 12rem) clamp(3rem, 6vw, 5rem); }
 .contact-inner { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,400px); gap: 2rem 4rem; align-items: start; }
+/* Leave the closed drawer a clear lane without changing the section height. */
+.contact:has(.tip-panel.is-enhanced) .contact-inner { padding-inline-start: 1rem; }
 .contact .eyebrow { grid-column: 1 / -1; color: #e2cba5; }
 .contact h2 { font-size: clamp(3.3rem, 5.8vw, 6.5rem); line-height: 1.04; }
 .contact h2 em { color: #e2cba5; }
@@ -173,25 +175,36 @@ em { font-weight: 400; }
 .contact-email { display: block; margin-top: .2rem; font-size: .88rem; font-weight: 400; overflow-wrap: anywhere; }
 .tip-panel { grid-column: 2; grid-row: 3; justify-self: end; width: min(100%,400px); min-width: 0; }
 .tip-panel-body { display: grid; gap: .6rem; min-width: 0; padding: .65rem; background: #f1e6d3; color: var(--ink); }
-.tip-panel.is-enhanced { --tip-tab-width: 3rem; --tip-drawer-gutter: clamp(1rem, 2.5vw, 2.5rem); position: absolute; z-index: 20; top: clamp(7rem, 12vw, 12rem); left: var(--tip-drawer-gutter); width: min(460px, calc(100vw - 2 * var(--tip-drawer-gutter))); transform: translateX(calc(-100% + var(--tip-tab-width) - var(--tip-drawer-gutter))); transition: transform .45s cubic-bezier(.2,.75,.2,1); }
+.tip-panel.is-enhanced { --tip-tab-width: 2.75rem; --tip-drawer-gutter: clamp(1rem, 2.5vw, 2.5rem); position: absolute; z-index: 20; top: clamp(7rem, 12vw, 12rem); left: var(--tip-drawer-gutter); width: min(460px, calc(100vw - 2 * var(--tip-drawer-gutter))); transform: translateX(calc(-100% + var(--tip-tab-width) - var(--tip-drawer-gutter))); transition: transform .45s cubic-bezier(.2,.75,.2,1); }
 .tip-panel.is-enhanced.is-open { transform: translateX(0); }
-.tip-panel.is-enhanced .tip-panel-body { max-height: min(760px, calc(100svh - 2rem)); overflow-y: auto; padding: .8rem calc(var(--tip-tab-width) + .8rem) .8rem .8rem; box-shadow: 0 12px 35px rgba(0,0,0,.28); }
+.tip-panel.is-enhanced .tip-panel-body { margin-right: var(--tip-tab-width); max-height: min(760px, calc(100svh - 2rem)); overflow-y: auto; padding: .8rem; box-shadow: 0 12px 35px rgba(0,0,0,.28); }
 .tip-panel .tip-trigger { position: absolute; z-index: 2; top: 0; right: 0; display: flex; flex-direction: column; justify-content: space-between; align-items: center; width: var(--tip-tab-width); height: 13rem; padding: .8rem .35rem; border: 0; border-left: 1px solid var(--rule); background: #d8c8ab; color: var(--ink); font: 600 .82rem/1.2 "IBM Plex Sans Variable",system-ui,sans-serif; cursor: pointer; }
 .tip-panel .tip-trigger[hidden] { display: none; }
 .tip-trigger span:first-child { writing-mode: vertical-rl; transform: rotate(180deg); }
 .tip-trigger-icon { font-size: 1.3rem; }
-.contact:has(.tip-panel.is-open) { min-height: max(980px, calc(100svh + 4rem)); }
 .tip-console { min-width: 0; }
 .tip-machine { display: grid; grid-template-columns: minmax(0,1fr); min-width: 0; }
 .tip-machine-figure { min-width: 0; }
 .tip-media-caption, .tip-media-status { grid-column: 1; }
-.tip-machine-figure { min-width: 0; margin: 0; padding: .3rem; border: 1px solid #ad9d84; background: #e8dbc5; }
-.tip-machine-stamp { margin: 0 0 .55rem; color: #e2cba5; font: 500 .64rem/1.4 "IBM Plex Mono",ui-monospace,monospace; letter-spacing: .04em; }
-.tip-machine-crt { position: relative; width: 100%; aspect-ratio: 2.3 / 1; overflow: hidden; border: 1px solid #8b8e82; background: #15201c; box-shadow: inset 0 0 18px #050908; }
+.tip-machine-figure { min-width: 0; margin: 0; }
+.tip-machine-crt { position: relative; width: 100%; aspect-ratio: 2.3 / 1; min-height: 160px; overflow: hidden; border-radius: 12px; border: 1px solid #8b8e82; background: #15201c; box-shadow: inset 0 0 18px #050908; }
 .tip-machine-crt img, .tip-machine-crt video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: sepia(.3) brightness(.85); }
 .tip-machine-crt video { opacity: 0; }
 .tip-machine-crt.has-frame video { opacity: 1; }
-.tip-machine-crt::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(to bottom,rgba(3,5,5,.16) 0 1px,transparent 1px 4px),radial-gradient(ellipse 100% 75% at 50% 50%,transparent 38%,rgba(3,7,6,.65) 100%),radial-gradient(ellipse 75% 30% at 50% -12%,rgba(255,248,223,.22),transparent 90%); box-shadow: inset 0 0 18px rgba(2,5,5,.65),inset 1px 1px rgba(255,248,223,.35); pointer-events: none; animation: tip-scan 6s linear infinite; animation-play-state: paused; }
+.tip-crt-readout { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; justify-content: center; gap: .25rem; padding: 5% 7%; background: linear-gradient(rgba(3,10,7,.35),rgba(3,10,7,.85)); color: #e2edce; text-shadow: 0 0 5px rgba(194,224,161,.6); font: 400 .75rem/1.35 "IBM Plex Mono",ui-monospace,monospace; pointer-events: none; }
+.tip-crt-readout .tip-crt-network { color: #bac5ad; font-size: .65rem; font-weight: 400; letter-spacing: .08em; }
+.tip-crt-readout > strong { font-size: .75rem; font-weight: 600; letter-spacing: .03em; }
+.tip-crt-readout:not(.has-amount) > strong { font-size: 1rem; }
+.tip-crt-readout .tip-crt-amount { display: flex; align-items: baseline; gap: .45rem; margin: .1rem 0; line-height: 1; }
+.tip-crt-amount > b { font-size: clamp(1.65rem, 4vw, 2rem); font-weight: 600; letter-spacing: -.04em; }
+.tip-crt-amount > span { font-size: .8rem; font-weight: 400; }
+.tip-crt-readout .tip-crt-detail { max-width: 42ch; font-size: .7rem; line-height: 1.4; letter-spacing: 0; }
+.tip-wallet-from { color: var(--ink-soft); font-size: .78rem; }
+.tip-wallet-from > span { display: block; font: 400 .78rem/1.5 "IBM Plex Mono",ui-monospace,monospace; overflow-wrap: anywhere; }
+.tip-sr-only, .tip-panel.is-enhanced :is(.tip-step-heading,.tip-manual-warning) { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; white-space: nowrap; clip-path: inset(50%); border: 0; }
+.tip-hash > summary { cursor: pointer; padding-block: .65rem; text-underline-offset: .2em; }
+/* The moving scanlines and glass coat the readout as well as the footage. */
+.tip-machine-crt::after { content: ''; position: absolute; inset: 0; z-index: 2; background: repeating-linear-gradient(to bottom,rgba(3,5,5,.16) 0 1px,transparent 1px 4px),radial-gradient(ellipse 100% 75% at 50% 50%,transparent 38%,rgba(3,7,6,.65) 100%),radial-gradient(ellipse 75% 30% at 50% -12%,rgba(255,248,223,.22),transparent 90%); box-shadow: inset 0 0 18px rgba(2,5,5,.65),inset 1px 1px rgba(255,248,223,.35); pointer-events: none; animation: tip-scan 6s linear infinite; animation-play-state: paused; }
 .tip-machine.is-playing .tip-machine-crt::after { animation-play-state: running; }
 @keyframes tip-scan { to { background-position: 0 48px, 0 0; } }
 .tip-media-caption { margin-top: .5rem; color: #e2cba5; font: 500 .75rem/1.3 "IBM Plex Mono",ui-monospace,monospace; }
@@ -208,12 +221,28 @@ em { font-weight: 400; }
 .tip-review-facts dd { margin: .15rem 0 0; }
 .tip-review-facts code, .tip-review code, .tip-manual-details code, .tip-nojs, .tip-form [data-tip-step-outcome] code { display: block; color: var(--chalk); font: 400 .88rem/1.5 "IBM Plex Mono",ui-monospace,monospace; overflow-wrap: anywhere; word-break: break-word; }
 .tip-panel button { min-height: 2.75rem; padding: .6rem .85rem; border: 1px solid #e2cba5; border-radius: 0; background: transparent; color: var(--chalk); font: 600 .9rem/1.3 "IBM Plex Sans Variable",system-ui,sans-serif; cursor: pointer; }
-.tip-panel button:hover:not(:disabled), .tip-panel button[aria-pressed="true"] { background: #46504c; }
+.tip-panel button:not(:is(.tip-back,.tip-manual-toggle)):hover:not(:disabled), .tip-panel button[aria-pressed="true"] { background: #46504c; }
 .tip-panel button:disabled { opacity: .55; cursor: not-allowed; }
 .tip-manual-details { margin-top: .2rem; border-top: 1px solid #73796e; padding-top: .35rem; line-height: 1.5; }
 .tip-manual-details summary { display: list-item; min-height: 2.75rem; padding: .65rem .1rem; color: #e2cba5; cursor: pointer; }
 .tip-manual-details p, .tip-manual-details code { margin: .6rem 0; }
 .tip-manual-details button { margin-top: .5rem; }
+/* Both views share one grid cell, reserving their space so switching never
+   stretches the drawer. Inactive content sits outside the clipped viewport
+   and is made inert in JS; both views stay painted throughout the slide. */
+.tip-panel.is-enhanced .tip-views { display: grid; overflow: hidden; margin-top: .95rem; }
+.tip-panel.is-enhanced .tip-views > :is(.tip-form,.tip-manual-details) { grid-area: 1 / 1; min-width: 0; margin-top: 0; padding: 2px; transition: transform .4s cubic-bezier(.4,0,.2,1); }
+.tip-panel.is-enhanced .tip-form { transform: translateX(0); }
+.tip-panel.is-enhanced .tip-manual-details { transform: translateX(100%); border: 0; }
+.tip-panel.is-enhanced .tip-manual-details > summary { display: none; }
+.tip-panel.is-manual .tip-form { transform: translateX(-100%); }
+.tip-panel.is-manual .tip-manual-details { transform: translateX(0); }
+@media (prefers-reduced-motion: reduce) {
+  .tip-panel.is-enhanced .tip-views > :is(.tip-form,.tip-manual-details) { transition: none; }
+}
+.tip-panel-body .tip-manual-toggle { margin-top: .75rem; border: 0; padding-inline: 0; text-align: left; text-decoration: underline; text-underline-offset: .2em; }
+.tip-panel-body .tip-manual-details .tip-back { margin-left: 0; padding-inline: 0; }
+.tip-panel-body .tip-manual-details [data-tip-copy] { margin-inline-end: 1rem; }
 .tip-nojs { margin: .85rem 0; line-height: 1.5; }
 .tip-form { max-width: 44rem; margin-top: .95rem; }
 .tip-form section { min-width: 0; }
@@ -225,8 +254,8 @@ em { font-weight: 400; }
 .tip-amounts { width: 100%; margin: 0; border: 0; padding: 0; }
 .tip-amounts legend { position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip-path: inset(50%); }
 .tip-presets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .45rem; }
-.tip-presets button { display: grid; align-content: center; gap: .25rem; min-width: 0; min-height: 4.25rem; padding-inline: .35rem; text-align: center; line-height: 1.2; }
-.tip-presets button span { display: block; color: #e2cba5; font: 500 .72rem/1.3 "IBM Plex Mono",ui-monospace,monospace; white-space: nowrap; }
+.tip-presets button { display: grid; align-content: center; gap: .4rem; min-width: 0; min-height: 4.75rem; padding-inline: .35rem; text-align: center; font-size: .78rem; font-weight: 400; line-height: 1.2; }
+.tip-presets button span { display: block; color: #e2cba5; font: 600 1rem/1.3 "IBM Plex Mono",ui-monospace,monospace; white-space: nowrap; }
 .tip-presets button:hover:not(:disabled) span, .tip-presets button:focus-visible span { color: var(--chalk); }
 .tip-help { color: #d7c8ae; font-size: .85rem; line-height: 1.55; }
 .tip-error { color: #ffb29e; font-weight: 600; line-height: 1.5; }
@@ -252,10 +281,11 @@ em { font-weight: 400; }
 .tip-panel-body .tip-manual-details { border-top-color: var(--rule); }
 .tip-panel-body .tip-review { border-top-color: var(--rule); }
 .tip-panel-body .tip-error { color: #9f3026; }
-.tip-panel-body .tip-presets button span { color: var(--ink-soft); }
+.tip-panel-body .tip-presets button { color: var(--ink-soft); }
+.tip-panel-body .tip-presets button span { color: var(--ink); }
 .tip-panel-body .tip-presets button:hover:not(:disabled) span { color: var(--ink); }
 .tip-panel-body button { border-color: var(--ink); background: transparent; color: var(--ink); }
-.tip-panel-body button:hover:not(:disabled) { background: #d8c8ab; }
+.tip-panel-body button:not(:is(.tip-back,.tip-manual-toggle)):hover:not(:disabled) { background: #d8c8ab; }
 .tip-panel-body .tip-primary, .tip-panel-body .tip-primary:disabled { background: var(--ink) !important; color: var(--chalk) !important; }
 .tip-panel-body .tip-primary:hover:not(:disabled) { background: #50564d !important; }
 .tip-panel-body .tip-back { color: var(--ink) !important; }
@@ -272,8 +302,7 @@ em { font-weight: 400; }
 @keyframes terminal-blink { 50% { opacity: 0; } }
 .site-footer a:focus-visible { outline-color: var(--chalk); }
 @media (max-width: 900px) {
-  .tip-machine-figure { max-width: 100%; padding: .45rem; }
-  .tip-machine-stamp { margin-bottom: .4rem; }
+  .tip-machine-figure { max-width: 100%; }
 }
 @media (max-width: 850px) {
   .contact-links, .tip-panel { grid-column: 1; grid-row: auto; justify-self: start; }
@@ -315,13 +344,13 @@ em { font-weight: 400; }
   .approach h2 { font-size: clamp(3rem, 11vw, 4.7rem); }
   .about-note { margin-top: 4rem; margin-left: 0; }
   .contact h2 { font-size: clamp(3rem, 11vw, 4.7rem); }
+  .contact:has(.tip-panel.is-enhanced) .contact-inner { padding-inline-start: 2rem; }
   .tip-panel-body { padding: .35rem; gap: .55rem; }
-  .tip-machine-figure { grid-column: 1 / -1; padding: .25rem; }
-  .tip-machine-stamp { margin-bottom: .25rem; }
+  .tip-machine-figure { grid-column: 1 / -1; }
   .tip-machine-crt { aspect-ratio: 2.4 / 1; }
   .tip-media-caption { margin: .3rem 0 0; font-size: .75rem; line-height: 1.2; }
   .tip-presets { grid-template-columns: 1fr; width: 100%; gap: .3rem; }
-  .tip-presets button { display: flex; align-items: center; justify-content: space-between; gap: .5rem; min-height: 2.75rem; padding-inline: .7rem; font-size: .85rem; }
+  .tip-presets button { display: flex; align-items: center; justify-content: space-between; gap: .5rem; min-height: 2.75rem; padding-inline: .7rem; font-size: .78rem; }
   .tip-heading h3 { font-size: 1.8rem; }
   .footer-inner { grid-template-columns: 1fr auto; gap: 2rem 1rem; }
   .footer-socials { grid-column: 1 / -1; grid-row: 2; }
@@ -358,7 +387,7 @@ em { font-weight: 400; }
 /* Case-study CRT outer contour, vertically normalized for the taller hero and Work cards.
    Mask the whole screen (including media and copy), not just its border. Rounded bezels remain fallback. */
 @supports ((mask-image: linear-gradient(#000,#000)) or (-webkit-mask-image: linear-gradient(#000,#000))) {
-  .crt-screen, .project-screen {
+  .crt-screen, .project-screen, .tip-machine-crt {
     --screen-outer-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1200' preserveAspectRatio='none'%3E%3Cpath d='M28 38 Q500 -30 972 38 Q980 44 980 56 Q1016 600 980 1144 Q980 1156 972 1162 Q500 1230 28 1162 Q20 1156 20 1144 Q-16 600 20 56 Q20 44 28 38Z' fill='%23fff'/%3E%3C/svg%3E");
     border-radius: 0;
     box-shadow: none;
@@ -366,7 +395,9 @@ em { font-weight: 400; }
     -webkit-mask: var(--screen-outer-mask) center / 100% 100% no-repeat;
   }
   .crt-edge, .project-glass { border: 0; border-radius: 0; box-shadow: none; }
-  .crt-screen::after, .project-screen::after {
+  .tip-machine-crt { border: 0; }
+  /* Keep the tip screen's scan/glass layer on ::after; its bezel uses ::before. */
+  .crt-screen::after, .project-screen::after, .tip-machine-crt::before {
     content: ''; position: absolute; inset: 0; z-index: 9; pointer-events: none;
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1200' preserveAspectRatio='none'%3E%3Cpath d='M28 38 Q500 -30 972 38 Q980 44 980 56 Q1016 600 980 1144 Q980 1156 972 1162 Q500 1230 28 1162 Q20 1156 20 1144 Q-16 600 20 56 Q20 44 28 38Z' fill='none' stroke='%23050808' stroke-opacity='.28' stroke-width='8' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M28 38 Q500 -30 972 38 Q980 44 980 56 Q1016 600 980 1144 Q980 1156 972 1162 Q500 1230 28 1162 Q20 1156 20 1144 Q-16 600 20 56 Q20 44 28 38Z' fill='none' stroke='%23e2c9a5' stroke-opacity='.38' stroke-width='2' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
   }
