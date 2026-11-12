@@ -161,7 +161,7 @@ const linkedInUrl = 'https://www.linkedin.com/in/davor-lucic-467236267/';
         <div class="tip-machine" data-tip-media>
           <figure class="tip-machine-figure">
             <div class="tip-machine-crt" data-tip-screen data-power-session-key="coffee-tip-screen-played">
-              <img src="/media/settlement-poster.webp" alt="" loading="lazy" />
+              <img src="/media/firewatch-poster.webp" alt="" loading="lazy" />
               <video muted loop playsinline preload="none" aria-hidden="true"></video>
               <div class="tip-crt-readout" data-tip-crt-state="idle">
                 <span class="tip-crt-network">BASE MAINNET · 8453</span>
@@ -170,6 +170,7 @@ const linkedInUrl = 'https://www.linkedin.com/in/davor-lucic-467236267/';
                 <p class="tip-crt-detail" data-tip-crt-detail>Optional ETH tips.</p>
               </div>
               <p class="tip-sr-only" data-tip-status role="status" aria-live="polite" tabindex="-1"></p>
+              <div class="crt-scan" aria-hidden="true"></div>
               <div class="crt-shutter" aria-hidden="true"><span class="crt-shutter-line"></span></div>
             </div>
           </figure>
@@ -180,8 +181,10 @@ const linkedInUrl = 'https://www.linkedin.com/in/davor-lucic-467236267/';
           <h3 id="tip-title" class="tip-sr-only">Optional ETH tip on Base</h3>
           <div class="tip-views">
           <div class="tip-form" data-tip-form hidden>
+          <div class="tip-step-viewport" data-tip-step-viewport>
             <section data-tip-step-amount aria-labelledby="tip-step-amount-title">
               <h4 id="tip-step-amount-title" class="tip-step-heading" tabindex="-1">Choose a tip</h4>
+              <div class="tip-pane-content" tabindex="0">
               <fieldset class="tip-amounts">
                 <legend>Choose an ETH tip on Base Mainnet</legend>
                 <div class="tip-presets">
@@ -190,43 +193,87 @@ const linkedInUrl = 'https://www.linkedin.com/in/davor-lucic-467236267/';
                   <button type="button" data-tip-preset="0.01">Keep the lights on <span>0.01 ETH</span></button>
                 </div>
               </fieldset>
-              <button class="tip-manual-toggle" type="button" data-tip-manual-toggle hidden>Send from your own wallet instead →</button>
+              </div>
+              <div class="tip-actions">
+                <button class="tip-manual-toggle" type="button" data-tip-manual-toggle hidden>Send from your own wallet instead →</button>
+              </div>
             </section>
             <section data-tip-step-review aria-labelledby="tip-step-review-title" hidden>
               <h4 id="tip-step-review-title" class="tip-step-heading" tabindex="-1">Review your tip</h4>
-              <dl class="tip-review-facts">
-                <div><dt>Recipient · verify full address</dt><dd><code>{TIP_RECIPIENT}</code></dd></div>
-              </dl>
-              <button class="tip-primary" type="button" data-tip-connect disabled>Connect wallet</button>
-              <div class="tip-review" data-tip-review hidden role="group" aria-label="Review before wallet approval">
-                <p class="tip-wallet-from">From <span data-tip-account></span></p>
-                <p class="tip-help">Verify recipient and gas in your wallet. Transfers cannot be reversed.</p>
-                <button class="tip-primary" type="button" data-tip-send disabled>Review transfer in wallet</button>
+              <div class="tip-pane-content" tabindex="0">
+                <dl class="tip-review-facts tip-info-block">
+                  <div><dt>Recipient · verify full address</dt><dd><code>{TIP_RECIPIENT}</code></dd></div>
+                </dl>
+                <p class="tip-help">Choose the account you want to tip from in your browser wallet.</p>
               </div>
-              <button class="tip-back" type="button" data-tip-back>← Change tip</button>
+              <div class="tip-actions">
+                <button class="tip-primary" type="button" data-tip-connect disabled>Connect wallet</button>
+                <button class="tip-back" type="button" data-tip-back>← Change tip</button>
+              </div>
+            </section>
+            <section data-tip-step-wallet aria-labelledby="tip-step-wallet-title" hidden>
+              <h4 id="tip-step-wallet-title" class="tip-step-heading" tabindex="-1">Review transfer in wallet</h4>
+              <div class="tip-pane-content" tabindex="0">
+                <dl class="tip-review-facts tip-info-block">
+                  <div><dt>Recipient · verify full address</dt><dd><code>{TIP_RECIPIENT}</code></dd></div>
+                </dl>
+                <div class="tip-review tip-info-block" data-tip-review role="group" aria-label="Review before wallet approval">
+                  <p class="tip-wallet-from">From <span data-tip-account></span></p>
+                  <details class="tip-wallet-mobile-account" data-tip-account-details>
+                    <summary>From <span class="tip-account-short" data-tip-account-short></span> <span class="tip-account-show">Show full</span><span class="tip-account-hide">Hide full</span></summary>
+                    <code data-tip-account-full></code>
+                  </details>
+                </div>
+              </div>
+              <div class="tip-actions">
+                <p class="tip-help tip-safety">Check recipient and gas in your wallet. Transfers are irreversible.</p>
+                <button class="tip-primary" type="button" data-tip-send disabled>Review in wallet</button>
+                <button class="tip-back" type="button" data-tip-wallet-back>← Back to connection</button>
+              </div>
             </section>
             <section data-tip-step-outcome aria-labelledby="tip-step-outcome-title" hidden>
               <h4 id="tip-step-outcome-title" class="tip-step-heading" tabindex="-1">Tip status</h4>
+              <div class="tip-pane-content tip-outcome-content" tabindex="0">
+                <p class="tip-outcome-note" data-tip-outcome-note>Follow the result here after wallet approval.</p>
+                <details class="tip-hash tip-info-block" data-tip-hash hidden><summary>Transaction reference</summary><code data-tip-hash-value></code></details>
+              </div>
+              <div class="tip-actions">
+                <button type="button" data-tip-retry hidden>Return to review details</button>
+                <a class="tip-receipt" data-tip-receipt href="#" target="_blank" rel="noopener noreferrer" hidden>View on BaseScan ↗</a>
+              </div>
             </section>
-            <p class="tip-error" id="tip-error" data-tip-error role="alert"></p>
-            <button type="button" data-tip-retry hidden>Return to review details</button>
-            <details class="tip-hash" data-tip-hash hidden><summary>Transaction reference</summary><code data-tip-hash-value></code></details>
-            <a class="tip-receipt" data-tip-receipt href="#" target="_blank" rel="noopener noreferrer" hidden>View on BaseScan ↗</a>
+          </div>
+            <p class="tip-error" id="tip-error" data-tip-error role="alert" tabindex="0"></p>
           </div>
           <noscript><p class="tip-nojs">Wallet connection needs JavaScript. Open the manual instructions below to send from your own wallet.</p></noscript>
           <details class="tip-manual-details" data-tip-manual-view>
             <summary>Send from your own wallet instead</summary>
+            <div class="tip-manual-pane">
             <h4 class="tip-step-heading" data-tip-manual-heading tabindex="-1" hidden>Send manually</h4>
-            <p class="tip-manual-warning">Send only ETH on Base Mainnet (8453). Check the full address; other networks or assets may be lost.</p>
-            <p class="tip-label">Full recipient address</p>
-            <code>{TIP_RECIPIENT}</code>
-            <button type="button" data-tip-copy hidden>Copy address</button>
-            <p data-tip-copy-status role="status" aria-live="polite"></p>
-            <button class="tip-back" type="button" data-tip-manual-back hidden>← Back to tip amounts</button>
+            <div class="tip-pane-content" tabindex="0">
+              <p class="tip-help tip-mobile-wallet-note" data-tip-mobile-wallet-note hidden>No wallet detected in this browser. Copy the address to send manually, or open this site in your wallet’s browser to connect.</p>
+              <p class="tip-manual-warning">Send only ETH on Base Mainnet (8453). Check the full address; other networks or assets may be lost.</p>
+              <div class="tip-info-block">
+                <p class="tip-label">Full recipient address</p>
+                <code>{TIP_RECIPIENT}</code>
+              </div>
+              <p data-tip-copy-status role="status" aria-live="polite"></p>
+            </div>
+            <div class="tip-actions">
+              <button type="button" data-tip-copy hidden>Copy address</button>
+              <button class="tip-back" type="button" data-tip-manual-back hidden>← Tip amounts</button>
+            </div>
+            </div>
           </details>
           </div>
           </div>
         </div>
+        <dialog class="tip-mobile-dialog" data-tip-mobile-dialog aria-labelledby="tip-mobile-title">
+          <header class="tip-sheet-header">
+            <h3 class="tip-sheet-heading" id="tip-mobile-title">Fund the night shift</h3>
+            <button class="tip-sheet-close" type="button" data-tip-mobile-close>Close <span aria-hidden="true">×</span></button>
+          </header>
+        </dialog>
         </section>
       </div>
     </section>

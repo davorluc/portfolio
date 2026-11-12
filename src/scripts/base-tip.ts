@@ -55,6 +55,10 @@ export function initBaseTip(): void {
   };
   const drawerToggle = pick<HTMLButtonElement>('[data-tip-drawer-toggle]');
   const drawerBody = pick<HTMLElement>('[data-tip-drawer-body]');
+  const mobileSheet = pick<HTMLDialogElement>('[data-tip-mobile-dialog]');
+  const mobileClose = pick<HTMLButtonElement>('[data-tip-mobile-close]');
+  const mobileWalletNote = pick<HTMLElement>('[data-tip-mobile-wallet-note]');
+  const mobileLayout = matchMedia('(max-width: 600px)');
   const form = pick<HTMLElement>('[data-tip-form]');
   const copy = pick<HTMLButtonElement>('[data-tip-copy]');
   const copyStatus = pick<HTMLElement>('[data-tip-copy-status]');
@@ -69,12 +73,19 @@ export function initBaseTip(): void {
   const send = pick<HTMLButtonElement>('[data-tip-send]');
   const review = pick<HTMLElement>('[data-tip-review]');
   const accountDisplay = pick<HTMLElement>('[data-tip-account]');
+  const accountShort = pick<HTMLElement>('[data-tip-account-short]');
+  const accountFull = pick<HTMLElement>('[data-tip-account-full]');
+  const accountDetails = pick<HTMLDetailsElement>('[data-tip-account-details]');
   const receiptLink = pick<HTMLAnchorElement>('[data-tip-receipt]');
   const hashDisplay = pick<HTMLElement>('[data-tip-hash]');
   const hashValue = pick<HTMLElement>('[data-tip-hash-value]');
   const amountStep = pick<HTMLElement>('[data-tip-step-amount]');
   const reviewStep = pick<HTMLElement>('[data-tip-step-review]');
   const outcomeStep = pick<HTMLElement>('[data-tip-step-outcome]');
+  const outcomeNote = pick<HTMLElement>('[data-tip-outcome-note]');
+  const walletStep = pick<HTMLElement>('[data-tip-step-wallet]');
+  const stepViewport = pick<HTMLElement>('[data-tip-step-viewport]');
+  const walletBack = pick<HTMLButtonElement>('[data-tip-wallet-back]');
   const back = pick<HTMLButtonElement>('[data-tip-back]');
   const retry = pick<HTMLButtonElement>('[data-tip-retry]');
   const screenReadout = pick<HTMLElement>('[data-tip-crt-state]');
@@ -120,6 +131,16 @@ export function initBaseTip(): void {
       manual: 'ETH only. Other assets or networks may be lost.',
     };
     screenDetail.textContent = details[state];
+    const outcomeNotes: Partial<Record<keyof typeof screenStates, string>> = {
+      approval: 'Verify the recipient, amount and gas in your wallet. This page never retries a transfer automatically.',
+      pending: 'Follow the original transaction on BaseScan while the network processes it.',
+      confirmed: 'Your support helps keep this work going. Thank you.',
+      failed: 'Gas may still have been charged. Inspect the transaction before starting another transfer.',
+      unverified: 'Use the original transaction in your wallet to investigate. An unknown result does not mean it failed.',
+      declined: 'Nothing further happens unless you choose to return to the details and try again.',
+    };
+    outcomeNote.textContent = outcomeNotes[state] ?? '';
+    panel.dispatchEvent(new CustomEvent('tip-state-change', { detail: { state } }));
   };
 
   let amount: ReturnType<typeof parseEthAmount> = null;
@@ -133,15 +154,20 @@ export function initBaseTip(): void {
   let receiptOutcome: 'pending' | 'confirmed' | 'failed' | 'unverified' | null = null;
   let provenanceUncertain = false;
   let revision = 0;
-  let step: 1 | 2 | 3 = 1;
-  const showStep = (next: 1 | 2 | 3, focus = false) => {
+  const steps = [amountStep, reviewStep, walletStep, outcomeStep];
+  let step: 1 | 2 | 3 | 4 = 1;
+  const showStep = (next: 1 | 2 | 3 | 4, focus = false) => {
     step = next;
     if (next === 1) setScreenState('idle');
     else if (next === 2) setScreenState('review');
-    amountStep.hidden = next !== 1;
-    reviewStep.hidden = next !== 2;
-    outcomeStep.hidden = next !== 3;
-    if (focus) (next === 1 ? amountStep : next === 2 ? reviewStep : outcomeStep).querySelector<HTMLElement>('h4')?.focus();
+    stepViewport.style.setProperty('--tip-active-step', String(next - 1));
+    steps.forEach((pane, index) => {
+      pane.hidden = false;
+      pane.inert = index !== next - 1;
+      pane.setAttribute('aria-hidden', String(index !== next - 1));
+      if (index === next - 1) pane.querySelector<HTMLElement>('.tip-pane-content')?.scrollTo({ top: 0, behavior: 'instant' });
+    });
+    if (focus) steps[next - 1].querySelector<HTMLElement>('h4')?.focus({ preventScroll: true });
   };
 
   const setStatus = (text: string, screenState?: keyof typeof screenStates) => {
@@ -152,7 +178,8 @@ export function initBaseTip(): void {
   const refresh = () => {
     const locked = busy || sendAttempted || !!hash;
     back.disabled = locked;
-    retry.hidden = step !== 3 || locked || !!hash;
+    walletBack.disabled = locked;
+    retry.hidden = step !== 4 || locked || !!hash;
     connect.disabled = locked || !amount;
     connect.hidden = ready;
     send.disabled = locked || !ready || !amount;
@@ -160,9 +187,13 @@ export function initBaseTip(): void {
     presets.forEach(button => {
       button.disabled = busy || !!hash || sendAttempted;
     });
-    review.hidden = !ready;
+    // The wallet pane stays laid out offscreen so connection doesn't resize it.
+    review.hidden = false;
     if (ready && account && amount) {
+      if (accountFull.textContent !== account) accountDetails.open = false;
       accountDisplay.textContent = account;
+      accountFull.textContent = account;
+      accountShort.textContent = `${account.slice(0, 6)}…${account.slice(-4)}`;
     }
   };
   const invalidate = (message: string) => {
@@ -190,8 +221,16 @@ export function initBaseTip(): void {
     showStep(1, true);
     refresh();
   });
-  retry.addEventListener('click', () => {
+  walletBack.addEventListener('click', () => {
     if (busy || sendAttempted || hash || step !== 3) return;
+    account = null;
+    invalidate('');
+    setError();
+    showStep(2, true);
+    refresh();
+  });
+  retry.addEventListener('click', () => {
+    if (busy || sendAttempted || hash || step !== 4) return;
     account = null;
     invalidate('No transaction hash was returned. Review the Base network, amount and address again before connecting.');
     setError();
@@ -223,9 +262,10 @@ export function initBaseTip(): void {
       return;
     }
     const hadReview = ready;
+    if (step === 3) showStep(2);
     account = null;
     invalidate('Wallet account or network changed. Review again before any transfer.');
-    if (hadReview && !busy && amount) connect.focus();
+    if (hadReview && !busy && amount) connect.focus({ preventScroll: true });
   };
   const obtainProvider = (): EthereumProvider | null => {
     const candidate = (window as Window & { ethereum?: EthereumProvider }).ethereum;
@@ -271,6 +311,7 @@ export function initBaseTip(): void {
       }
       account = current[0];
       ready = true;
+      showStep(3, true);
       setStatus('Ready for wallet transfer review. Nothing has been sent.', 'ready');
     } catch (cause) {
       ready = false;
@@ -282,8 +323,8 @@ export function initBaseTip(): void {
     } finally {
       busy = false;
       refresh();
-      if (ready) send.focus();
-      else if (amount) connect.focus();
+      if (ready) send.focus({ preventScroll: true });
+      else if (amount) connect.focus({ preventScroll: true });
     }
   });
 
@@ -337,13 +378,14 @@ export function initBaseTip(): void {
       const current = await wallet.request({ method: 'eth_accounts' });
       const chain = await wallet.request({ method: 'eth_chainId' });
       if (revision !== before || !Array.isArray(current) || !isAddress(current[0]) || current[0].toLowerCase() !== selectedAccount.toLowerCase() || !isBase(chain)) {
+        showStep(2, true);
         invalidate('Wallet account or network changed. Review again; no transfer was requested.');
         return;
       }
       sendAttempted = true;
       provenanceUncertain = false;
       ready = false;
-      showStep(3, true);
+      showStep(4, true);
       setStatus('Awaiting wallet approval. Verify destination, Base network and ETH amount in your wallet; you may reject.', 'approval');
       refresh();
       const response = await wallet.request({ method: 'eth_sendTransaction', params: [{ from: selectedAccount, to: TIP_RECIPIENT, value: `0x${selectedWei.toString(16)}` }] });
@@ -356,6 +398,7 @@ export function initBaseTip(): void {
       void pollReceipt(response, wallet);
     } catch (cause) {
       if (!sendAttempted) {
+        showStep(2, true);
         setError('Wallet check failed before any transfer request. Review your account and Base network again.');
         setStatus('No transfer was requested. Your amount is still selected.', 'review');
       } else if (rejected(cause)) {
@@ -371,19 +414,21 @@ export function initBaseTip(): void {
     } finally {
       busy = false;
       refresh();
-      if (step === 3) status.focus();
-      else if (amount) connect.focus();
+      if (step === 4) status.focus({ preventScroll: true });
+      else if (amount) connect.focus({ preventScroll: true });
     }
   });
 
-  const showManual = (manual: boolean) => {
+  const showManual = (manual: boolean, focus = true) => {
     panel.classList.toggle('is-manual', manual);
     setScreenState(manual ? 'manual' : 'idle');
     form.inert = manual;
     manualView.inert = !manual;
     copyStatus.textContent = '';
-    if (manual) manualHeading.focus({ preventScroll: true });
-    else manualToggle.focus({ preventScroll: true });
+    if (focus) {
+      if (manual) manualHeading.focus({ preventScroll: true });
+      else manualToggle.focus({ preventScroll: true });
+    }
   };
   manualToggle.addEventListener('click', () => showManual(true));
   manualBack.addEventListener('click', () => showManual(false));
@@ -393,19 +438,62 @@ export function initBaseTip(): void {
   manualView.open = true;
   manualView.inert = true;
 
-  drawerToggle.addEventListener('click', () => {
-    const open = !panel.classList.contains('is-open');
+  const updateMobileWallet = () => {
+    const candidate = (window as Window & { ethereum?: EthereumProvider }).ethereum;
+    const manualOnly = mobileLayout.matches && typeof candidate?.request !== 'function';
+    mobileWalletNote.hidden = !manualOnly;
+    manualBack.hidden = manualOnly;
+    return manualOnly;
+  };
+  const setDrawerOpen = (open: boolean, restoreFocus = true) => {
     panel.classList.toggle('is-open', open);
     drawerBody.inert = !open;
     drawerToggle.setAttribute('aria-expanded', String(open));
-    drawerToggle.querySelector<HTMLElement>('.tip-trigger-icon')!.textContent = open ? '←' : '→';
+    drawerToggle.querySelector<HTMLElement>('.tip-trigger-icon')!.textContent = mobileLayout.matches ? '↑' : open ? '←' : '→';
+    const manualOnly = updateMobileWallet();
+    if (mobileLayout.matches) {
+      // Move the existing interface, not a copy: wallet state and media survive resizing.
+      if (drawerBody.parentElement !== mobileSheet) mobileSheet.append(drawerBody);
+      if (open) {
+        if (manualOnly && step === 1) showManual(true, false);
+        if (!mobileSheet.open) mobileSheet.showModal();
+        document.documentElement.classList.add('tip-modal-open');
+        mobileClose.focus({ preventScroll: true });
+      } else {
+        mobileSheet.close();
+        document.documentElement.classList.remove('tip-modal-open');
+      }
+    } else {
+      mobileSheet.close();
+      document.documentElement.classList.remove('tip-modal-open');
+      if (drawerBody.parentElement !== panel) panel.insertBefore(drawerBody, mobileSheet);
+    }
+    if (!open && restoreFocus) drawerToggle.focus({ preventScroll: true });
     panel.dispatchEvent(new Event('tip-drawer-toggle'));
+  };
+  drawerToggle.addEventListener('click', () => setDrawerOpen(!panel.classList.contains('is-open')));
+  mobileClose.addEventListener('click', () => setDrawerOpen(false));
+  mobileSheet.addEventListener('cancel', event => {
+    event.preventDefault();
+    setDrawerOpen(false);
+  });
+  mobileSheet.addEventListener('click', event => {
+    if (event.target !== mobileSheet) return;
+    const bounds = mobileSheet.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) setDrawerOpen(false);
+  });
+  mobileLayout.addEventListener('change', () => setDrawerOpen(panel.classList.contains('is-open'), false));
+  window.addEventListener('ethereum#initialized', () => { updateMobileWallet(); });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !mobileLayout.matches && panel.classList.contains('is-open')) setDrawerOpen(false);
   });
   form.hidden = false;
   copy.hidden = false;
   drawerBody.inert = true;
   drawerToggle.hidden = false;
   panel.classList.add('is-enhanced');
+  showStep(1);
   setStatus('', 'idle');
   refresh();
+  setDrawerOpen(false, false);
 }
