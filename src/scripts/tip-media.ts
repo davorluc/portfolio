@@ -11,6 +11,7 @@ export function initTipMedia(): void {
   const sources = {
     idle: '/media/firewatch-idle-silent.mp4',
     success: '/media/firewatch-success-silent.mp4',
+    declined: '/media/firewatch-declined-silent.mp4',
   };
   let clip: keyof typeof sources = 'idle';
   let loadedClip: keyof typeof sources | null = null;
@@ -30,7 +31,7 @@ export function initTipMedia(): void {
     if (reduced.matches || failed || !isOpen() || !visible || document.hidden) {
       stop();
       if (reduced.matches) {
-        // Do not queue a celebration to surprise someone who opted out of motion.
+        // Do not queue a one-shot to surprise someone who opted out of motion.
         clip = 'idle';
         loadedClip = null;
         if (video.hasAttribute('src')) {
@@ -66,24 +67,22 @@ export function initTipMedia(): void {
   };
   panel.addEventListener('tip-state-change', event => {
     const state = (event as CustomEvent<{ state: string }>).detail.state;
-    // Temporary visual preview: a declined approval also plays the light-up clip.
-    // This changes decoration only; the transaction readout still says declined.
     if ((state === 'confirmed' || state === 'declined') && lastState !== state && !reduced.matches && !failed) {
       // A transaction hash alone never starts the one-shot.
-      clip = 'success';
+      clip = state === 'confirmed' ? 'success' : 'declined';
       void sync();
     }
     lastState = state;
   });
   video.addEventListener('ended', () => {
-    if (clip !== 'success' || loadedClip !== 'success' || failed) return;
+    if (clip === 'idle' || loadedClip !== clip || failed) return;
     clip = 'idle';
     void sync();
   });
   panel.addEventListener('tip-drawer-toggle', () => {
     if (!isOpen()) {
       stop();
-      // A celebration interrupted by closing resumes, rather than playing twice.
+      // A one-shot interrupted by closing resumes, rather than playing twice.
       if (clip === 'idle') video.currentTime = 0;
     } else void sync();
   });
