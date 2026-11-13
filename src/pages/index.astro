@@ -130,7 +130,7 @@ const linkedInUrl = 'https://www.linkedin.com/in/davor-lucic-467236267/';
           <a class="how-link" href="/work/monad-torrent/">Read the monad-torrent story <span aria-hidden="true">↗</span></a>
         </div>
       </div>
-      <figure class="how-artifact" aria-labelledby="how-artifact-title">
+      <div class="how-artifact" aria-labelledby="how-artifact-title">
         <div class="how-artifact-heading">
           <div>
             <p class="eyebrow">Inside monad-torrent / Haskell + Brick</p>
@@ -138,30 +138,34 @@ const linkedInUrl = 'https://www.linkedin.com/in/davor-lucic-467236267/';
           </div>
           <a href="/media/monad-torrent-help.webp">Open full-size screenshot <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="how-crt">
-          <img class="how-screenshot" src="/media/monad-torrent-help.webp" width="1337" height="718" loading="lazy" decoding="async" alt="monad-torrent’s terminal help screen, listing shortcuts for adding torrents, settings, navigation, deleting or removing entries, help, closing a window and quitting." />
-          <div class="crt-scan" aria-hidden="true"></div>
-          <div class="crt-glass" aria-hidden="true"></div>
-          <div class="crt-edge" aria-hidden="true"></div>
-          <div class="crt-shutter" aria-hidden="true"><span class="crt-shutter-line"></span></div>
+        <div class="how-artifact-layout">
+          <figure class="how-preview">
+            <div class="how-crt">
+              <img class="how-screenshot" src="/media/monad-torrent-help.webp" width="1337" height="718" loading="lazy" decoding="async" alt="monad-torrent’s terminal help screen, listing shortcuts for adding torrents, settings, navigation, deleting or removing entries, help, closing a window and quitting." />
+              <div class="crt-scan" aria-hidden="true"></div>
+              <div class="crt-glass" aria-hidden="true"></div>
+              <div class="crt-edge" aria-hidden="true"></div>
+              <div class="crt-shutter" aria-hidden="true"><span class="crt-shutter-line"></span></div>
+            </div>
+            <figcaption>Actual project UI: the help overview. This shows the interface I built, not the peer-download backend.</figcaption>
+          </figure>
+          <div class="how-details">
+            <details name="how-interface" open>
+              <summary><span><span class="how-detail-index">01 / Access</span>Direct actions</span></summary>
+              <p><kbd>a</kbd> adds a torrent; <kbd>s</kbd> opens settings. Common actions have their own keys rather than a menu to step through.</p>
+            </details>
+            <details name="how-interface">
+              <summary><span><span class="how-detail-index">02 / Navigation</span>Two ways to move</span></summary>
+              <p><kbd>j</kbd> / <kbd>k</kbd> and the arrow keys move through entries. <kbd>Esc</kbd> closes an open window.</p>
+            </details>
+            <details name="how-interface">
+              <summary><span><span class="how-detail-index">03 / Semantics</span>Remove isn’t delete</span></summary>
+              <p><kbd>e</kbd> removes an entry from the list; <kbd>d</kbd> also deletes its file. The help text spells out the difference.</p>
+            </details>
+          </div>
         </div>
-        <figcaption>Actual project UI: the help overview. This shows the interface I built, not the peer-download backend.</figcaption>
-        <dl class="how-details">
-          <div>
-            <dt><span class="how-detail-index">01 / Access</span>Direct actions</dt>
-            <dd><kbd>a</kbd> adds a torrent; <kbd>s</kbd> opens settings. Common actions have their own keys rather than a menu to step through.</dd>
-          </div>
-          <div>
-            <dt><span class="how-detail-index">02 / Navigation</span>Two ways to move</dt>
-            <dd><kbd>j</kbd> / <kbd>k</kbd> and the arrow keys move through entries. <kbd>Esc</kbd> closes an open window.</dd>
-          </div>
-          <div>
-            <dt><span class="how-detail-index">03 / Semantics</span>Remove isn’t delete</dt>
-            <dd><kbd>e</kbd> removes an entry from the list; <kbd>d</kbd> also deletes its file. The help text spells out the difference.</dd>
-          </div>
-        </dl>
         <p class="how-tradeoff"><strong>The trade-off:</strong> shortcuts keep actions direct, but users need to learn them. The footer points to <kbd>h</kbd> for this overview. With more actions, I’d keep common shortcuts and add a menu for discoverability.</p>
-      </figure>
+      </div>
     </section>
 
     <section class="approach" id="approach" aria-labelledby="approach-title">
