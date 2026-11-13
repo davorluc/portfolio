@@ -56,7 +56,7 @@ em { font-weight: 400; }
 .crt-shutter-line { position: absolute; z-index: 1; top: 50%; left: 0; right: 0; height: 2px; transform: translateY(-50%); opacity: 0; background: linear-gradient(90deg,transparent,rgba(221,235,222,.55) 22%,rgba(221,235,222,.72) 50%,rgba(221,235,222,.42) 78%,transparent); box-shadow: 0 0 8px rgba(204,228,214,.35); }
 @media (prefers-reduced-motion: no-preference) {
   .crt-turn-on .crt-screen > .crt-shutter,
-  .crt-secondary-ready :is(.project-screen, .case-media-frame):not([data-power-state="played"]) > .crt-shutter,
+  .crt-secondary-ready :is(.project-screen, .case-media-frame, .how-crt):not([data-power-state="played"]) > .crt-shutter,
   .crt-secondary-ready:not(.tip-power-played) .tip-machine-crt:not([data-power-state="played"]) > .crt-shutter { display: block; }
   .crt-turn-on .crt-screen > .crt-shutter::before, .crt-turn-on .crt-screen > .crt-shutter::after,
   .is-powering-on > .crt-shutter::before, .is-powering-on > .crt-shutter::after { animation: crt-shutter-open .9s cubic-bezier(.26,.18,.22,1) .2s both; }
@@ -154,6 +154,23 @@ em { font-weight: 400; }
 .how-story p { font-size: clamp(1.18rem, 1.6vw, 1.4rem); line-height: 1.65; }
 .how-link { display: inline-flex; align-items: center; gap: .35rem; min-height: 2.75rem; margin-top: 1.5rem; color: var(--ochre); font-weight: 600; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .3em; }
 .how-link:hover { color: #692b1c; }
+.how-artifact { margin-top: clamp(3rem, 6vw, 5rem); }
+.how-artifact-heading { display: flex; justify-content: space-between; align-items: end; gap: 1.5rem; padding-block: 1.5rem; border-top: 1px solid var(--rule); }
+.how-artifact-heading h3 { margin-top: .6rem; font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.15; }
+.how-artifact-heading a { flex-shrink: 0; padding-block: .75rem; color: var(--ochre); font-size: .9rem; text-underline-offset: .25em; }
+.how-crt { position: relative; isolation: isolate; overflow: hidden; width: min(100%, 760px); margin-inline: auto; padding: min(3.5%, 27px) min(3%, 23px); border-radius: 18px; background: #201d16; box-shadow: 0 0 0 1px #302e2a; }
+.how-screenshot { display: block; width: 100%; height: auto; }
+.how-crt .crt-glass { z-index: 2; }
+.how-crt .crt-edge { z-index: 3; }
+.how-artifact figcaption { margin-top: .85rem; color: var(--ink-soft); font-size: .85rem; line-height: 1.5; }
+.how-details { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; margin-top: 2rem; }
+.how-details > div { border-top: 1px solid var(--rule); padding-top: 1rem; }
+.how-details dt { font-family: "Fraunces Variable", Georgia, serif; font-size: 1.5rem; line-height: 1.25; }
+.how-detail-index { display: block; margin-bottom: .75rem; color: var(--ochre); font: 600 .75rem/1.5 "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .04em; }
+.how-details dd { margin: .9rem 0 0; color: var(--ink-soft); line-height: 1.65; }
+.how-artifact kbd { display: inline-block; min-width: 1.5em; padding: 0 .3em; border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 3px; color: var(--ink); font: 400 .85em/1.5 "IBM Plex Mono", monospace; text-align: center; }
+.how-tradeoff { max-width: 75ch; margin-top: 2rem; padding-left: 1.25rem; border-left: 2px solid var(--ochre); color: var(--ink-soft); line-height: 1.65; }
+.how-tradeoff strong { color: var(--ink); }
 .approach { background: #e5d8c2; padding-block: clamp(7rem, 11vw, 11rem); }
 .approach-inner { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: clamp(4rem, 8vw, 10rem); }
 .approach h2 { margin-top: 2rem; font-size: clamp(3.3rem, 5.5vw, 6rem); line-height: 1.04; }
@@ -365,6 +382,8 @@ html.tip-modal-open, html.tip-modal-open body { overflow: hidden; }
   .project-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .work-intro > p { max-width: 28rem; }
   .how-layout { grid-template-columns: 1fr; }
+  .how-artifact-heading { align-items: start; flex-direction: column; gap: .5rem; }
+  .how-details { grid-template-columns: 1fr; gap: 1.5rem; }
   .about-note { max-width: 28rem; margin-top: 5rem; margin-left: auto; }
   .contact .eyebrow { grid-column: 1; }
 }
@@ -457,7 +476,7 @@ html.tip-modal-open, html.tip-modal-open body { overflow: hidden; }
 /* Case-study CRT outer contour, vertically normalized for the taller hero and Work cards.
    Mask the whole screen (including media and copy), not just its border. Rounded bezels remain fallback. */
 @supports ((mask-image: linear-gradient(#000,#000)) or (-webkit-mask-image: linear-gradient(#000,#000))) {
-  .crt-screen, .project-screen, .tip-machine-crt {
+  .crt-screen, .project-screen, .tip-machine-crt, .how-crt {
     --screen-outer-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1200' preserveAspectRatio='none'%3E%3Cpath d='M28 38 Q500 -30 972 38 Q980 44 980 56 Q1016 600 980 1144 Q980 1156 972 1162 Q500 1230 28 1162 Q20 1156 20 1144 Q-16 600 20 56 Q20 44 28 38Z' fill='%23fff'/%3E%3C/svg%3E");
     border-radius: 0;
     box-shadow: none;
@@ -467,7 +486,7 @@ html.tip-modal-open, html.tip-modal-open body { overflow: hidden; }
   .crt-edge, .project-glass { border: 0; border-radius: 0; box-shadow: none; }
   .tip-machine-crt { border: 0; }
   /* Keep the tip screen's glass on ::after; its bezel uses ::before. */
-  .crt-screen::after, .project-screen::after, .tip-machine-crt::before {
+  .crt-screen::after, .project-screen::after, .tip-machine-crt::before, .how-crt::after {
     content: ''; position: absolute; inset: 0; z-index: 9; pointer-events: none;
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1200' preserveAspectRatio='none'%3E%3Cpath d='M28 38 Q500 -30 972 38 Q980 44 980 56 Q1016 600 980 1144 Q980 1156 972 1162 Q500 1230 28 1162 Q20 1156 20 1144 Q-16 600 20 56 Q20 44 28 38Z' fill='none' stroke='%23050808' stroke-opacity='.28' stroke-width='8' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M28 38 Q500 -30 972 38 Q980 44 980 56 Q1016 600 980 1144 Q980 1156 972 1162 Q500 1230 28 1162 Q20 1156 20 1144 Q-16 600 20 56 Q20 44 28 38Z' fill='none' stroke='%23e2c9a5' stroke-opacity='.38' stroke-width='2' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
   }

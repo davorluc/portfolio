@@ -5,7 +5,7 @@ import { TIP_RECIPIENT } from '../scripts/base-tip';
 const projects = [
   {
     name: 'monad-torrent', titleId: 'project-title', detailsId: 'project-details',
-    stack: 'Haskell / Brick', description: 'A simple torrent client written in Haskell using Brick.',
+    stack: 'Haskell / Brick', description: 'A two-person, one-semester Haskell project combining BitTorrent networking with a keyboard-driven terminal interface.',
     mediaUrl: '/media/library-silent.mp4', posterUrl: '/media/library-poster.webp',
     mediaNote: 'Temporary library concept visual, not project imagery.',
     caseUrl: '/work/monad-torrent/',
@@ -126,10 +126,42 @@ const linkedInUrl = 'https://www.linkedin.com/in/davor-lucic-467236267/';
       <div class="how-layout">
         <h2 id="how-title">Know the system.<br /><em>Then choose where to help.</em></h2>
         <div class="how-story">
-          <p>Fadil and I both started by exploring the download side of monad-torrent. With time tight, he took the peer-download backend while I built the Brick interface. Understanding the backend first helped me shape the local torrent-file, download-path and keyboard flows around what the client actually needed. I kept a small set of actions direct rather than hiding them in a menu. The work made more sense to me this way: learn how the parts connect, then make the part I own fit the whole.</p>
+          <p>Fadil and I started by exploring the download side of monad-torrent. We then split the work: he took the peer-download backend; I built the Brick terminal interface. With a small set of actions, I chose direct keyboard shortcuts over a menu.</p>
           <a class="how-link" href="/work/monad-torrent/">Read the monad-torrent story <span aria-hidden="true">↗</span></a>
         </div>
       </div>
+      <figure class="how-artifact" aria-labelledby="how-artifact-title">
+        <div class="how-artifact-heading">
+          <div>
+            <p class="eyebrow">Inside monad-torrent / Haskell + Brick</p>
+            <h3 id="how-artifact-title">A small interface. Explicit actions.</h3>
+          </div>
+          <a href="/media/monad-torrent-help.webp">Open full-size screenshot <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="how-crt">
+          <img class="how-screenshot" src="/media/monad-torrent-help.webp" width="1337" height="718" loading="lazy" decoding="async" alt="monad-torrent’s terminal help screen, listing shortcuts for adding torrents, settings, navigation, deleting or removing entries, help, closing a window and quitting." />
+          <div class="crt-scan" aria-hidden="true"></div>
+          <div class="crt-glass" aria-hidden="true"></div>
+          <div class="crt-edge" aria-hidden="true"></div>
+          <div class="crt-shutter" aria-hidden="true"><span class="crt-shutter-line"></span></div>
+        </div>
+        <figcaption>Actual project UI: the help overview. This shows the interface I built, not the peer-download backend.</figcaption>
+        <dl class="how-details">
+          <div>
+            <dt><span class="how-detail-index">01 / Access</span>Direct actions</dt>
+            <dd><kbd>a</kbd> adds a torrent; <kbd>s</kbd> opens settings. Common actions have their own keys rather than a menu to step through.</dd>
+          </div>
+          <div>
+            <dt><span class="how-detail-index">02 / Navigation</span>Two ways to move</dt>
+            <dd><kbd>j</kbd> / <kbd>k</kbd> and the arrow keys move through entries. <kbd>Esc</kbd> closes an open window.</dd>
+          </div>
+          <div>
+            <dt><span class="how-detail-index">03 / Semantics</span>Remove isn’t delete</dt>
+            <dd><kbd>e</kbd> removes an entry from the list; <kbd>d</kbd> also deletes its file. The help text spells out the difference.</dd>
+          </div>
+        </dl>
+        <p class="how-tradeoff"><strong>The trade-off:</strong> shortcuts keep actions direct, but users need to learn them. The footer points to <kbd>h</kbd> for this overview. With more actions, I’d keep common shortcuts and add a menu for discoverability.</p>
+      </figure>
     </section>
 
     <section class="approach" id="approach" aria-labelledby="approach-title">
@@ -432,7 +464,7 @@ const linkedInUrl = 'https://www.linkedin.com/in/davor-lucic-467236267/';
     const tipScreen = document.querySelector<HTMLElement>('.tip-machine-crt');
     if (tipScreen && document.documentElement.classList.contains('tip-power-played')) tipScreen.dataset.powerState = 'played';
     startSecondaryPowerOn([
-      ...document.querySelectorAll<HTMLElement>('.project-screen'),
+      ...document.querySelectorAll<HTMLElement>('.project-screen, .how-crt'),
       ...(tipScreen && tipScreen.dataset.powerState !== 'played' ? [tipScreen] : []),
     ]);
     initBaseTip();

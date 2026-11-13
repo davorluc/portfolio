@@ -41,7 +41,7 @@ import Layout from '../../../layouts/Layout.astro';
         <div class="case-hero-grid">
           <div>
             <h1 id="case-title">monad-<em>torrent</em></h1>
-            <p class="case-deck">A collaborative Haskell BitTorrent client exploring protocol and terminal UI.</p>
+            <p class="case-deck">A two-person, one-semester university project combining BitTorrent networking with a terminal interface in Haskell.</p>
           </div>
           <aside class="case-facts" aria-label="Project facts">
             <p><span>Built with</span><strong>Fadil Smajilbasic</strong></p>
@@ -54,6 +54,7 @@ import Layout from '../../../layouts/Layout.astro';
       <section class="case-section case-overview" aria-labelledby="overview-title">
         <div class="case-section-head"><p>01 / Context</p><h2 id="overview-title">What it does</h2></div>
         <div class="case-section-body">
+          <p>Built with Fadil Smajilbasic over one university semester, monad-torrent explored BitTorrent networking and terminal UI in Haskell. We both investigated the download side before dividing implementation: Fadil focused on peer downloading; I built the Brick interface, interaction flows, local persistence, and download-directory settings.</p>
           <p>A <code>.torrent</code> file supplies metadata about a file. This client decodes that metadata, computes an info hash, asks the listed HTTP tracker for compact peer addresses, and requests blocks from peers over TCP. A terminal interface lets someone add a torrent, inspect its metadata and choose a download directory.</p>
           <p class="case-aside">This is an account of the code path in a collaborative study, not a claim of a finished or production-ready downloader.</p>
         </div>
@@ -80,9 +81,9 @@ import Layout from '../../../layouts/Layout.astro';
       </section>
 
       <section class="case-section case-limits" aria-labelledby="limits-title">
-        <div class="case-section-head"><p>04 / In scope</p><h2 id="limits-title">What remains open</h2></div>
+        <div class="case-section-head"><p>04 / Outcome &amp; limits</p><h2 id="limits-title">What worked. What remains open.</h2></div>
         <div class="case-section-body">
-          <p>In our trials, some simple torrents downloaded, while more complex examples with multiple seeders failed. We suspected a parsing problem but did not confirm its cause. Broader compatibility needs investigation rather than a claim that this already works reliably.</p>
+          <p>The project brought torrent metadata, tracker communication, peer downloading, and a terminal interface into one application. Some simple torrents downloaded in our trials, but more complex examples with multiple seeders failed. We suspected a parsing problem but did not confirm its cause. Broader compatibility remained unfinished.</p>
           <p>The current download path writes received blocks without comparing a completed piece against the hashes advertised in the torrent metadata. That missing integrity check matters. The tracker path also reads one <code>announce</code> URL. This study is not presented as a production-ready or fast client, and this page makes no test-suite claim.</p>
         </div>
       </section>
