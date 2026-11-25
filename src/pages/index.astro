@@ -7,21 +7,18 @@ const projects = [
     name: 'monad-torrent', titleId: 'project-title', detailsId: 'project-details',
     stack: 'Haskell / Brick', description: 'A two-person, one-semester Haskell project combining BitTorrent networking with a keyboard-driven terminal interface.',
     mediaUrl: '/media/library-silent.mp4', posterUrl: '/media/library-poster.webp',
-    mediaNote: 'Temporary library concept visual, not project imagery.',
     caseUrl: '/work/monad-torrent/',
   },
   {
     name: 'devchain', titleId: 'project-title-devchain', detailsId: 'project-details-devchain',
     stack: 'Rust / SHA-256', description: 'Early Rust blockchain study of proof-of-work blocks and transaction models.',
     mediaUrl: '/media/settlement-silent.mp4', posterUrl: '/media/settlement-poster.webp',
-    mediaNote: 'Temporary settlement concept visual, not blockchain or project footage.',
     caseUrl: '/work/devchain/',
   },
   {
     name: 'Hydra', titleId: 'project-title-hydra', detailsId: 'project-details-hydra',
     stack: 'Aave / concept', description: 'A concept for an Aave liquidation bot with planned Rust monitoring and Solidity execution.',
     mediaUrl: '/media/hydra-storm-silent.mp4', posterUrl: '/media/hydra-storm-poster.webp',
-    mediaNote: 'Temporary storm concept visual, not a built bot or project demo.',
     caseUrl: null,
   },
 ] as const;
@@ -111,7 +108,6 @@ const linkedInUrl = 'https://www.linkedin.com/in/davor-lucic-467236267/';
                 {project.caseUrl
                   ? <a class="project-link" href={project.caseUrl}>Read case study <span aria-hidden="true">↗</span></a>
                   : <span class="project-placeholder">Case study in preparation</span>}
-                <p class="project-media-note">{project.mediaNote}</p>
               </div>
             </div>
             <p class="project-status" role="status" aria-live="polite"></p>

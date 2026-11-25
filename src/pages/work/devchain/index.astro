@@ -21,7 +21,7 @@ import Layout from '../../../layouts/Layout.astro';
   </header>
 
   <main id="main" tabindex="-1">
-    <figure class="case-media case-container">
+    <div class="case-media case-container">
       <div class="case-media-shell">
         <div class="case-media-frame">
           <img src="/media/settlement-poster.webp" width="1280" height="720" alt="" fetchpriority="high" />
@@ -33,8 +33,7 @@ import Layout from '../../../layouts/Layout.astro';
           <div class="crt-shutter" aria-hidden="true"><span class="crt-shutter-line"></span></div>
         </div>
       </div>
-      <figcaption>Temporary settlement concept footage — not project UI or a running blockchain demo.</figcaption>
-    </figure>
+    </div>
     <div class="case-container">
       <section class="case-hero" aria-labelledby="case-title">
         <p class="case-index">02 / Selected work · Case study</p>
@@ -199,7 +198,6 @@ import Layout from '../../../layouts/Layout.astro';
   }
   .case-media-status { position: absolute; z-index: 2; bottom: 1rem; left: 1rem; max-width: calc(100% - 2rem); padding: .35rem .55rem; background: rgba(8,12,11,.94); color: var(--chalk); font-size: .84rem; }
   .case-media-status:empty { display: none; }
-  .case-media figcaption { margin-top: .85rem; color: var(--ink-soft); font: 400 .75rem/1.6 "IBM Plex Mono",ui-monospace,monospace; }
   .case-hero { padding: clamp(3.5rem, 5vw, 6rem) 0 clamp(4.5rem, 8vw, 8rem); }
   .case-index { margin-bottom: 2rem; color: var(--ochre); }
   .case-hero-grid { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(16rem, .7fr); gap: clamp(3rem, 7vw, 9rem); align-items: end; }
